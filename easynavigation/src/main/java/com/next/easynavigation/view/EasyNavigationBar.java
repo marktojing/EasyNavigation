@@ -434,7 +434,7 @@ public class EasyNavigationBar extends LinearLayout {
     private void setViewPagerAdapter() {
         adapter = new ViewPagerAdapter(fragmentManager, fragmentList);
         mViewPager.setAdapter(adapter);
-        mViewPager.setOffscreenPageLimit(3);
+        mViewPager.setOffscreenPageLimit(10);
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {

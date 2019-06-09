@@ -41,6 +41,12 @@ Step 2. Add the dependency
 ```
 
 ---
+# 更新（1.0.3）
+
+1、viewpager缓存默认值改大一些（之前一直有咨询页面销毁的问题）；
+
+
+---
 # 更新（1.0.2）
 
 1、修改navigition为navigation；

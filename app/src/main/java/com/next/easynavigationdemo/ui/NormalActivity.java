@@ -38,7 +38,6 @@ public class NormalActivity extends AppCompatActivity {
         fragments.add(new DFragment());
 
         navigationBar.titleItems(tabText)
-                .normalIconItems(normalIcon)
                 .selectIconItems(selectIcon)
                 .fragmentList(fragments)
                 .fragmentManager(getSupportFragmentManager())

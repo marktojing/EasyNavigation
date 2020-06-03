@@ -362,73 +362,81 @@ public class EasyNavigationBar extends LinearLayout {
 
         setViewPagerAdapter();
 
-        for (int i = 0; i < tabCount; i++) {
-            View itemView = View.inflate(getContext(), R.layout.navigation_tab_layout, null);
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-            params.width = NavigationUtil.getScreenWidth(getContext()) / tabCount;
+        post(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < tabCount; i++) {
+                    View itemView = View.inflate(getContext(), R.layout.navigation_tab_layout, null);
+                    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+                    params.width = getWidth() / tabCount;
 
-            itemView.setLayoutParams(params);
-            itemView.setId(i);
+                    itemView.setLayoutParams(params);
+                    itemView.setId(i);
 
-            TextView text = itemView.findViewById(R.id.tab_text_tv);
-            ImageView icon = itemView.findViewById(R.id.tab_icon_iv);
-            icon.setScaleType(scaleType);
-            LayoutParams iconParams = (LayoutParams) icon.getLayoutParams();
-            iconParams.width = (int) iconSize;
-            iconParams.height = (int) iconSize;
-            icon.setLayoutParams(iconParams);
+                    TextView text = itemView.findViewById(R.id.tab_text_tv);
+                    ImageView icon = itemView.findViewById(R.id.tab_icon_iv);
+                    icon.setScaleType(scaleType);
+                    LayoutParams iconParams = (LayoutParams) icon.getLayoutParams();
+                    iconParams.width = (int) iconSize;
+                    iconParams.height = (int) iconSize;
+                    icon.setLayoutParams(iconParams);
 
-            View hintPoint = itemView.findViewById(R.id.red_point);
+                    View hintPoint = itemView.findViewById(R.id.red_point);
 
-            //提示红点
-            RelativeLayout.LayoutParams hintPointParams = (RelativeLayout.LayoutParams) hintPoint.getLayoutParams();
-            hintPointParams.bottomMargin = (int) hintPointTop;
-            hintPointParams.width = (int) hintPointSize;
-            hintPointParams.height = (int) hintPointSize;
-            hintPointParams.leftMargin = (int) hintPointLeft;
-            hintPoint.setLayoutParams(hintPointParams);
+                    //提示红点
+                    RelativeLayout.LayoutParams hintPointParams = (RelativeLayout.LayoutParams) hintPoint.getLayoutParams();
+                    hintPointParams.bottomMargin = (int) hintPointTop;
+                    hintPointParams.width = (int) hintPointSize;
+                    hintPointParams.height = (int) hintPointSize;
+                    hintPointParams.leftMargin = (int) hintPointLeft;
+                    hintPoint.setLayoutParams(hintPointParams);
 
-            //消息红点
-            TextView msgPoint = itemView.findViewById(R.id.msg_point_tv);
-            msgPoint.setTextSize(NavigationUtil.px2sp(getContext(), msgPointTextSize));
-            RelativeLayout.LayoutParams msgPointParams = (RelativeLayout.LayoutParams) msgPoint.getLayoutParams();
-            msgPointParams.bottomMargin = (int) msgPointTop;
-            msgPointParams.width = (int) msgPointSize;
-            msgPointParams.height = (int) msgPointSize;
-            msgPointParams.leftMargin = (int) msgPointLeft;
-            msgPoint.setLayoutParams(msgPointParams);
+                    //消息红点
+                    TextView msgPoint = itemView.findViewById(R.id.msg_point_tv);
+                    msgPoint.setTextSize(NavigationUtil.px2sp(getContext(), msgPointTextSize));
+                    RelativeLayout.LayoutParams msgPointParams = (RelativeLayout.LayoutParams) msgPoint.getLayoutParams();
+                    msgPointParams.bottomMargin = (int) msgPointTop;
+                    msgPointParams.width = (int) msgPointSize;
+                    msgPointParams.height = (int) msgPointSize;
+                    msgPointParams.leftMargin = (int) msgPointLeft;
+                    msgPoint.setLayoutParams(msgPointParams);
 
 
-            hintPointList.add(hintPoint);
-            msgPointList.add(msgPoint);
+                    hintPointList.add(hintPoint);
+                    msgPointList.add(msgPoint);
 
-            imageViewList.add(icon);
-            textViewList.add(text);
+                    imageViewList.add(icon);
+                    textViewList.add(text);
 
-            itemView.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (onTabClickListener != null) {
-                        if (!onTabClickListener.onTabClickEvent(view, view.getId())) {
-                            mViewPager.setCurrentItem(view.getId(), smoothScroll);
+                    itemView.setOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if (onTabClickListener != null) {
+                                if (!onTabClickListener.onTabClickEvent(view, view.getId())) {
+                                    mViewPager.setCurrentItem(view.getId(), smoothScroll);
+                                }
+                            } else {
+                                mViewPager.setCurrentItem(view.getId(), smoothScroll);
+                            }
                         }
-                    } else {
-                        mViewPager.setCurrentItem(view.getId(), smoothScroll);
-                    }
+                    });
+
+                    LayoutParams textParams = (LayoutParams) text.getLayoutParams();
+                    textParams.topMargin = (int) tabTextTop;
+                    text.setLayoutParams(textParams);
+                    text.setText(titleItems[i]);
+                    text.setTextSize(NavigationUtil.px2sp(getContext(), tabTextSize));
+
+
+                    tabList.add(itemView);
+                    navigationLayout.addView(itemView);
                 }
-            });
-
-            LayoutParams textParams = (LayoutParams) text.getLayoutParams();
-            textParams.topMargin = (int) tabTextTop;
-            text.setLayoutParams(textParams);
-            text.setText(titleItems[i]);
-            text.setTextSize(NavigationUtil.px2sp(getContext(), tabTextSize));
+                select(0, false);
+            }
+        });
 
 
-            tabList.add(itemView);
-            navigationLayout.addView(itemView);
-        }
-        select(0, false);
+
     }
 
     private void setViewPagerAdapter() {
@@ -482,169 +490,175 @@ public class EasyNavigationBar extends LinearLayout {
 
         setViewPagerAdapter();
 
-        for (int i = 0; i < tabCount; i++) {
+        post(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < tabCount; i++) {
 
-            if (i == tabCount / 2) {
-                RelativeLayout addItemView = new RelativeLayout(getContext());
-                RelativeLayout.LayoutParams addItemParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-                addItemParams.width = NavigationUtil.getScreenWidth(getContext()) / tabCount;
-                addItemView.setLayoutParams(addItemParams);
-                navigationLayout.addView(addItemView);
+                    if (i == tabCount / 2) {
+                        RelativeLayout addItemView = new RelativeLayout(getContext());
+                        RelativeLayout.LayoutParams addItemParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+                        addItemParams.width = getWidth() / tabCount;
+                        addItemView.setLayoutParams(addItemParams);
+                        navigationLayout.addView(addItemView);
 
-                final LinearLayout addLinear = new LinearLayout(getContext());
-                addLinear.setOrientation(VERTICAL);
-                addLinear.setGravity(Gravity.CENTER);
-                final RelativeLayout.LayoutParams linearParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                        final LinearLayout addLinear = new LinearLayout(getContext());
+                        addLinear.setOrientation(VERTICAL);
+                        addLinear.setGravity(Gravity.CENTER);
+                        final RelativeLayout.LayoutParams linearParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
-                addImage = new ImageView(getContext());
-                LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                imageParams.width = (int) addIconSize;
-                imageParams.height = (int) addIconSize;
-                addImage.setLayoutParams(imageParams);
+                        addImage = new ImageView(getContext());
+                        LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                        imageParams.width = (int) addIconSize;
+                        imageParams.height = (int) addIconSize;
+                        addImage.setLayoutParams(imageParams);
 
-                TextView addText = new TextView(getContext());
-                addText.setTextSize(NavigationUtil.px2sp(getContext(), addTextSize));
-                LinearLayout.LayoutParams addTextParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                addTextParams.topMargin = (int) addTextTopMargin;
-                if (TextUtils.isEmpty(titleItems[i])) {
-                    addText.setVisibility(GONE);
-                } else {
-                    addText.setVisibility(VISIBLE);
-                }
-                addText.setLayoutParams(addTextParams);
-                addText.setText(titleItems[i]);
-
-                if (addLayoutRule == RULE_CENTER) {
-                    linearParams.addRule(RelativeLayout.CENTER_IN_PARENT);
-                } else if (addLayoutRule == RULE_BOTTOM) {
-                    linearParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-                    linearParams.addRule(RelativeLayout.ABOVE, R.id.empty_line);
-                    if (addAlignBottom) {
-                        if (textViewList != null && textViewList.size() > 0) {
-                            textViewList.get(0).post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) empty_line.getLayoutParams();
-                                    params.height = (int) ((navigationHeight - textViewList.get(0).getHeight() - iconSize - tabTextTop) / 2);
-                                    empty_line.setLayoutParams(params);
-                                    //linearParams.bottomMargin = (int) ((navigationHeight - textViewList.get(0).getHeight() - iconSize - tabTextTop) / 2);
-                                }
-                            });
-
-                        }
-                    } else {
-                        linearParams.bottomMargin = (int) addLayoutBottom;
-                    }
-                }
-
-                addImage.setId(i);
-                addImage.setImageResource(normalIconItems[i]);
-                addImage.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (onTabClickListener != null) {
-                            if (!onTabClickListener.onTabClickEvent(view, view.getId())) {
-                                if (addAsFragment)
-                                    mViewPager.setCurrentItem(view.getId(), smoothScroll);
-                            }
+                        TextView addText = new TextView(getContext());
+                        addText.setTextSize(NavigationUtil.px2sp(getContext(), addTextSize));
+                        LinearLayout.LayoutParams addTextParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                        addTextParams.topMargin = (int) addTextTopMargin;
+                        if (TextUtils.isEmpty(titleItems[i])) {
+                            addText.setVisibility(GONE);
                         } else {
-                            if (addAsFragment)
-                                mViewPager.setCurrentItem(view.getId(), smoothScroll);
+                            addText.setVisibility(VISIBLE);
                         }
-                        if (onAddClickListener != null)
-                            onAddClickListener.OnAddClickEvent(view);
-                    }
-                });
+                        addText.setLayoutParams(addTextParams);
+                        addText.setText(titleItems[i]);
 
-                imageViewList.add(addImage);
-                textViewList.add(addText);
+                        if (addLayoutRule == RULE_CENTER) {
+                            linearParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+                        } else if (addLayoutRule == RULE_BOTTOM) {
+                            linearParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+                            linearParams.addRule(RelativeLayout.ABOVE, R.id.empty_line);
+                            if (addAlignBottom) {
+                                if (textViewList != null && textViewList.size() > 0) {
+                                    textViewList.get(0).post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) empty_line.getLayoutParams();
+                                            params.height = (int) ((navigationHeight - textViewList.get(0).getHeight() - iconSize - tabTextTop) / 2);
+                                            empty_line.setLayoutParams(params);
+                                            //linearParams.bottomMargin = (int) ((navigationHeight - textViewList.get(0).getHeight() - iconSize - tabTextTop) / 2);
+                                        }
+                                    });
 
-
-                addLinear.addView(addImage);
-                addLinear.addView(addText);
-
-                tabList.add(addLinear);
-
-                AddContainerLayout.addView(addLinear, linearParams);
-            } else {
-                int index = i;
-
-                View itemView = View.inflate(getContext(), R.layout.navigation_tab_layout, null);
-                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-                params.width = NavigationUtil.getScreenWidth(getContext()) / tabCount;
-
-                itemView.setLayoutParams(params);
-                itemView.setId(index);
-
-                TextView text = itemView.findViewById(R.id.tab_text_tv);
-                ImageView icon = itemView.findViewById(R.id.tab_icon_iv);
-                icon.setScaleType(scaleType);
-                LayoutParams iconParams = (LayoutParams) icon.getLayoutParams();
-                iconParams.width = (int) iconSize;
-                iconParams.height = (int) iconSize;
-                icon.setLayoutParams(iconParams);
-
-                imageViewList.add(icon);
-                textViewList.add(text);
-                itemView.setOnClickListener(new OnClickListener() {
-                    public void onClick(View view) {
-                        final int tabPosition = view.getId();
-                        if (onTabClickListener != null) {
-                            if (!onTabClickListener.onTabClickEvent(view, view.getId())) {
-
-                                if (tabPosition > tabCount / 2 && !addAsFragment) {
-                                    mViewPager.setCurrentItem(tabPosition - 1, smoothScroll);
-                                } else {
-                                    mViewPager.setCurrentItem(view.getId(), smoothScroll);
                                 }
-                            }
-                        } else {
-                            if (tabPosition > tabCount / 2 && !addAsFragment) {
-                                mViewPager.setCurrentItem(tabPosition - 1, smoothScroll);
                             } else {
-                                mViewPager.setCurrentItem(view.getId(), smoothScroll);
+                                linearParams.bottomMargin = (int) addLayoutBottom;
                             }
                         }
+
+                        addImage.setId(i);
+                        addImage.setImageResource(normalIconItems[i]);
+                        addImage.setOnClickListener(new OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                if (onTabClickListener != null) {
+                                    if (!onTabClickListener.onTabClickEvent(view, view.getId())) {
+                                        if (addAsFragment)
+                                            mViewPager.setCurrentItem(view.getId(), smoothScroll);
+                                    }
+                                } else {
+                                    if (addAsFragment)
+                                        mViewPager.setCurrentItem(view.getId(), smoothScroll);
+                                }
+                                if (onAddClickListener != null)
+                                    onAddClickListener.OnAddClickEvent(view);
+                            }
+                        });
+
+                        imageViewList.add(addImage);
+                        textViewList.add(addText);
+
+
+                        addLinear.addView(addImage);
+                        addLinear.addView(addText);
+
+                        tabList.add(addLinear);
+
+                        AddContainerLayout.addView(addLinear, linearParams);
+                    } else {
+                        int index = i;
+
+                        View itemView = View.inflate(getContext(), R.layout.navigation_tab_layout, null);
+                        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+                        params.width = getWidth() / tabCount;
+
+                        itemView.setLayoutParams(params);
+                        itemView.setId(index);
+
+                        TextView text = itemView.findViewById(R.id.tab_text_tv);
+                        ImageView icon = itemView.findViewById(R.id.tab_icon_iv);
+                        icon.setScaleType(scaleType);
+                        LayoutParams iconParams = (LayoutParams) icon.getLayoutParams();
+                        iconParams.width = (int) iconSize;
+                        iconParams.height = (int) iconSize;
+                        icon.setLayoutParams(iconParams);
+
+                        imageViewList.add(icon);
+                        textViewList.add(text);
+                        itemView.setOnClickListener(new OnClickListener() {
+                            public void onClick(View view) {
+                                final int tabPosition = view.getId();
+                                if (onTabClickListener != null) {
+                                    if (!onTabClickListener.onTabClickEvent(view, view.getId())) {
+
+                                        if (tabPosition > tabCount / 2 && !addAsFragment) {
+                                            mViewPager.setCurrentItem(tabPosition - 1, smoothScroll);
+                                        } else {
+                                            mViewPager.setCurrentItem(view.getId(), smoothScroll);
+                                        }
+                                    }
+                                } else {
+                                    if (tabPosition > tabCount / 2 && !addAsFragment) {
+                                        mViewPager.setCurrentItem(tabPosition - 1, smoothScroll);
+                                    } else {
+                                        mViewPager.setCurrentItem(view.getId(), smoothScroll);
+                                    }
+                                }
+                            }
+                        });
+
+                        LayoutParams textParams = (LayoutParams) text.getLayoutParams();
+                        textParams.topMargin = (int) tabTextTop;
+                        text.setLayoutParams(textParams);
+                        text.setText(titleItems[index]);
+                        text.setTextSize(NavigationUtil.px2sp(getContext(), tabTextSize));
+
+
+                        View hintPoint = itemView.findViewById(R.id.red_point);
+
+                        //提示红点
+                        RelativeLayout.LayoutParams hintPointParams = (RelativeLayout.LayoutParams) hintPoint.getLayoutParams();
+                        hintPointParams.bottomMargin = (int) hintPointTop;
+                        hintPointParams.width = (int) hintPointSize;
+                        hintPointParams.height = (int) hintPointSize;
+                        hintPointParams.leftMargin = (int) hintPointLeft;
+                        hintPoint.setLayoutParams(hintPointParams);
+
+                        //消息红点
+                        TextView msgPoint = itemView.findViewById(R.id.msg_point_tv);
+                        msgPoint.setTextSize(NavigationUtil.px2sp(getContext(), msgPointTextSize));
+                        RelativeLayout.LayoutParams msgPointParams = (RelativeLayout.LayoutParams) msgPoint.getLayoutParams();
+                        msgPointParams.bottomMargin = (int) msgPointTop;
+                        msgPointParams.width = (int) msgPointSize;
+                        msgPointParams.height = (int) msgPointSize;
+                        msgPointParams.leftMargin = (int) msgPointLeft;
+                        msgPoint.setLayoutParams(msgPointParams);
+
+
+                        hintPointList.add(hintPoint);
+                        msgPointList.add(msgPoint);
+
+
+                        tabList.add(itemView);
+                        navigationLayout.addView(itemView);
                     }
-                });
-
-                LayoutParams textParams = (LayoutParams) text.getLayoutParams();
-                textParams.topMargin = (int) tabTextTop;
-                text.setLayoutParams(textParams);
-                text.setText(titleItems[index]);
-                text.setTextSize(NavigationUtil.px2sp(getContext(), tabTextSize));
-
-
-                View hintPoint = itemView.findViewById(R.id.red_point);
-
-                //提示红点
-                RelativeLayout.LayoutParams hintPointParams = (RelativeLayout.LayoutParams) hintPoint.getLayoutParams();
-                hintPointParams.bottomMargin = (int) hintPointTop;
-                hintPointParams.width = (int) hintPointSize;
-                hintPointParams.height = (int) hintPointSize;
-                hintPointParams.leftMargin = (int) hintPointLeft;
-                hintPoint.setLayoutParams(hintPointParams);
-
-                //消息红点
-                TextView msgPoint = itemView.findViewById(R.id.msg_point_tv);
-                msgPoint.setTextSize(NavigationUtil.px2sp(getContext(), msgPointTextSize));
-                RelativeLayout.LayoutParams msgPointParams = (RelativeLayout.LayoutParams) msgPoint.getLayoutParams();
-                msgPointParams.bottomMargin = (int) msgPointTop;
-                msgPointParams.width = (int) msgPointSize;
-                msgPointParams.height = (int) msgPointSize;
-                msgPointParams.leftMargin = (int) msgPointLeft;
-                msgPoint.setLayoutParams(msgPointParams);
-
-
-                hintPointList.add(hintPoint);
-                msgPointList.add(msgPoint);
-
-
-                tabList.add(itemView);
-                navigationLayout.addView(itemView);
+                }
+                select(0, false);
             }
-        }
-        select(0, false);
+        });
+
     }
 
 
@@ -664,108 +678,6 @@ public class EasyNavigationBar extends LinearLayout {
 
         navigationLayout.removeAllViews();
     }
-
-    private void addTabView(final int index) {
-        View itemView = View.inflate(getContext(), R.layout.navigation_tab_layout, null);
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-        params.width = NavigationUtil.getScreenWidth(getContext()) / tabCount;
-
-        itemView.setLayoutParams(params);
-        itemView.setId(index);
-
-        TextView text = itemView.findViewById(R.id.tab_text_tv);
-        ImageView icon = itemView.findViewById(R.id.tab_icon_iv);
-        icon.setScaleType(scaleType);
-        LayoutParams iconParams = (LayoutParams) icon.getLayoutParams();
-        iconParams.width = (int) iconSize;
-        iconParams.height = (int) iconSize;
-        icon.setLayoutParams(iconParams);
-
-        imageViewList.add(icon);
-        textViewList.add(text);
-
-        if (mode == MODE_ADD) {
-            itemView.setOnClickListener(new OnClickListener() {
-                public void onClick(View view) {
-                    final int tabPosition = view.getId();
-                    if (onTabClickListener != null) {
-                        if (!onTabClickListener.onTabClickEvent(view, view.getId())) {
-
-                            if (tabPosition > tabCount / 2 && !addAsFragment) {
-                                mViewPager.setCurrentItem(tabPosition - 1, smoothScroll);
-                            } else {
-                                mViewPager.setCurrentItem(view.getId(), smoothScroll);
-                            }
-                        }
-                    } else {
-                        if (tabPosition > tabCount / 2 && !addAsFragment) {
-                            mViewPager.setCurrentItem(tabPosition - 1, smoothScroll);
-                        } else {
-                            mViewPager.setCurrentItem(view.getId(), smoothScroll);
-                        }
-                    }
-                }
-            });
-        } else if (mode == MODE_ADD_VIEW) {
-            itemView.setOnClickListener(new OnClickListener() {
-                public void onClick(View view) {
-                    final int tabPosition = view.getId();
-                    if (onTabClickListener != null) {
-                        if (!onTabClickListener.onTabClickEvent(view, index)) {
-
-                            if (index > tabCount / 2 && !addAsFragment) {
-                                mViewPager.setCurrentItem(tabPosition, smoothScroll);
-                            } else {
-                                mViewPager.setCurrentItem(index, smoothScroll);
-                            }
-                        }
-                    } else {
-                        if (index > tabCount / 2 && !addAsFragment) {
-                            mViewPager.setCurrentItem(tabPosition, smoothScroll);
-                        } else {
-                            mViewPager.setCurrentItem(index, smoothScroll);
-                        }
-                    }
-                }
-            });
-        }
-
-        LayoutParams textParams = (LayoutParams) text.getLayoutParams();
-        textParams.topMargin = (int) tabTextTop;
-        text.setLayoutParams(textParams);
-        text.setText(titleItems[index]);
-        text.setTextSize(NavigationUtil.px2sp(getContext(), tabTextSize));
-
-
-        View hintPoint = itemView.findViewById(R.id.red_point);
-
-        //提示红点
-        RelativeLayout.LayoutParams hintPointParams = (RelativeLayout.LayoutParams) hintPoint.getLayoutParams();
-        hintPointParams.bottomMargin = (int) hintPointTop;
-        hintPointParams.width = (int) hintPointSize;
-        hintPointParams.height = (int) hintPointSize;
-        hintPointParams.leftMargin = (int) hintPointLeft;
-        hintPoint.setLayoutParams(hintPointParams);
-
-        //消息红点
-        TextView msgPoint = itemView.findViewById(R.id.msg_point_tv);
-        msgPoint.setTextSize(NavigationUtil.px2sp(getContext(), msgPointTextSize));
-        RelativeLayout.LayoutParams msgPointParams = (RelativeLayout.LayoutParams) msgPoint.getLayoutParams();
-        msgPointParams.bottomMargin = (int) msgPointTop;
-        msgPointParams.width = (int) msgPointSize;
-        msgPointParams.height = (int) msgPointSize;
-        msgPointParams.leftMargin = (int) msgPointLeft;
-        msgPoint.setLayoutParams(msgPointParams);
-
-
-        hintPointList.add(hintPoint);
-        msgPointList.add(msgPoint);
-
-
-        tabList.add(itemView);
-        navigationLayout.addView(itemView);
-    }
-
 
     //自定义中间按钮
     public void buildAddViewNavigation() {
@@ -795,145 +707,150 @@ public class EasyNavigationBar extends LinearLayout {
 
         setViewPagerAdapter();
 
-        for (int i = 0; i < tabCount; i++) {
+       post(new Runnable() {
+           @Override
+           public void run() {
+               for (int i = 0; i < tabCount; i++) {
 
-            if (i == tabCount / 2) {
-                RelativeLayout addItemView = new RelativeLayout(getContext());
-                RelativeLayout.LayoutParams addItemParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-                addItemParams.width = NavigationUtil.getScreenWidth(getContext()) / tabCount;
-                addItemView.setLayoutParams(addItemParams);
-                navigationLayout.addView(addItemView);
+                   if (i == tabCount / 2) {
+                       RelativeLayout addItemView = new RelativeLayout(getContext());
+                       RelativeLayout.LayoutParams addItemParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+                       addItemParams.width = getWidth() / tabCount;
+                       addItemView.setLayoutParams(addItemParams);
+                       navigationLayout.addView(addItemView);
 
-                final RelativeLayout.LayoutParams linearParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                //linearParams.width = NavigationUtil.getScreenWidth(getContext()) / tabCount;
+                       final RelativeLayout.LayoutParams linearParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                       //linearParams.width = NavigationUtil.getScreenWidth(getContext()) / tabCount;
 
-                if (addLayoutRule == RULE_CENTER) {
-                    linearParams.addRule(RelativeLayout.CENTER_IN_PARENT);
-                } else if (addLayoutRule == RULE_BOTTOM) {
-                    linearParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-                    if (addAlignBottom) {
-                        linearParams.addRule(RelativeLayout.ABOVE, R.id.empty_line);
-                        if (textViewList != null && textViewList.size() > 0) {
-                            textViewList.get(0).post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    linearParams.bottomMargin = (int) ((navigationHeight - textViewList.get(0).getHeight() - iconSize - tabTextTop) / 2);
-                                }
-                            });
+                       if (addLayoutRule == RULE_CENTER) {
+                           linearParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+                       } else if (addLayoutRule == RULE_BOTTOM) {
+                           linearParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+                           if (addAlignBottom) {
+                               linearParams.addRule(RelativeLayout.ABOVE, R.id.empty_line);
+                               if (textViewList != null && textViewList.size() > 0) {
+                                   textViewList.get(0).post(new Runnable() {
+                                       @Override
+                                       public void run() {
+                                           linearParams.bottomMargin = (int) ((navigationHeight - textViewList.get(0).getHeight() - iconSize - tabTextTop) / 2);
+                                       }
+                                   });
 
-                        }
-                    } else {
-                        linearParams.addRule(RelativeLayout.ABOVE, R.id.empty_line);
-                        linearParams.bottomMargin = (int) addLayoutBottom;
-                    }
-                }
-                customAddView.setId(i);
-                customAddView.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (onTabClickListener != null) {
-                            if (!onTabClickListener.onTabClickEvent(view, view.getId())) {
-                                if (addAsFragment)
-                                    mViewPager.setCurrentItem(view.getId(), smoothScroll);
-                            }
-                        } else {
-                            if (addAsFragment)
-                                mViewPager.setCurrentItem(view.getId(), smoothScroll);
-                        }
-                        if (onAddClickListener != null)
-                            onAddClickListener.OnAddClickEvent(view);
-                    }
-                });
+                               }
+                           } else {
+                               linearParams.addRule(RelativeLayout.ABOVE, R.id.empty_line);
+                               linearParams.bottomMargin = (int) addLayoutBottom;
+                           }
+                       }
+                       customAddView.setId(i);
+                       customAddView.setOnClickListener(new OnClickListener() {
+                           @Override
+                           public void onClick(View view) {
+                               if (onTabClickListener != null) {
+                                   if (!onTabClickListener.onTabClickEvent(view, view.getId())) {
+                                       if (addAsFragment)
+                                           mViewPager.setCurrentItem(view.getId(), smoothScroll);
+                                   }
+                               } else {
+                                   if (addAsFragment)
+                                       mViewPager.setCurrentItem(view.getId(), smoothScroll);
+                               }
+                               if (onAddClickListener != null)
+                                   onAddClickListener.OnAddClickEvent(view);
+                           }
+                       });
 
-                AddContainerLayout.addView(customAddView, linearParams);
-            } else {
-                int index;
+                       AddContainerLayout.addView(customAddView, linearParams);
+                   } else {
+                       int index;
 
-                if (i > tabCount / 2) {
-                    index = i - 1;
-                } else {
-                    index = i;
-                }
+                       if (i > tabCount / 2) {
+                           index = i - 1;
+                       } else {
+                           index = i;
+                       }
 
-                View itemView = View.inflate(getContext(), R.layout.navigation_tab_layout, null);
-                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-                params.width = NavigationUtil.getScreenWidth(getContext()) / tabCount;
+                       View itemView = View.inflate(getContext(), R.layout.navigation_tab_layout, null);
+                       RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+                       params.width = getWidth() / tabCount;
 
-                itemView.setLayoutParams(params);
-                itemView.setId(index);
+                       itemView.setLayoutParams(params);
+                       itemView.setId(index);
 
-                TextView text = itemView.findViewById(R.id.tab_text_tv);
-                ImageView icon = itemView.findViewById(R.id.tab_icon_iv);
-                icon.setScaleType(scaleType);
-                LayoutParams iconParams = (LayoutParams) icon.getLayoutParams();
-                iconParams.width = (int) iconSize;
-                iconParams.height = (int) iconSize;
-                icon.setLayoutParams(iconParams);
+                       TextView text = itemView.findViewById(R.id.tab_text_tv);
+                       ImageView icon = itemView.findViewById(R.id.tab_icon_iv);
+                       icon.setScaleType(scaleType);
+                       LayoutParams iconParams = (LayoutParams) icon.getLayoutParams();
+                       iconParams.width = (int) iconSize;
+                       iconParams.height = (int) iconSize;
+                       icon.setLayoutParams(iconParams);
 
-                imageViewList.add(icon);
-                textViewList.add(text);
-                final int finalI = i;
-                itemView.setOnClickListener(new OnClickListener() {
-                    public void onClick(View view) {
-                        final int tabPosition = view.getId();
-                        if (onTabClickListener != null) {
-                            if (!onTabClickListener.onTabClickEvent(view, finalI)) {
+                       imageViewList.add(icon);
+                       textViewList.add(text);
+                       final int finalI = i;
+                       itemView.setOnClickListener(new OnClickListener() {
+                           public void onClick(View view) {
+                               final int tabPosition = view.getId();
+                               if (onTabClickListener != null) {
+                                   if (!onTabClickListener.onTabClickEvent(view, finalI)) {
 
-                                if (finalI > tabCount / 2 && !addAsFragment) {
-                                    mViewPager.setCurrentItem(tabPosition, smoothScroll);
-                                } else {
-                                    mViewPager.setCurrentItem(finalI, smoothScroll);
-                                }
-                            }
-                        } else {
-                            if (finalI > tabCount / 2 && !addAsFragment) {
-                                mViewPager.setCurrentItem(tabPosition, smoothScroll);
-                            } else {
-                                mViewPager.setCurrentItem(finalI, smoothScroll);
-                            }
-                        }
-                    }
-                });
+                                       if (finalI > tabCount / 2 && !addAsFragment) {
+                                           mViewPager.setCurrentItem(tabPosition, smoothScroll);
+                                       } else {
+                                           mViewPager.setCurrentItem(finalI, smoothScroll);
+                                       }
+                                   }
+                               } else {
+                                   if (finalI > tabCount / 2 && !addAsFragment) {
+                                       mViewPager.setCurrentItem(tabPosition, smoothScroll);
+                                   } else {
+                                       mViewPager.setCurrentItem(finalI, smoothScroll);
+                                   }
+                               }
+                           }
+                       });
 
-                LayoutParams textParams = (LayoutParams) text.getLayoutParams();
-                textParams.topMargin = (int) tabTextTop;
-                text.setLayoutParams(textParams);
-                text.setText(titleItems[index]);
-                text.setTextSize(NavigationUtil.px2sp(getContext(), tabTextSize));
-
-
-                View hintPoint = itemView.findViewById(R.id.red_point);
-
-                //提示红点
-                RelativeLayout.LayoutParams hintPointParams = (RelativeLayout.LayoutParams) hintPoint.getLayoutParams();
-                hintPointParams.bottomMargin = (int) hintPointTop;
-                hintPointParams.width = (int) hintPointSize;
-                hintPointParams.height = (int) hintPointSize;
-                hintPointParams.leftMargin = (int) hintPointLeft;
-                hintPoint.setLayoutParams(hintPointParams);
-
-                //消息红点
-                TextView msgPoint = itemView.findViewById(R.id.msg_point_tv);
-                msgPoint.setTextSize(NavigationUtil.px2sp(getContext(), msgPointTextSize));
-                RelativeLayout.LayoutParams msgPointParams = (RelativeLayout.LayoutParams) msgPoint.getLayoutParams();
-                msgPointParams.bottomMargin = (int) msgPointTop;
-                msgPointParams.width = (int) msgPointSize;
-                msgPointParams.height = (int) msgPointSize;
-                msgPointParams.leftMargin = (int) msgPointLeft;
-                msgPoint.setLayoutParams(msgPointParams);
+                       LayoutParams textParams = (LayoutParams) text.getLayoutParams();
+                       textParams.topMargin = (int) tabTextTop;
+                       text.setLayoutParams(textParams);
+                       text.setText(titleItems[index]);
+                       text.setTextSize(NavigationUtil.px2sp(getContext(), tabTextSize));
 
 
-                hintPointList.add(hintPoint);
-                msgPointList.add(msgPoint);
+                       View hintPoint = itemView.findViewById(R.id.red_point);
+
+                       //提示红点
+                       RelativeLayout.LayoutParams hintPointParams = (RelativeLayout.LayoutParams) hintPoint.getLayoutParams();
+                       hintPointParams.bottomMargin = (int) hintPointTop;
+                       hintPointParams.width = (int) hintPointSize;
+                       hintPointParams.height = (int) hintPointSize;
+                       hintPointParams.leftMargin = (int) hintPointLeft;
+                       hintPoint.setLayoutParams(hintPointParams);
+
+                       //消息红点
+                       TextView msgPoint = itemView.findViewById(R.id.msg_point_tv);
+                       msgPoint.setTextSize(NavigationUtil.px2sp(getContext(), msgPointTextSize));
+                       RelativeLayout.LayoutParams msgPointParams = (RelativeLayout.LayoutParams) msgPoint.getLayoutParams();
+                       msgPointParams.bottomMargin = (int) msgPointTop;
+                       msgPointParams.width = (int) msgPointSize;
+                       msgPointParams.height = (int) msgPointSize;
+                       msgPointParams.leftMargin = (int) msgPointLeft;
+                       msgPoint.setLayoutParams(msgPointParams);
 
 
-                tabList.add(itemView);
-                navigationLayout.addView(itemView);
+                       hintPointList.add(hintPoint);
+                       msgPointList.add(msgPoint);
 
-            }
-        }
 
-        select(0, false);
+                       tabList.add(itemView);
+                       navigationLayout.addView(itemView);
+
+                   }
+               }
+
+               select(0, false);
+           }
+       });
 
     }
 
@@ -1283,7 +1200,7 @@ public class EasyNavigationBar extends LinearLayout {
     public EasyNavigationBar anim(Anim anim) {
         if (anim != null) {
             this.anim = anim.getYoyo();
-        }else{
+        } else {
             this.anim = null;
         }
         return this;

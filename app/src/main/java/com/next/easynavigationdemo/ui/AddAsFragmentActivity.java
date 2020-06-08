@@ -22,11 +22,11 @@ public class AddAsFragmentActivity extends AppCompatActivity {
 
     private EasyNavigationBar navigationBar;
 
-    private String[] tabText = {"首页", "发现", "发布", "消息", "我的"};
+    private String[] tabText = {"首页", "发现", "消息", "我的"};
     //未选中icon
-    private int[] normalIcon = {R.mipmap.index, R.mipmap.find, R.mipmap.add_image, R.mipmap.message, R.mipmap.me};
+    private int[] normalIcon = {R.mipmap.index, R.mipmap.find, R.mipmap.message, R.mipmap.me};
     //选中时icon
-    private int[] selectIcon = {R.mipmap.index1, R.mipmap.find1, R.mipmap.add_image, R.mipmap.message1, R.mipmap.me1};
+    private int[] selectIcon = {R.mipmap.index1, R.mipmap.find1, R.mipmap.message1, R.mipmap.me1};
 
     private List<Fragment> fragments = new ArrayList<>();
     private Handler mHandler = new Handler();
@@ -50,11 +50,12 @@ public class AddAsFragmentActivity extends AppCompatActivity {
                 .normalIconItems(normalIcon)
                 .selectIconItems(selectIcon)
                 .fragmentList(fragments)
+                .centerImageRes(R.mipmap.add_image)
+                .centerTextStr("发布")
                 .anim(null)
                 .centerLayoutRule(EasyNavigationBar.RULE_BOTTOM)
                 .addLayoutBottom(0)
                 .addAlignBottom(true)
-                .centerAsFragment(true)
                 .fragmentManager(getSupportFragmentManager())
                 .onTabClickListener(new EasyNavigationBar.OnTabClickListener() {
                     @Override

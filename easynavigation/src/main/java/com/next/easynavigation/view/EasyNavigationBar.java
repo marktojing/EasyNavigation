@@ -432,10 +432,9 @@ public class EasyNavigationBar extends LinearLayout {
      */
     private boolean checkCanBuild() {
         if (titleItems.length < 1 && normalIconItems.length < 1) {
-            Log.e(getClass().getName(), "titleItems和normalIconItems不能都为空");
+            Log.e(getClass().getName(), "titleItems和normalIconItems不能同时为空");
             return false;
         }
-
         buildCommonNavigation();
 
         return true;
@@ -459,6 +458,11 @@ public class EasyNavigationBar extends LinearLayout {
             } else {
                 tabCount = normalIconItems.length;
             }
+        }
+
+        if(isAddPage()&&tabCount%2==1){
+            Log.e(getClass().getName(), "2.0.0之后、添加中间Tab、则普通Tab数量应为偶数");
+            return;
         }
 
         if (selectIconItems == null || selectIconItems.length < 1) {

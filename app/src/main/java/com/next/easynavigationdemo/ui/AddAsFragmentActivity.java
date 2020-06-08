@@ -51,29 +51,31 @@ public class AddAsFragmentActivity extends AppCompatActivity {
                 .selectIconItems(selectIcon)
                 .fragmentList(fragments)
                 .anim(null)
-                .addLayoutRule(EasyNavigationBar.RULE_BOTTOM)
+                .centerLayoutRule(EasyNavigationBar.RULE_BOTTOM)
                 .addLayoutBottom(0)
                 .addAlignBottom(true)
-                .addAsFragment(true)
+                .centerAsFragment(true)
                 .fragmentManager(getSupportFragmentManager())
                 .onTabClickListener(new EasyNavigationBar.OnTabClickListener() {
                     @Override
                     public boolean onTabClickEvent(View view, int position) {
-                        Log.e("onTabClickEvent", position + "");
-                        if (position == 2) {
-                            mHandler.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    //＋ 旋转动画
-                                    if (flag) {
-                                        navigationBar.getAddImage().animate().rotation(45).setDuration(400);
-                                    } else {
-                                        navigationBar.getAddImage().animate().rotation(0).setDuration(400);
-                                    }
-                                    flag = !flag;
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onCenterTabClickEvent(View view) {
+                        mHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                //＋ 旋转动画
+                                if (flag) {
+                                    navigationBar.getCenterImage().animate().rotation(45).setDuration(400);
+                                } else {
+                                    navigationBar.getCenterImage().animate().rotation(0).setDuration(400);
                                 }
-                            });
-                        }
+                                flag = !flag;
+                            }
+                        });
                         return false;
                     }
                 })

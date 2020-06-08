@@ -31,11 +31,11 @@ public class WeiboActivity extends AppCompatActivity {
 
     private EasyNavigationBar navigationBar;
 
-    private String[] tabText = {"首页", "发现", "", "消息", "我的"};
+    private String[] tabText = {"首页", "发现", "消息", "我的"};
     //未选中icon
-    private int[] normalIcon = {R.mipmap.index, R.mipmap.find, R.mipmap.add_image, R.mipmap.message, R.mipmap.me};
+    private int[] normalIcon = {R.mipmap.index, R.mipmap.find,  R.mipmap.message, R.mipmap.me};
     //选中时icon
-    private int[] selectIcon = {R.mipmap.index1, R.mipmap.find1, R.mipmap.add_image, R.mipmap.message1, R.mipmap.me1};
+    private int[] selectIcon = {R.mipmap.index1, R.mipmap.find1, R.mipmap.message1, R.mipmap.me1};
 
     private List<android.support.v4.app.Fragment> fragments = new ArrayList<>();
 
@@ -58,26 +58,31 @@ public class WeiboActivity extends AppCompatActivity {
         fragments.add(new WBFirstFragment());
         fragments.add(new WBSecondFragment());
         fragments.add(new AddThirdFragment());
-        fragments.add(new AddThirdFragment());
+        fragments.add(new WBFirstFragment());
 
         navigationBar.titleItems(tabText)
                 .normalIconItems(normalIcon)
                 .selectIconItems(selectIcon)
+                .centerImageRes(R.mipmap.add_image)
                 .fragmentList(fragments)
                 .fragmentManager(getSupportFragmentManager())
-                .addLayoutRule(EasyNavigationBar.RULE_BOTTOM)
-                .addLayoutBottom(100)
+                .centerLayoutRule(EasyNavigationBar.RULE_CENTER)
+//                .addLayoutBottom(100)
                 .onTabClickListener(new EasyNavigationBar.OnTabClickListener() {
                     @Override
                     public boolean onTabClickEvent(View view, int position) {
-                        if (position == 4) {
+                        if (position == 3) {
                             Toast.makeText(WeiboActivity.this, "请先登录", Toast.LENGTH_SHORT).show();
                             //return true则拦截事件、不进行页面切换
                             return true;
-                        } else if (position == 2) {
-                            //跳转页面（全民K歌）   或者   弹出菜单（微博）
-                            showMunu();
                         }
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onCenterTabClickEvent(View view) {
+                        //跳转页面（全民K歌）   或者   弹出菜单（微博）
+                        showMunu();
                         return false;
                     }
                 })
@@ -224,4 +229,40 @@ public class WeiboActivity extends AppCompatActivity {
         return navigationBar;
     }
 
+    public void onChangeStyle(View view) {
+    }
+
+    public void changeStyle() {
+        navigationBar
+                .resetSetting()
+                .titleItems(tabText)
+                .fragmentList(fragments)
+                .fragmentManager(getSupportFragmentManager())
+                .centerLayoutRule(EasyNavigationBar.RULE_BOTTOM)
+                .addLayoutBottom(100)
+                .onTabClickListener(new EasyNavigationBar.OnTabClickListener() {
+                    @Override
+                    public boolean onTabClickEvent(View view, int position) {
+                        if (position == 3) {
+                            Toast.makeText(WeiboActivity.this, "请先登录", Toast.LENGTH_SHORT).show();
+                            //return true则拦截事件、不进行页面切换
+                            return true;
+                        }
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onCenterTabClickEvent(View view) {
+                        //跳转页面（全民K歌）   或者   弹出菜单（微博）
+                        showMunu();
+                        return false;
+                    }
+                })
+                .mode(EasyNavigationBar.MODE_ADD)
+                .anim(Anim.ZoomIn)
+                .build();
+
+
+        navigationBar.setAddViewLayout(createWeiboView());
+    }
 }

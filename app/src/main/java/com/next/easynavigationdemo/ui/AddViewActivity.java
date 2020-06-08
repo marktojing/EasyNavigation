@@ -51,28 +51,29 @@ public class AddViewActivity extends AppCompatActivity {
                 .selectIconItems(selectIcon)
                 .fragmentList(fragments)
                 .canScroll(true)
-                .addAsFragment(false)
                 .mode(EasyNavigationBar.MODE_ADD_VIEW)
                 .addCustomView(view)
                 .fragmentManager(getSupportFragmentManager())
                 .onTabClickListener(new EasyNavigationBar.OnTabClickListener() {
                     @Override
                     public boolean onTabClickEvent(View view, int position) {
-                        Log.e("Tap->Position", position + "");
-                        if (position == 2) {
-                            mHandler.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    //＋ 旋转动画
-                                    if (flag) {
-                                        navigationBar.getCustomAddView().animate().rotation(180).setDuration(400);
-                                    } else {
-                                        navigationBar.getCustomAddView().animate().rotation(0).setDuration(400);
-                                    }
-                                    flag = !flag;
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onCenterTabClickEvent(View view) {
+                        mHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                //＋ 旋转动画
+                                if (flag) {
+                                    navigationBar.getCustomAddView().animate().rotation(180).setDuration(400);
+                                } else {
+                                    navigationBar.getCustomAddView().animate().rotation(0).setDuration(400);
                                 }
-                            });
-                        }
+                                flag = !flag;
+                            }
+                        });
                         return false;
                     }
                 })

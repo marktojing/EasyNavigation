@@ -80,6 +80,16 @@ public class WBFirstFragment extends android.support.v4.app.Fragment {
             }
         });
 
+        Button bt06 = view.findViewById(R.id.bt06);
+        bt06.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (getActivity() instanceof WeiboActivity) {
+                    ((WeiboActivity) getActivity()).changeStyle();
+                }
+            }
+        });
+
         return view;
     }
 

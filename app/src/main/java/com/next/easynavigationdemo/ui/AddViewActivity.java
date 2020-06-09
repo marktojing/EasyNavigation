@@ -56,12 +56,19 @@ public class AddViewActivity extends AppCompatActivity {
                 .fragmentManager(getSupportFragmentManager())
                 .setOnTabClickListener(new EasyNavigationBar.OnTabClickListener() {
                     @Override
-                    public boolean onTabClickEvent(View view, int position) {
+                    public boolean onTabSelectEvent(View view, int position) {
                         return false;
                     }
 
                     @Override
-                    public boolean onCenterTabClickEvent(View view) {
+                    public boolean onTabReSelectEvent(View view, int position) {
+                        return false;
+                    }
+
+                })
+                .setOnCenterTabClickListener(new EasyNavigationBar.OnCenterTabSelectListener() {
+                    @Override
+                    public boolean onCenterTabSelectEvent(View view) {
                         mHandler.post(new Runnable() {
                             @Override
                             public void run() {

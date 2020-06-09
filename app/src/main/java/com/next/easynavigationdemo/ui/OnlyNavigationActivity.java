@@ -2,8 +2,10 @@ package com.next.easynavigationdemo.ui;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.next.easynavigation.view.EasyNavigationBar;
 import com.next.easynavigationdemo.R;
@@ -48,16 +50,19 @@ public class OnlyNavigationActivity extends AppCompatActivity {
                 .build();
 
         navigationBar.setOnTabClickListener(new EasyNavigationBar.OnTabClickListener() {
+
             @Override
-            public boolean onTabClickEvent(View view, int position) {
+            public boolean onTabSelectEvent(View view, int position) {
                 tv_content.setText("您点击了第"+position+"个Tab，这里面没有Fragment的、只是单纯的点击");
                 return false;
             }
 
             @Override
-            public boolean onCenterTabClickEvent(View view) {
+            public boolean onTabReSelectEvent(View view, int position) {
+                Toast.makeText(OnlyNavigationActivity.this,"重复点击",Toast.LENGTH_SHORT).show();
                 return false;
             }
+
         });
     }
 

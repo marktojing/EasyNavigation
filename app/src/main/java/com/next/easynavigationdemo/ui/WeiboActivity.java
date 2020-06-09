@@ -70,7 +70,7 @@ public class WeiboActivity extends AppCompatActivity {
 //                .addLayoutBottom(100)
                 .setOnTabClickListener(new EasyNavigationBar.OnTabClickListener() {
                     @Override
-                    public boolean onTabClickEvent(View view, int position) {
+                    public boolean onTabSelectEvent(View view, int position) {
                         if (position == 3) {
                             Toast.makeText(WeiboActivity.this, "请先登录", Toast.LENGTH_SHORT).show();
                             //return true则拦截事件、不进行页面切换
@@ -80,7 +80,14 @@ public class WeiboActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public boolean onCenterTabClickEvent(View view) {
+                    public boolean onTabReSelectEvent(View view, int position) {
+                        return false;
+                    }
+
+                })
+                .setOnCenterTabClickListener(new EasyNavigationBar.OnCenterTabSelectListener() {
+                    @Override
+                    public boolean onCenterTabSelectEvent(View view) {
                         //跳转页面（全民K歌）   或者   弹出菜单（微博）
                         showMunu();
                         return false;
@@ -242,7 +249,7 @@ public class WeiboActivity extends AppCompatActivity {
                 .addLayoutBottom(100)
                 .setOnTabClickListener(new EasyNavigationBar.OnTabClickListener() {
                     @Override
-                    public boolean onTabClickEvent(View view, int position) {
+                    public boolean onTabSelectEvent(View view, int position) {
                         if (position == 3) {
                             Toast.makeText(WeiboActivity.this, "请先登录", Toast.LENGTH_SHORT).show();
                             //return true则拦截事件、不进行页面切换
@@ -252,7 +259,13 @@ public class WeiboActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public boolean onCenterTabClickEvent(View view) {
+                    public boolean onTabReSelectEvent(View view, int position) {
+                        return false;
+                    }
+                })
+                .setOnCenterTabClickListener(new EasyNavigationBar.OnCenterTabSelectListener() {
+                    @Override
+                    public boolean onCenterTabSelectEvent(View view) {
                         //跳转页面（全民K歌）   或者   弹出菜单（微博）
                         showMunu();
                         return false;

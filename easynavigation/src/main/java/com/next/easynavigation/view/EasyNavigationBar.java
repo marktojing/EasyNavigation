@@ -8,7 +8,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -98,6 +97,8 @@ public class EasyNavigationBar extends LinearLayout {
     private float hintPointTop = -3;
 
     private EasyNavigationBar.OnTabClickListener onTabClickListener;
+    private OnCenterTabSelectListener onCenterTabClickListener;
+
     //消息红点字体大小
     private float msgPointTextSize = 9;
     //消息红点大小
@@ -176,6 +177,8 @@ public class EasyNavigationBar extends LinearLayout {
     private String centerTextStr;
     //只是导航没有ViewPager
     private boolean onlyNavigation;
+    //记录位置
+    private int currentPosition = 0;
 
 
     public EasyNavigationBar(Context context) {
@@ -355,7 +358,7 @@ public class EasyNavigationBar extends LinearLayout {
         if (!checkCanBuild())
             return;
 
-        switch (mode){
+        switch (mode) {
             case NavigationMode.MODE_NORMAL:
                 buildNavigation();
                 break;
@@ -528,9 +531,9 @@ public class EasyNavigationBar extends LinearLayout {
         });
 
         if (canScroll) {
-            ((CustomViewPager)getViewPager()).setCanScroll(true);
+            ((CustomViewPager) getViewPager()).setCanScroll(true);
         } else {
-            ((CustomViewPager)getViewPager()).setCanScroll(false);
+            ((CustomViewPager) getViewPager()).setCanScroll(false);
         }
     }
 
@@ -636,8 +639,8 @@ public class EasyNavigationBar extends LinearLayout {
         centerImage.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (onTabClickListener != null) {
-                    if (!onTabClickListener.onCenterTabClickEvent(view)) {
+                if (onCenterTabClickListener != null) {
+                    if (!onCenterTabClickListener.onCenterTabSelectEvent(view)) {
                         if (centerAsFragment)
                             selectTab(tabCount / 2, smoothScroll);
                     }
@@ -685,12 +688,15 @@ public class EasyNavigationBar extends LinearLayout {
         } else if (mode == NavigationMode.MODE_ADD_VIEW) {
             params.width = getWidth() / (tabCount + 1);
         }
-
+        itemView.setTag(R.id.tag_view_position,position);
         itemView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (onTabClickListener != null) {
-                    if (!onTabClickListener.onTabClickEvent(view, position)) {
+                    if (currentPosition == position) {
+                        onTabClickListener.onTabReSelectEvent(view, currentPosition);
+                    }
+                    if (!onTabClickListener.onTabSelectEvent(view, position)) {
                         selectTab(finalIndex, smoothScroll);
                     }
                 } else {
@@ -700,7 +706,7 @@ public class EasyNavigationBar extends LinearLayout {
         });
 
         itemView.setLayoutParams(params);
-        itemView.setId(position);
+
 
 
         View hintPoint = itemView.findViewById(R.id.red_point);
@@ -782,6 +788,9 @@ public class EasyNavigationBar extends LinearLayout {
      * 切换ViewPager页面
      */
     public void selectTab(int position, boolean smoothScroll) {
+        if(currentPosition==position)
+            return;
+        currentPosition = position;
         if (!onlyNavigation) {
             getViewPager().setCurrentItem(position, smoothScroll);
         }
@@ -886,8 +895,8 @@ public class EasyNavigationBar extends LinearLayout {
         customAddView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (onTabClickListener != null) {
-                    if (!onTabClickListener.onCenterTabClickEvent(view)) {
+                if (onCenterTabClickListener != null) {
+                    if (!onCenterTabClickListener.onCenterTabSelectEvent(view)) {
                         if (centerAsFragment)
                             selectTab(tabCount / 2, smoothScroll);
                     }
@@ -1055,12 +1064,19 @@ public class EasyNavigationBar extends LinearLayout {
     }
 
     public interface OnTabClickListener {
-        boolean onTabClickEvent(View view, int position);
+        boolean onTabSelectEvent(View view, int position);
 
+        /**
+         * 重复点击
+         */
+        boolean onTabReSelectEvent(View view, int position);
+    }
+
+    public interface OnCenterTabSelectListener{
         /**
          * 中间布局点击事件
          */
-        boolean onCenterTabClickEvent(View view);
+        boolean onCenterTabSelectEvent(View view);
     }
 
 
@@ -1223,6 +1239,10 @@ public class EasyNavigationBar extends LinearLayout {
         return this;
     }
 
+    public EasyNavigationBar setOnCenterTabClickListener(OnCenterTabSelectListener onCenterTabClickListener) {
+        this.onCenterTabClickListener = onCenterTabClickListener;
+        return this;
+    }
 
     public EasyNavigationBar iconSize(int iconSize) {
         this.iconSize = NavigationUtil.dip2px(getContext(), iconSize);

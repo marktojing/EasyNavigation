@@ -305,12 +305,30 @@ public class EasyNavigationBar extends LinearLayout {
     }
 
 
-    public void setupWithViewPager(@NonNull ViewPager viewPager) {
+    public EasyNavigationBar setupWithViewPager(@NonNull ViewPager viewPager) {
 //        final PagerAdapter adapter = viewPager.getAdapter();
 //        if (adapter == null) {
 //            throw new IllegalArgumentException("ViewPager does not have a PagerAdapter set");
 //        }
+        onlyNavigation = true;
         mViewPager = viewPager;
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                selectTab(position, smoothScroll, false);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+        return this;
     }
 
 
@@ -496,9 +514,6 @@ public class EasyNavigationBar extends LinearLayout {
             setViewPagerAdapter();
         }
 
-        if (mViewPager != null)
-            contentView.addView(mViewPager, 0);
-
         if (hasPadding && mViewPager != null) {
             mViewPager.setPadding(0, 0, 0, (int) (navigationHeight + lineHeight));
         }
@@ -508,6 +523,8 @@ public class EasyNavigationBar extends LinearLayout {
      * 添加ViewPager
      */
     private void setViewPagerAdapter() {
+        if (mViewPager != null)
+            ((ViewGroup) mViewPager.getParent()).removeView(mViewPager);
         mViewPager = new CustomViewPager(getContext());
         mViewPager.setId(R.id.vp_layout);
         adapter = new ViewPagerAdapter(fragmentManager, fragmentList);
@@ -521,7 +538,7 @@ public class EasyNavigationBar extends LinearLayout {
 
             @Override
             public void onPageSelected(int position) {
-
+                selectTab(position, smoothScroll, false);
             }
 
             @Override
@@ -535,6 +552,9 @@ public class EasyNavigationBar extends LinearLayout {
         } else {
             ((CustomViewPager) getViewPager()).setCanScroll(false);
         }
+
+
+        contentView.addView(mViewPager, 0);
     }
 
     /**
@@ -688,7 +708,7 @@ public class EasyNavigationBar extends LinearLayout {
         } else if (mode == NavigationMode.MODE_ADD_VIEW) {
             params.width = getWidth() / (tabCount + 1);
         }
-        itemView.setTag(R.id.tag_view_position,position);
+        itemView.setTag(R.id.tag_view_position, position);
         itemView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -706,7 +726,6 @@ public class EasyNavigationBar extends LinearLayout {
         });
 
         itemView.setLayoutParams(params);
-
 
 
         View hintPoint = itemView.findViewById(R.id.red_point);
@@ -787,11 +806,11 @@ public class EasyNavigationBar extends LinearLayout {
     /**
      * 切换ViewPager页面
      */
-    public void selectTab(int position, boolean smoothScroll) {
-        if(currentPosition==position)
+    public void selectTab(int position, boolean smoothScroll, boolean selectPager) {
+        if (currentPosition == position)
             return;
         currentPosition = position;
-        if (!onlyNavigation) {
+        if (selectPager) {
             getViewPager().setCurrentItem(position, smoothScroll);
         }
         if (isCenterAsFragment()) {
@@ -805,6 +824,13 @@ public class EasyNavigationBar extends LinearLayout {
         } else {
             selectNormalTabUI(position, true);
         }
+    }
+
+    /**
+     * 切换ViewPager页面
+     */
+    public void selectTab(int position, boolean smoothScroll) {
+        selectTab(position, smoothScroll, true);
     }
 
     /**
@@ -1072,7 +1098,7 @@ public class EasyNavigationBar extends LinearLayout {
         boolean onTabReSelectEvent(View view, int position);
     }
 
-    public interface OnCenterTabSelectListener{
+    public interface OnCenterTabSelectListener {
         /**
          * 中间布局点击事件
          */

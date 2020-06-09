@@ -21,6 +21,7 @@
         <activity android:name="com.next.easynavigationdemo.ui.AddAsFragmentActivity" />
         <activity android:name="com.next.easynavigationdemo.ui.AddViewActivity" />
         <activity android:name=".ui.OnlyNavigationActivity" />
+        <activity android:name=".ui.SetUpViewPagerActivity" />
     </application>
 
 </manifest>

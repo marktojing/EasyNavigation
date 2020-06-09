@@ -41,4 +41,8 @@ public class DemoListActivity extends AppCompatActivity {
     public void OnlyNavigation(View view) {
         startActivity(new Intent(DemoListActivity.this, OnlyNavigationActivity.class));
     }
+
+    public void SetUpViewPagerActivity(View view) {
+        startActivity(new Intent(DemoListActivity.this, SetUpViewPagerActivity.class));
+    }
 }

@@ -68,7 +68,7 @@ public class WeiboActivity extends AppCompatActivity {
                 .fragmentManager(getSupportFragmentManager())
                 .centerLayoutRule(EasyNavigationBar.RULE_CENTER)
 //                .addLayoutBottom(100)
-                .onTabClickListener(new EasyNavigationBar.OnTabClickListener() {
+                .setOnTabClickListener(new EasyNavigationBar.OnTabClickListener() {
                     @Override
                     public boolean onTabClickEvent(View view, int position) {
                         if (position == 3) {
@@ -240,7 +240,7 @@ public class WeiboActivity extends AppCompatActivity {
                 .fragmentManager(getSupportFragmentManager())
                 .centerLayoutRule(EasyNavigationBar.RULE_BOTTOM)
                 .addLayoutBottom(100)
-                .onTabClickListener(new EasyNavigationBar.OnTabClickListener() {
+                .setOnTabClickListener(new EasyNavigationBar.OnTabClickListener() {
                     @Override
                     public boolean onTabClickEvent(View view, int position) {
                         if (position == 3) {

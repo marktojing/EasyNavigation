@@ -32,6 +32,14 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:gravity="center"
+        android:onClick="OnlyNavigation"
+        android:text="没有自带的ViewPager、只是单纯的导航栏(OnlyNavigation)"
+        android:textSize="17sp" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="center"
         android:onClick="OnWeibo"
         android:text="示例(Weibo)"
         android:textSize="17sp" />

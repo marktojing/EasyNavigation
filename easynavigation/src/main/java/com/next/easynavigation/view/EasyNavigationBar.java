@@ -4,9 +4,11 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.support.annotation.IntDef;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -64,7 +66,7 @@ public class EasyNavigationBar extends LinearLayout {
     //底部TabLayout（除中间加号）
     private List<View> tabList = new ArrayList<>();
 
-    private CustomViewPager mViewPager;
+    private ViewPager mViewPager;
     //private GestureDetector detector;
 
     private ViewGroup addViewLayout;
@@ -172,6 +174,8 @@ public class EasyNavigationBar extends LinearLayout {
     private int centerImageRes;
     //中间布局的文字
     private String centerTextStr;
+    //只是导航没有ViewPager
+    private boolean onlyNavigation;
 
 
     public EasyNavigationBar(Context context) {
@@ -193,7 +197,6 @@ public class EasyNavigationBar extends LinearLayout {
         AddContainerLayout = contentView.findViewById(R.id.add_rl);
         empty_line = contentView.findViewById(R.id.empty_line);
         navigationLayout = contentView.findViewById(R.id.navigation_ll);
-        mViewPager = contentView.findViewById(R.id.mViewPager);
         lineView = contentView.findViewById(R.id.common_horizontal_line);
         lineView.setTag(-100);
         empty_line.setTag(-100);
@@ -299,6 +302,15 @@ public class EasyNavigationBar extends LinearLayout {
     }
 
 
+    public void setupWithViewPager(@NonNull ViewPager viewPager) {
+//        final PagerAdapter adapter = viewPager.getAdapter();
+//        if (adapter == null) {
+//            throw new IllegalArgumentException("ViewPager does not have a PagerAdapter set");
+//        }
+        mViewPager = viewPager;
+    }
+
+
     public void build() {
 
         if (addLayoutHeight < navigationHeight + lineHeight)
@@ -324,10 +336,6 @@ public class EasyNavigationBar extends LinearLayout {
         navigationLayout.setLayoutParams(params);
 
 
-        if (hasPadding) {
-            mViewPager.setPadding(0, 0, 0, (int) (navigationHeight + lineHeight));
-        }
-
         RelativeLayout.LayoutParams lineParams = (RelativeLayout.LayoutParams) lineView.getLayoutParams();
         lineParams.height = (int) lineHeight;
         lineView.setBackgroundColor(lineColor);
@@ -344,18 +352,25 @@ public class EasyNavigationBar extends LinearLayout {
             addSelectTextColor = selectTextColor;
         }
 
-        if (mode == NavigationMode.MODE_NORMAL) {
-            buildNavigation();
-        } else if (mode == NavigationMode.MODE_ADD) {
-            buildAddNavigation();
-        } else if (mode == NavigationMode.MODE_ADD_VIEW) {
-            buildAddViewNavigation();
+        if (!checkCanBuild())
+            return;
+
+        switch (mode){
+            case NavigationMode.MODE_NORMAL:
+                buildNavigation();
+                break;
+            case NavigationMode.MODE_ADD:
+                buildAddNavigation();
+                break;
+            case NavigationMode.MODE_ADD_VIEW:
+                buildAddViewNavigation();
+                break;
+            default:
+                buildNavigation();
+                break;
         }
-        if (canScroll) {
-            getmViewPager().setCanScroll(true);
-        } else {
-            getmViewPager().setCanScroll(false);
-        }
+
+
     }
 
     /**
@@ -408,17 +423,13 @@ public class EasyNavigationBar extends LinearLayout {
 
     public void buildNavigation() {
 
-        if (!checkCanBuild())
-            return;
-
-
         post(new Runnable() {
             @Override
             public void run() {
                 for (int i = 0; i < tabCount; i++) {
                     addTabItemView(i);
                 }
-                selectNormalTab(0, false);
+                selectNormalTabUI(0, false);
             }
         });
 
@@ -445,6 +456,12 @@ public class EasyNavigationBar extends LinearLayout {
      * 构建导航栏前的通用操作
      */
     private void buildCommonNavigation() {
+        if (fragmentList == null || fragmentList.size() < 1 || fragmentManager == null) {
+            onlyNavigation = true;
+        } else {
+            onlyNavigation = false;
+        }
+
         if (titleItems == null || titleItems.length < 1) {
             contentType = TabContentType.TYPE_ONLY_IMAGE;
             tabCount = normalIconItems.length;
@@ -460,7 +477,7 @@ public class EasyNavigationBar extends LinearLayout {
             }
         }
 
-        if(isAddPage()&&tabCount%2==1){
+        if (isAddPage() && tabCount % 2 == 1) {
             Log.e(getClass().getName(), "2.0.0之后、添加中间Tab、则普通Tab数量应为偶数");
             return;
         }
@@ -472,10 +489,24 @@ public class EasyNavigationBar extends LinearLayout {
 
         removeNavigationAllView();
 
-        setViewPagerAdapter();
+        if (!onlyNavigation) {
+            setViewPagerAdapter();
+        }
+
+        if (mViewPager != null)
+            contentView.addView(mViewPager, 0);
+
+        if (hasPadding && mViewPager != null) {
+            mViewPager.setPadding(0, 0, 0, (int) (navigationHeight + lineHeight));
+        }
     }
 
+    /**
+     * 添加ViewPager
+     */
     private void setViewPagerAdapter() {
+        mViewPager = new CustomViewPager(getContext());
+        mViewPager.setId(R.id.vp_layout);
         adapter = new ViewPagerAdapter(fragmentManager, fragmentList);
         mViewPager.setAdapter(adapter);
         mViewPager.setOffscreenPageLimit(10);
@@ -487,17 +518,7 @@ public class EasyNavigationBar extends LinearLayout {
 
             @Override
             public void onPageSelected(int position) {
-                if (isCenterAsFragment()) {
-                    if(isCenterPosition(position)){
-                        selectCenterTab();
-                    }else if(isBeforeCenter(position)){
-                        selectNormalTab(position, true);
-                    }else{
-                        selectNormalTab(position-1, true);
-                    }
-                } else {
-                    selectNormalTab(position, true);
-                }
+
             }
 
             @Override
@@ -505,6 +526,12 @@ public class EasyNavigationBar extends LinearLayout {
 
             }
         });
+
+        if (canScroll) {
+            ((CustomViewPager)getViewPager()).setCanScroll(true);
+        } else {
+            ((CustomViewPager)getViewPager()).setCanScroll(false);
+        }
     }
 
     /**
@@ -534,31 +561,6 @@ public class EasyNavigationBar extends LinearLayout {
     //构建中间带按钮的navigation
     public void buildAddNavigation() {
 
-//        if ((titleItems.length != normalIconItems.length) || (titleItems.length != selectIconItems.length) || (normalIconItems.length != selectIconItems.length)) {
-//            Log.e("Easynavigation", "请传入相同数量的Tab文字集合、未选中图标集合、选中图标集合");
-//            return;
-//        }
-//        tabCount = titleItems.length;
-//        if (tabCount % 2 == 0) {
-//            Log.e("EasyNavigation", "MODE_ADD模式下请传入奇奇奇奇奇奇奇奇奇奇奇数数量的Tab文字集合、未选中图标集合、选中图标集合");
-//            return;
-//        }
-//
-//        if (addAsFragment) {
-//            if (fragmentList.size() < tabCount) {
-//                Log.e("EasyNavigation", "MODE_ADD模式下/addAsFragment=true时Fragment的数量应和传入tab集合数量相等");
-//                return;
-//            }
-//        } else {
-//            if (fragmentList.size() < tabCount - 1) {
-//                Log.e("EasyNavigation", "MODE_ADD模式下/addAsFragment=false时Fragment的数量应比传入tab集合数量少一个");
-//                return;
-//            }
-//        }
-
-        if (!checkCanBuild())
-            return;
-
         if (centerImageRes == 0) {
             Log.e("EasyNavigation", "MODE_ADD模式下centerImageRes不能为空");
             return;
@@ -575,7 +577,7 @@ public class EasyNavigationBar extends LinearLayout {
                     }
                     addTabItemView(i);
                 }
-                selectNormalTab(0, false);
+                selectNormalTabUI(0, false);
             }
         });
 
@@ -637,11 +639,11 @@ public class EasyNavigationBar extends LinearLayout {
                 if (onTabClickListener != null) {
                     if (!onTabClickListener.onCenterTabClickEvent(view)) {
                         if (centerAsFragment)
-                            mViewPager.setCurrentItem(tabCount / 2, smoothScroll);
+                            selectTab(tabCount / 2, smoothScroll);
                     }
                 } else {
                     if (centerAsFragment)
-                        mViewPager.setCurrentItem(tabCount / 2, smoothScroll);
+                        selectTab(tabCount / 2, smoothScroll);
                 }
             }
         });
@@ -689,10 +691,10 @@ public class EasyNavigationBar extends LinearLayout {
             public void onClick(View view) {
                 if (onTabClickListener != null) {
                     if (!onTabClickListener.onTabClickEvent(view, position)) {
-                        mViewPager.setCurrentItem(finalIndex, smoothScroll);
+                        selectTab(finalIndex, smoothScroll);
                     }
                 } else {
-                    mViewPager.setCurrentItem(finalIndex, smoothScroll);
+                    selectTab(finalIndex, smoothScroll);
                 }
             }
         });
@@ -777,6 +779,26 @@ public class EasyNavigationBar extends LinearLayout {
     }
 
     /**
+     * 切换ViewPager页面
+     */
+    public void selectTab(int position, boolean smoothScroll) {
+        if (!onlyNavigation) {
+            getViewPager().setCurrentItem(position, smoothScroll);
+        }
+        if (isCenterAsFragment()) {
+            if (isCenterPosition(position)) {
+                selectCenterTabUI();
+            } else if (isBeforeCenter(position)) {
+                selectNormalTabUI(position, true);
+            } else {
+                selectNormalTabUI(position - 1, true);
+            }
+        } else {
+            selectNormalTabUI(position, true);
+        }
+    }
+
+    /**
      * 是否有中间局部
      *
      * @return
@@ -808,31 +830,6 @@ public class EasyNavigationBar extends LinearLayout {
     //自定义中间按钮
     public void buildAddViewNavigation() {
 
-//        if ((titleItems.length != normalIconItems.length) || (titleItems.length != selectIconItems.length) || (normalIconItems.length != selectIconItems.length)) {
-//            Log.e("EasyNavigation", "请传入相同数量的Tab文字集合、未选中图标集合、选中图标集合");
-//            return;
-//        }
-//        tabCount = titleItems.length + 1;
-//        if (tabCount % 2 == 0) {
-//            Log.e("EasyNavigation", "MODE_ADD_VIEW模式下请传入偶偶偶偶偶偶偶偶偶偶偶偶数数量的Tab文字集合、未选中图标集合、选中图标集合");
-//            return;
-//        }
-//        if (addAsFragment) {
-//            if (fragmentList.size() < tabCount) {
-//                Log.e("EasyNavigation", "MODE_ADD_VIEW模式下/addAsFragment=true时Fragment的数量应比传入tab集合数量多一个");
-//                return;
-//            }
-//        } else {
-//            if (fragmentList.size() < tabCount - 1) {
-//                Log.e("EasyNavigation", "MODE_ADD_VIEW模式下/addAsFragment=false时,Fragment的数量应和传入tab集合数量相等");
-//                return;
-//            }
-//        }
-
-
-        if (!checkCanBuild())
-            return;
-
         post(new Runnable() {
             @Override
             public void run() {
@@ -844,7 +841,7 @@ public class EasyNavigationBar extends LinearLayout {
                     addTabItemView(i);
                 }
 
-                selectNormalTab(0, false);
+                selectNormalTabUI(0, false);
             }
         });
 
@@ -892,11 +889,11 @@ public class EasyNavigationBar extends LinearLayout {
                 if (onTabClickListener != null) {
                     if (!onTabClickListener.onCenterTabClickEvent(view)) {
                         if (centerAsFragment)
-                            mViewPager.setCurrentItem(tabCount / 2, smoothScroll);
+                            selectTab(tabCount / 2, smoothScroll);
                     }
                 } else {
                     if (centerAsFragment)
-                        mViewPager.setCurrentItem(tabCount / 2, smoothScroll);
+                        selectTab(tabCount / 2, smoothScroll);
                 }
             }
         });
@@ -905,7 +902,7 @@ public class EasyNavigationBar extends LinearLayout {
     }
 
 
-    public CustomViewPager getmViewPager() {
+    public ViewPager getViewPager() {
         return mViewPager;
     }
 
@@ -923,7 +920,7 @@ public class EasyNavigationBar extends LinearLayout {
     /**
      * 选择中间Tab UI变化
      */
-    private void selectCenterTab() {
+    private void selectCenterTabUI() {
         for (int i = 0; i < tabCount; i++) {
             switch (contentType) {
                 case TabContentType.TYPE_NORMAL:
@@ -944,7 +941,7 @@ public class EasyNavigationBar extends LinearLayout {
      *
      * @param position
      */
-    private void selectNormalTab(int position, boolean showAnim) {
+    private void selectNormalTabUI(int position, boolean showAnim) {
         for (int i = 0; i < tabCount; i++) {
             if (i == position) {
                 if (anim != null && showAnim)
@@ -976,110 +973,7 @@ public class EasyNavigationBar extends LinearLayout {
                 }
             }
         }
-//        if (mode == NavigationMode.MODE_NORMAL) {
-//
-//        } else if (mode == NavigationMode.MODE_ADD) {
-//            if (addAsFragment) {
-//                for (int i = 0; i < tabCount; i++) {
-//                    if (i == position) {
-//                        if (anim != null && showAnim && (position != tabCount / 2))
-//                            YoYo.with(anim).duration(300).playOn(tabList.get(i));
-//
-//                        switch (contentType) {
-//                            case TabContentType.TYPE_NORMAL:
-//                                if (i == tabCount / 2) {
-//                                    textViewList.get(i).setTextColor(addSelectTextColor);
-//                                } else {
-//                                    textViewList.get(i).setTextColor(selectTextColor);
-//                                }
-//                                imageViewList.get(i).setImageResource(selectIconItems[i]);
-//                                break;
-//                            case TabContentType.TYPE_ONLY_IMAGE:
-//                                imageViewList.get(i).setImageResource(selectIconItems[i]);
-//                                break;
-//                            case TabContentType.TYPE_ONLY_TEXT:
-//                                if (i == tabCount / 2) {
-//                                    textViewList.get(i).setTextColor(addSelectTextColor);
-//                                } else {
-//                                    textViewList.get(i).setTextColor(selectTextColor);
-//                                }
-//                                break;
-//                        }
-//
-//                    } else {
-//                        imageViewList.get(i).setImageResource(normalIconItems[i]);
-//                        if (i == tabCount / 2) {
-//                            textViewList.get(i).setTextColor(addNormalTextColor);
-//                        } else {
-//                            textViewList.get(i).setTextColor(normalTextColor);
-//                        }
-//                    }
-//                }
-//            } else {
-//                if ((position > ((tabCount - 2) / 2))) {
-//                    position = position + 1;
-//                }
-//                for (int i = 0; i < tabCount; i++) {
-//                    if (i == position) {
-//                        if (anim != null && showAnim && (i != tabCount / 2))
-//                            YoYo.with(anim).duration(300).playOn(tabList.get(i));
-//                        imageViewList.get(i).setImageResource(selectIconItems[i]);
-//                        if (i == tabCount / 2) {
-//                            textViewList.get(i).setTextColor(addSelectTextColor);
-//                        } else {
-//                            textViewList.get(i).setTextColor(selectTextColor);
-//                        }
-//                    } else {
-//                        imageViewList.get(i).setImageResource(normalIconItems[i]);
-//                        if (i == tabCount / 2) {
-//                            textViewList.get(i).setTextColor(addNormalTextColor);
-//                        } else {
-//                            textViewList.get(i).setTextColor(normalTextColor);
-//                        }
-//                    }
-//                }
-//            }
-//        } else if (mode == NavigationMode.MODE_ADD_VIEW) {
-//            int realPosition;
-//
-//            if (addAsFragment) {
-//                for (int i = 0; i < tabCount; i++) {
-//                    if (i == tabCount / 2) {
-//                        continue;
-//                    } else if (i > tabCount / 2) {
-//                        realPosition = i - 1;
-//                    } else {
-//                        realPosition = i;
-//                    }
-//                    if (i == position) {
-//                        if (anim != null && showAnim)
-//                            YoYo.with(anim).duration(300).playOn(tabList.get(realPosition));
-//                        imageViewList.get(realPosition).setImageResource(selectIconItems[realPosition]);
-//                        textViewList.get(realPosition).setTextColor(selectTextColor);
-//                    } else {
-//                        imageViewList.get(realPosition).setImageResource(normalIconItems[realPosition]);
-//                        textViewList.get(realPosition).setTextColor(normalTextColor);
-//                    }
-//                }
-//            } else {
-//                for (int i = 0; i < tabCount - 1; i++) {
-//                    if (i == position) {
-//                        if (anim != null && showAnim)
-//                            YoYo.with(anim).duration(300).playOn(tabList.get(i));
-//                        imageViewList.get(i).setImageResource(selectIconItems[i]);
-//                        textViewList.get(i).setTextColor(selectTextColor);
-//                    } else {
-//                        imageViewList.get(i).setImageResource(normalIconItems[i]);
-//                        textViewList.get(i).setTextColor(normalTextColor);
-//                    }
-//                }
-//            }
-//        }
-    }
 
-
-    public void selectTab(int position) {
-        getmViewPager().setCurrentItem(position, smoothScroll);
     }
 
 
@@ -1324,7 +1218,7 @@ public class EasyNavigationBar extends LinearLayout {
     }
 
 
-    public EasyNavigationBar onTabClickListener(EasyNavigationBar.OnTabClickListener onTabClickListener) {
+    public EasyNavigationBar setOnTabClickListener(EasyNavigationBar.OnTabClickListener onTabClickListener) {
         this.onTabClickListener = onTabClickListener;
         return this;
     }

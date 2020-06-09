@@ -20,6 +20,7 @@
         <activity android:name="com.next.easynavigationdemo.ui.WeiboActivity" />
         <activity android:name="com.next.easynavigationdemo.ui.AddAsFragmentActivity" />
         <activity android:name="com.next.easynavigationdemo.ui.AddViewActivity" />
+        <activity android:name=".ui.OnlyNavigationActivity" />
     </application>
 
 </manifest>

@@ -57,7 +57,7 @@ public class AddAsFragmentActivity extends AppCompatActivity {
                 .addLayoutBottom(0)
                 .addAlignBottom(true)
                 .fragmentManager(getSupportFragmentManager())
-                .onTabClickListener(new EasyNavigationBar.OnTabClickListener() {
+                .setOnTabClickListener(new EasyNavigationBar.OnTabClickListener() {
                     @Override
                     public boolean onTabClickEvent(View view, int position) {
                         return false;

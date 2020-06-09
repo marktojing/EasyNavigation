@@ -38,4 +38,7 @@ public class DemoListActivity extends AppCompatActivity {
         startActivity(new Intent(DemoListActivity.this, WeiboActivity.class));
     }
 
+    public void OnlyNavigation(View view) {
+        startActivity(new Intent(DemoListActivity.this, OnlyNavigationActivity.class));
+    }
 }

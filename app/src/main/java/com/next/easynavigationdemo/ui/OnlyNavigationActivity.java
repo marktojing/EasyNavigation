@@ -2,6 +2,8 @@ package com.next.easynavigationdemo.ui;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.TextView;
 
 import com.next.easynavigation.view.EasyNavigationBar;
 import com.next.easynavigationdemo.R;
@@ -13,7 +15,7 @@ import com.next.easynavigationdemo.ui.normal.DFragment;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NormalActivity extends AppCompatActivity {
+public class OnlyNavigationActivity extends AppCompatActivity {
 
     private EasyNavigationBar navigationBar;
 
@@ -25,12 +27,15 @@ public class NormalActivity extends AppCompatActivity {
 
     private List<android.support.v4.app.Fragment> fragments = new ArrayList<>();
 
+    private TextView tv_content;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_noadd);
+        setContentView(R.layout.activity_only_navigation);
 
         navigationBar = findViewById(R.id.navigationBar);
+        tv_content = findViewById(R.id.tv_content);
 
         fragments.add(new AFragment());
         fragments.add(new BFragment());
@@ -40,14 +45,21 @@ public class NormalActivity extends AppCompatActivity {
         navigationBar.titleItems(tabText)
                 .normalIconItems(normalIcon)
                 .selectIconItems(selectIcon)
-                .fragmentList(fragments)
-                .fragmentManager(getSupportFragmentManager())
-                .canScroll(true)
                 .build();
+
+        navigationBar.setOnTabClickListener(new EasyNavigationBar.OnTabClickListener() {
+            @Override
+            public boolean onTabClickEvent(View view, int position) {
+                tv_content.setText("您点击了第"+position+"个Tab，这里面没有Fragment的、只是单纯的点击");
+                return false;
+            }
+
+            @Override
+            public boolean onCenterTabClickEvent(View view) {
+                return false;
+            }
+        });
     }
 
-    public EasyNavigationBar getNavigationBar() {
-        return navigationBar;
-    }
 
 }

@@ -54,7 +54,7 @@ public class AddViewActivity extends AppCompatActivity {
                 .mode(EasyNavigationBar.MODE_ADD_VIEW)
                 .addCustomView(view)
                 .fragmentManager(getSupportFragmentManager())
-                .onTabClickListener(new EasyNavigationBar.OnTabClickListener() {
+                .setOnTabClickListener(new EasyNavigationBar.OnTabClickListener() {
                     @Override
                     public boolean onTabClickEvent(View view, int position) {
                         return false;

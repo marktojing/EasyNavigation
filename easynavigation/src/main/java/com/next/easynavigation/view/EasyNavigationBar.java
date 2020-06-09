@@ -12,6 +12,7 @@ import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -183,6 +184,8 @@ public class EasyNavigationBar extends LinearLayout {
     private int tabContentRule = 0;
     //Tab内容距底部距离
     private int tabContentBottomMargin = 0;
+    //字体显示为DP还是SP  默认1 为DP 2SP
+    private int textSizeType = 1;
 
 
     public EasyNavigationBar(Context context) {
@@ -278,7 +281,7 @@ public class EasyNavigationBar extends LinearLayout {
             hasPadding = attributes.getBoolean(R.styleable.EasyNavigationBar_Easy_hasPadding, hasPadding);
 
             centerAsFragment = attributes.getBoolean(R.styleable.EasyNavigationBar_Easy_centerAsFragment, centerAsFragment);
-
+            textSizeType = attributes.getInt(R.styleable.EasyNavigationBar_Easy_textSizeType, textSizeType);
             attributes.recycle();
         }
     }
@@ -294,17 +297,17 @@ public class EasyNavigationBar extends LinearLayout {
         msgPointLeft = NavigationUtil.dip2px(getContext(), msgPointLeft);
         msgPointTop = NavigationUtil.dip2px(getContext(), msgPointTop);
         msgPointSize = NavigationUtil.dip2px(getContext(), msgPointSize);
-        msgPointTextSize = NavigationUtil.sp2px(getContext(), msgPointTextSize);
+        msgPointTextSize = NavigationUtil.dip2px(getContext(), msgPointTextSize);
 
         tabTextTop = NavigationUtil.dip2px(getContext(), tabTextTop);
-        tabTextSize = NavigationUtil.sp2px(getContext(), tabTextSize);
+        tabTextSize = NavigationUtil.dip2px(getContext(), tabTextSize);
 
 
         //Add
         centerIconSize = NavigationUtil.dip2px(getContext(), centerIconSize);
         addLayoutHeight = NavigationUtil.dip2px(getContext(), addLayoutHeight);
         addLayoutBottom = NavigationUtil.dip2px(getContext(), addLayoutBottom);
-        addTextSize = NavigationUtil.sp2px(getContext(), addTextSize);
+        addTextSize = NavigationUtil.dip2px(getContext(), addTextSize);
         addTextTopMargin = NavigationUtil.dip2px(getContext(), addTextTopMargin);
     }
 
@@ -493,6 +496,7 @@ public class EasyNavigationBar extends LinearLayout {
 
         tabContentRule = 0;
         tabContentBottomMargin = 0;
+        textSizeType = 1;
 
         toDp();
         return this;
@@ -529,7 +533,7 @@ public class EasyNavigationBar extends LinearLayout {
      * @param isNormal
      * @param str
      */
-    public void updateNavigationText(int position, boolean isNormal,String str) {
+    public void updateNavigationText(int position, boolean isNormal, String str) {
         if (titleItems == null | position >= titleItems.length) return;
         titleItems[position] = str;
         updateNavigation(false);
@@ -665,7 +669,7 @@ public class EasyNavigationBar extends LinearLayout {
      * 添加ViewPager
      */
     private void setViewPagerAdapter() {
-        if (mViewPager == null){
+        if (mViewPager == null) {
             mViewPager = new CustomViewPager(getContext());
             mViewPager.setId(R.id.vp_layout);
             contentView.addView(mViewPager, 0);
@@ -816,7 +820,7 @@ public class EasyNavigationBar extends LinearLayout {
 
         if (!TextUtils.isEmpty(centerTextStr)) {
             TextView addText = new TextView(getContext());
-            addText.setTextSize(NavigationUtil.px2sp(getContext(), addTextSize));
+            addText.setTextSize(textSizeType, NavigationUtil.px2dip(getContext(), addTextSize));
             LinearLayout.LayoutParams addTextParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             addTextParams.topMargin = (int) addTextTopMargin;
             addText.setLayoutParams(addTextParams);
@@ -837,9 +841,9 @@ public class EasyNavigationBar extends LinearLayout {
         LinearLayout ll_tab_content = itemView.findViewById(R.id.ll_tab_content);
         RelativeLayout.LayoutParams llParams = (RelativeLayout.LayoutParams) ll_tab_content.getLayoutParams();
 
-        if(tabContentRule==0){
+        if (tabContentRule == 0) {
             llParams.addRule(RelativeLayout.CENTER_IN_PARENT);
-        }else{
+        } else {
             llParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
             llParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
             llParams.bottomMargin = tabContentBottomMargin;
@@ -896,7 +900,7 @@ public class EasyNavigationBar extends LinearLayout {
 
         //消息红点
         TextView msgPoint = itemView.findViewById(R.id.msg_point_tv);
-        msgPoint.setTextSize(NavigationUtil.px2sp(getContext(), msgPointTextSize));
+        msgPoint.setTextSize(textSizeType, NavigationUtil.px2dip(getContext(), msgPointTextSize));
         RelativeLayout.LayoutParams msgPointParams = (RelativeLayout.LayoutParams) msgPoint.getLayoutParams();
         msgPointParams.bottomMargin = (int) msgPointTop;
         msgPointParams.width = (int) msgPointSize;
@@ -929,7 +933,7 @@ public class EasyNavigationBar extends LinearLayout {
                 textParams.topMargin = 0;
                 text.setLayoutParams(textParams);
                 text.setText(titleItems[position]);
-                text.setTextSize(NavigationUtil.px2sp(getContext(), tabTextSize));
+                text.setTextSize(textSizeType, NavigationUtil.px2dip(getContext(), tabTextSize));
                 text.setVisibility(VISIBLE);
 
                 icon.setVisibility(GONE);
@@ -940,7 +944,7 @@ public class EasyNavigationBar extends LinearLayout {
                 textParams2.topMargin = (int) tabTextTop;
                 text.setLayoutParams(textParams2);
                 text.setText(titleItems[position]);
-                text.setTextSize(NavigationUtil.px2sp(getContext(), tabTextSize));
+                text.setTextSize(textSizeType, NavigationUtil.px2dip(getContext(), tabTextSize));
 
 
                 icon.setScaleType(scaleType);
@@ -966,7 +970,7 @@ public class EasyNavigationBar extends LinearLayout {
         if (currentPosition == position)
             return;
         currentPosition = position;
-        if (selectPager&&mViewPager!=null) {
+        if (selectPager && mViewPager != null) {
             getViewPager().setCurrentItem(position, smoothScroll);
         }
         updateNavigation(true);
@@ -1316,7 +1320,7 @@ public class EasyNavigationBar extends LinearLayout {
     }
 
     public EasyNavigationBar tabTextSize(int tabTextSize) {
-        this.tabTextSize = NavigationUtil.sp2px(getContext(), tabTextSize);
+        this.tabTextSize = NavigationUtil.dip2px(getContext(), tabTextSize);
         return this;
     }
 
@@ -1326,7 +1330,7 @@ public class EasyNavigationBar extends LinearLayout {
     }
 
     public EasyNavigationBar msgPointTextSize(int msgPointTextSize) {
-        this.msgPointTextSize = NavigationUtil.sp2px(getContext(), msgPointTextSize);
+        this.msgPointTextSize = NavigationUtil.dip2px(getContext(), msgPointTextSize);
         return this;
     }
 
@@ -1443,7 +1447,7 @@ public class EasyNavigationBar extends LinearLayout {
     }
 
     public EasyNavigationBar addTextSize(int addTextSize) {
-        this.addTextSize = NavigationUtil.sp2px(getContext(), addTextSize);
+        this.addTextSize = NavigationUtil.dip2px(getContext(), addTextSize);
         return this;
     }
 
@@ -1654,5 +1658,12 @@ public class EasyNavigationBar extends LinearLayout {
         return centerImage;
     }
 
-    // --addIconBottom
+    public EasyNavigationBar textSizeType(int textSizeType) {
+        this.textSizeType = textSizeType;
+        return this;
+    }
+
+    public int getTextSizeType() {
+        return textSizeType;
+    }
 }

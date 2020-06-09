@@ -73,7 +73,11 @@
         <attr name="Easy_addTextTopMargin" format="dimension"/>
         <!--是否和其他tab文字底部对齐-->
         <attr name="Easy_addAlignBottom" format="dimension"/>
-
+        <!--文字大小单位DP还是SP-->
+        <attr name="Easy_textSizeType">
+            <flag name="TYPE_DP" value="1" />
+            <flag name="TYPE_SP" value="2" />
+        </attr>
 
 
     </declare-styleable>

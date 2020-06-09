@@ -73,9 +73,8 @@ public class WBFirstFragment extends android.support.v4.app.Fragment {
             @Override
             public void onClick(View view) {
                 if (getActivity() instanceof WeiboActivity) {
-                    ((WeiboActivity) getActivity()).getNavigationBar().selectTab(1,true);
+                    ((WeiboActivity) getActivity()).getNavigationBar().selectTab(1, true);
                     ((WBSecondFragment) (((WeiboActivity) getActivity()).getNavigationBar().getAdapter().getItem(1))).showToast("嘻嘻哈哈嗝");
-
                 }
             }
         });
@@ -86,6 +85,17 @@ public class WBFirstFragment extends android.support.v4.app.Fragment {
             public void onClick(View view) {
                 if (getActivity() instanceof WeiboActivity) {
                     ((WeiboActivity) getActivity()).changeStyle();
+                }
+            }
+        });
+
+        Button bt07 = view.findViewById(R.id.bt07);
+        bt07.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (getActivity() instanceof WeiboActivity) {
+                    ((WeiboActivity) getActivity()).getNavigationBar().updateNavigationText(1, true, "变了");
+                    ((WeiboActivity) getActivity()).getNavigationBar().updateNavigationIcon(1, true, R.mipmap.add_image);
                 }
             }
         });

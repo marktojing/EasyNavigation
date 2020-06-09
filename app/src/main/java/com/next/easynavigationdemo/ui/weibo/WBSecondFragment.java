@@ -1,7 +1,9 @@
 package com.next.easynavigationdemo.ui.weibo;
 
+import android.app.Application;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +26,6 @@ public class WBSecondFragment extends android.support.v4.app.Fragment {
 
     //提示消息
     public void showToast(String str) {
-        Toast.makeText(getContext(), str, Toast.LENGTH_SHORT).show();
+        Log.e(getClass().getName(),"hhhhhhhh");
     }
 }

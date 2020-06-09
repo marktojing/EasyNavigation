@@ -41,6 +41,11 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:text="变换样式" />
+    <Button
+        android:id="@+id/bt07"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="更换第二个未选中的图标和文字" />
 
 
 </LinearLayout>

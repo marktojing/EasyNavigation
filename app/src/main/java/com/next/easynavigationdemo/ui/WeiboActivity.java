@@ -32,12 +32,15 @@ public class WeiboActivity extends AppCompatActivity {
     private EasyNavigationBar navigationBar;
 
     private String[] tabText = {"首页", "发现", "消息", "我的"};
+
+    private String[] tabText2 = {"商城", "订单", "地址"};
     //未选中icon
     private int[] normalIcon = {R.mipmap.index, R.mipmap.find,  R.mipmap.message, R.mipmap.me};
     //选中时icon
     private int[] selectIcon = {R.mipmap.index1, R.mipmap.find1, R.mipmap.message1, R.mipmap.me1};
 
     private List<android.support.v4.app.Fragment> fragments = new ArrayList<>();
+    private List<android.support.v4.app.Fragment> changeFragments = new ArrayList<>();
 
 
     //仿微博图片和文字集合
@@ -59,6 +62,10 @@ public class WeiboActivity extends AppCompatActivity {
         fragments.add(new WBSecondFragment());
         fragments.add(new AddThirdFragment());
         fragments.add(new WBFirstFragment());
+
+        changeFragments.add(new AddThirdFragment());
+        changeFragments.add(new WBSecondFragment());
+        changeFragments.add(new WBFirstFragment());
 
         navigationBar.titleItems(tabText)
                 .normalIconItems(normalIcon)
@@ -236,46 +243,25 @@ public class WeiboActivity extends AppCompatActivity {
         return navigationBar;
     }
 
-    public void onChangeStyle(View view) {
-    }
 
     public void changeStyle() {
         navigationBar
                 .resetSetting()
-                .titleItems(tabText)
-                .fragmentList(fragments)
+                .fragmentList(changeFragments)
                 .fragmentManager(getSupportFragmentManager())
+                .titleItems(tabText2)
                 .centerLayoutRule(EasyNavigationBar.RULE_BOTTOM)
                 .addLayoutBottom(100)
-                .setOnTabClickListener(new EasyNavigationBar.OnTabClickListener() {
-                    @Override
-                    public boolean onTabSelectEvent(View view, int position) {
-                        if (position == 3) {
-                            Toast.makeText(WeiboActivity.this, "请先登录", Toast.LENGTH_SHORT).show();
-                            //return true则拦截事件、不进行页面切换
-                            return true;
-                        }
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onTabReSelectEvent(View view, int position) {
-                        return false;
-                    }
-                })
                 .setOnCenterTabClickListener(new EasyNavigationBar.OnCenterTabSelectListener() {
                     @Override
                     public boolean onCenterTabSelectEvent(View view) {
-                        //跳转页面（全民K歌）   或者   弹出菜单（微博）
-                        showMunu();
+                        Toast.makeText(WeiboActivity.this, "hhh,已经更改样式了", Toast.LENGTH_SHORT).show();
                         return false;
                     }
                 })
-                .mode(EasyNavigationBar.MODE_ADD)
-                .anim(Anim.ZoomIn)
                 .build();
 
 
-        navigationBar.setAddViewLayout(createWeiboView());
+//        navigationBar.setAddViewLayout(createWeiboView());
     }
 }

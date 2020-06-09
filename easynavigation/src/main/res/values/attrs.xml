@@ -40,7 +40,7 @@
 
 
         <!--中间图片的大小-->
-        <attr name="Easy_addIconSize" format="dimension" />
+        <attr name="Easy_centerIconSize" format="dimension" />
         <!--底部导航栏和加号的高度  加号会居中-->
         <attr name="Easy_addLayoutHeight" format="dimension" />
         <!--添加按钮距离底部的距离-->

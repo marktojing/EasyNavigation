@@ -112,7 +112,7 @@ public class EasyNavigationBar extends LinearLayout {
     //Tab文字大小
     private float tabTextSize = 12;
     //未选中Tab字体颜色
-    private int normalTextColor = Color.parseColor("#666666");
+    private int normalTextColor = Color.parseColor("#999999");
     //选中字体颜色
     private int selectTextColor = Color.parseColor("#333333");
     //分割线高度
@@ -129,7 +129,7 @@ public class EasyNavigationBar extends LinearLayout {
     private ViewPagerAdapter adapter;
 
 
-    private float addIconSize = 36;
+    private float centerIconSize = 36;
     private float addLayoutHeight = navigationHeight;
     public static final int MODE_NORMAL = 0;
     public static final int MODE_ADD = 1;
@@ -179,6 +179,10 @@ public class EasyNavigationBar extends LinearLayout {
     private boolean onlyNavigation;
     //记录位置
     private int currentPosition = 0;
+    //Tab内容布局方式
+    private int tabContentRule = 0;
+    //Tab内容距底部距离
+    private int tabContentBottomMargin = 0;
 
 
     public EasyNavigationBar(Context context) {
@@ -231,7 +235,7 @@ public class EasyNavigationBar extends LinearLayout {
 
             msgPointLeft = attributes.getDimension(R.styleable.EasyNavigationBar_Easy_msgPointLeft, -iconSize / 2);
             msgPointTextSize = attributes.getDimension(R.styleable.EasyNavigationBar_Easy_msgPointTextSize, msgPointTextSize);
-            addIconSize = attributes.getDimension(R.styleable.EasyNavigationBar_Easy_addIconSize, addIconSize);
+            centerIconSize = attributes.getDimension(R.styleable.EasyNavigationBar_Easy_centerIconSize, centerIconSize);
             addLayoutBottom = attributes.getDimension(R.styleable.EasyNavigationBar_Easy_addLayoutBottom, addLayoutBottom);
 
             //加号属性
@@ -297,7 +301,7 @@ public class EasyNavigationBar extends LinearLayout {
 
 
         //Add
-        addIconSize = NavigationUtil.dip2px(getContext(), addIconSize);
+        centerIconSize = NavigationUtil.dip2px(getContext(), centerIconSize);
         addLayoutHeight = NavigationUtil.dip2px(getContext(), addLayoutHeight);
         addLayoutBottom = NavigationUtil.dip2px(getContext(), addLayoutBottom);
         addTextSize = NavigationUtil.sp2px(getContext(), addTextSize);
@@ -343,8 +347,8 @@ public class EasyNavigationBar extends LinearLayout {
             AddContainerLayout.setLayoutParams(addLayoutParams);
         } else if (centerLayoutRule == RULE_BOTTOM) {
            /* RelativeLayout.LayoutParams addLayoutParams = (RelativeLayout.LayoutParams) AddContainerLayout.getLayoutParams();
-            if ((addIconSize + addIconBottom) > (navigationHeight + 1))
-                addLayoutParams.height = (int) (addIconSize + addIconBottom);
+            if ((centerIconSize + addIconBottom) > (navigationHeight + 1))
+                addLayoutParams.height = (int) (centerIconSize + addIconBottom);
             else
                 addLayoutParams.height = (int) (navigationHeight + 1);
             AddContainerLayout.setLayoutParams(addLayoutParams);*/
@@ -401,13 +405,151 @@ public class EasyNavigationBar extends LinearLayout {
         this.titleItems = new String[]{};
         this.normalIconItems = new int[]{};
         this.selectIconItems = new int[]{};
-        this.fragmentList.clear();
+        this.fragmentList = new ArrayList<>();
+        this.adapter.notifyDataSetChanged();
+
+//        if(mViewPager!=null){
+//            ((ViewGroup) mViewPager.getParent()).removeView(mViewPager);
+//        }
+
+        //Tab点击动画效果
+        anim = null;
+        //ViewPager切换动画
+        smoothScroll = false;
+        //图标大小
+        iconSize = 20;
+
+        //提示红点大小
+        hintPointSize = 6;
+        //提示红点距Tab图标右侧的距离
+        hintPointLeft = -3;
+        //提示红点距图标顶部的距离
+        hintPointTop = -3;
+
+        //消息红点字体大小
+        msgPointTextSize = 9;
+        //消息红点大小
+        msgPointSize = 18;
+        //消息红点距Tab图标右侧的距离   默认为Tab图标的一半
+        msgPointLeft = -10;
+        //消息红点距图标顶部的距离  默认为Tab图标的一半
+        msgPointTop = -10;
+        //Tab文字距Tab图标的距离
+        tabTextTop = 2;
+        //Tab文字大小
+        tabTextSize = 12;
+        //未选中Tab字体颜色
+        normalTextColor = Color.parseColor("#666666");
+        //选中字体颜色
+        selectTextColor = Color.parseColor("#333333");
+        //分割线高度
+        lineHeight = 1;
+        //分割线颜色
+        lineColor = Color.parseColor("#f7f7f7");
+
+        navigationBackground = Color.parseColor("#ffffff");
+        navigationHeight = 60;
+
+        scaleType = ImageView.ScaleType.CENTER_INSIDE;
+
+        canScroll = false;
+
+        centerIconSize = 36;
+        addLayoutHeight = navigationHeight;
+        addLayoutBottom = 10;
+
+        //RULE_CENTER 居中只需调节addLayoutHeight 默认和navigationHeight相等 此时addLayoutBottom属性无效
+        //RULE_BOTTOM addLayoutHeight属性无效、自适应、只需调节addLayoutBottom距底部的距离
+        centerLayoutRule = RULE_CENTER;
+
+        //true  ViewPager在Navigation上面
+        //false  ViewPager和Navigation重叠
+        hasPadding = true;
+
+
+        //1、普通的Tab 2、中间带按钮（如加号）3、
+        mode = NavigationMode.MODE_NORMAL;
+
+        //true 点击加号切换fragment
+        //false 点击加号不切换fragment进行其他操作（跳转界面等）
+        centerAsFragment = false;
+
+        addTextSize = 0;
+        //加号文字未选中颜色（默认同其他tab）
+        addNormalTextColor = 0;
+        //加号文字选中颜色（默认同其他tab）
+        addSelectTextColor = 0;
+        //加号文字距离顶部加号的距离
+        addTextTopMargin = 3;
+        //是否和其他tab文字底部对齐
+        addAlignBottom = true;
+
+        contentType = TabContentType.TYPE_NORMAL;
+        centerTextStr = "";
+
+        onTabClickListener = null;
+        onCenterTabClickListener = null;
+
+
+        tabContentRule = 0;
+        tabContentBottomMargin = 0;
+
+        toDp();
         return this;
     }
 
     public EasyNavigationBar centerImageRes(int centerImageRes) {
         this.centerImageRes = centerImageRes;
         return this;
+    }
+
+
+    /**
+     * 更新导航栏图标
+     *
+     * @param position
+     * @param isNormal
+     * @param res
+     */
+    public void updateNavigationIcon(int position, boolean isNormal, int res) {
+        if (isNormal) {
+            if (normalIconItems == null | position >= normalIconItems.length) return;
+            normalIconItems[position] = res;
+        } else {
+            if (selectIconItems == null | position >= selectIconItems.length) return;
+            selectIconItems[position] = res;
+        }
+        updateNavigation(false);
+    }
+
+    /**
+     * 更新导航栏文字
+     *
+     * @param position
+     * @param isNormal
+     * @param str
+     */
+    public void updateNavigationText(int position, boolean isNormal,String str) {
+        if (titleItems == null | position >= titleItems.length) return;
+        titleItems[position] = str;
+        updateNavigation(false);
+    }
+
+    /**
+     * 更新导航栏UI
+     */
+    public void updateNavigation(boolean showAnim) {
+        if (isCenterAsFragment()) {
+            if (isCenterPosition(currentPosition)) {
+                selectCenterTabUI();
+            } else if (isBeforeCenter(currentPosition)) {
+                selectNormalTabUI(currentPosition, showAnim);
+            } else {
+                selectNormalTabUI(currentPosition - 1, showAnim);
+            }
+        } else {
+            selectNormalTabUI(currentPosition, showAnim);
+        }
     }
 
     public EasyNavigationBar centerTextStr(String centerTextStr) {
@@ -523,10 +665,11 @@ public class EasyNavigationBar extends LinearLayout {
      * 添加ViewPager
      */
     private void setViewPagerAdapter() {
-        if (mViewPager != null)
-            ((ViewGroup) mViewPager.getParent()).removeView(mViewPager);
-        mViewPager = new CustomViewPager(getContext());
-        mViewPager.setId(R.id.vp_layout);
+        if (mViewPager == null){
+            mViewPager = new CustomViewPager(getContext());
+            mViewPager.setId(R.id.vp_layout);
+            contentView.addView(mViewPager, 0);
+        }
         adapter = new ViewPagerAdapter(fragmentManager, fragmentList);
         mViewPager.setAdapter(adapter);
         mViewPager.setOffscreenPageLimit(10);
@@ -553,8 +696,6 @@ public class EasyNavigationBar extends LinearLayout {
             ((CustomViewPager) getViewPager()).setCanScroll(false);
         }
 
-
-        contentView.addView(mViewPager, 0);
     }
 
     /**
@@ -626,8 +767,8 @@ public class EasyNavigationBar extends LinearLayout {
 
         centerImage = new ImageView(getContext());
         LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        imageParams.width = (int) addIconSize;
-        imageParams.height = (int) addIconSize;
+        imageParams.width = (int) centerIconSize;
+        imageParams.height = (int) centerIconSize;
         centerImage.setLayoutParams(imageParams);
 
 
@@ -692,6 +833,21 @@ public class EasyNavigationBar extends LinearLayout {
      */
     private void addTabItemView(final int position) {
         View itemView = View.inflate(getContext(), R.layout.navigation_tab_layout, null);
+
+        LinearLayout ll_tab_content = itemView.findViewById(R.id.ll_tab_content);
+        RelativeLayout.LayoutParams llParams = (RelativeLayout.LayoutParams) ll_tab_content.getLayoutParams();
+
+        if(tabContentRule==0){
+            llParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+        }else{
+            llParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+            llParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+            llParams.bottomMargin = tabContentBottomMargin;
+        }
+
+        ll_tab_content.setLayoutParams(llParams);
+
+
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         int index = 0;
         if (isCenterAsFragment()) {
@@ -810,20 +966,10 @@ public class EasyNavigationBar extends LinearLayout {
         if (currentPosition == position)
             return;
         currentPosition = position;
-        if (selectPager) {
+        if (selectPager&&mViewPager!=null) {
             getViewPager().setCurrentItem(position, smoothScroll);
         }
-        if (isCenterAsFragment()) {
-            if (isCenterPosition(position)) {
-                selectCenterTabUI();
-            } else if (isBeforeCenter(position)) {
-                selectNormalTabUI(position, true);
-            } else {
-                selectNormalTabUI(position - 1, true);
-            }
-        } else {
-            selectNormalTabUI(position, true);
-        }
+        updateNavigation(true);
     }
 
     /**
@@ -961,11 +1107,13 @@ public class EasyNavigationBar extends LinearLayout {
                 case TabContentType.TYPE_NORMAL:
                     imageViewList.get(i).setImageResource(normalIconItems[i]);
                     textViewList.get(i).setTextColor(normalTextColor);
+                    textViewList.get(i).setText(titleItems[i]);
                 case TabContentType.TYPE_ONLY_IMAGE:
                     imageViewList.get(i).setImageResource(normalIconItems[i]);
                     break;
                 case TabContentType.TYPE_ONLY_TEXT:
                     textViewList.get(i).setTextColor(normalTextColor);
+                    textViewList.get(i).setText(titleItems[i]);
                     break;
             }
         }
@@ -985,12 +1133,14 @@ public class EasyNavigationBar extends LinearLayout {
                     case TabContentType.TYPE_NORMAL:
                         imageViewList.get(i).setImageResource(selectIconItems[i]);
                         textViewList.get(i).setTextColor(selectTextColor);
+                        textViewList.get(i).setText(titleItems[i]);
                         break;
                     case TabContentType.TYPE_ONLY_IMAGE:
                         imageViewList.get(i).setImageResource(selectIconItems[i]);
                         break;
                     case TabContentType.TYPE_ONLY_TEXT:
                         textViewList.get(i).setTextColor(selectTextColor);
+                        textViewList.get(i).setText(titleItems[i]);
                         break;
                 }
 
@@ -999,11 +1149,13 @@ public class EasyNavigationBar extends LinearLayout {
                     case TabContentType.TYPE_NORMAL:
                         imageViewList.get(i).setImageResource(normalIconItems[i]);
                         textViewList.get(i).setTextColor(normalTextColor);
+                        textViewList.get(i).setText(titleItems[i]);
                     case TabContentType.TYPE_ONLY_IMAGE:
                         imageViewList.get(i).setImageResource(normalIconItems[i]);
                         break;
                     case TabContentType.TYPE_ONLY_TEXT:
                         textViewList.get(i).setTextColor(normalTextColor);
+                        textViewList.get(i).setText(titleItems[i]);
                         break;
                 }
             }
@@ -1127,8 +1279,8 @@ public class EasyNavigationBar extends LinearLayout {
         return this;
     }
 
-    public EasyNavigationBar addIconSize(int addIconSize) {
-        this.addIconSize = NavigationUtil.dip2px(getContext(), addIconSize);
+    public EasyNavigationBar centerIconSize(int centerIconSize) {
+        this.centerIconSize = NavigationUtil.dip2px(getContext(), centerIconSize);
         return this;
     }
 
@@ -1405,8 +1557,8 @@ public class EasyNavigationBar extends LinearLayout {
         return lineColor;
     }
 
-    public float getAddIconSize() {
-        return addIconSize;
+    public float getcenterIconSize() {
+        return centerIconSize;
     }
 
     public float getAddLayoutHeight() {

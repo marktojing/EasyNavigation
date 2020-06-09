@@ -11,7 +11,7 @@
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
-        app:Easy_addIconSize="40dp"
+        app:Easy_centerIconSize="40dp"
         app:Easy_navigationHeight="60dp"
         app:Easy_hasPadding="false"
         app:Easy_navigationBackground="#90ffffff">

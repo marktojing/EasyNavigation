@@ -5,6 +5,11 @@
 - 如果还不能满足、中间可添加自定义View；
 - Tab中随意添加小红点提示、数字消息提示；
 - 点击按钮可跳转界面、也可作为Tab切换Fragment；
+- 2.0.0迁移AndroidX、支持ViewPager2;
+- 剥离导航栏、不传Fragment则不会创建ViewPager、可自行实现ViewPager使用setupWithViewPager方法与之关联；
+- 支持仅图片、仅文字的方式.；
+- 支持字体单位修改、SP和DP切换；
+- 支持红点消息大于99、则显示椭圆可自定义背景颜色及角度；
 - 更多使用参考简书；
 
 

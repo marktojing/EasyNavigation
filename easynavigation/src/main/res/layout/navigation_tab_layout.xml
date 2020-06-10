@@ -37,16 +37,14 @@
         android:layout_above="@+id/ll_tab_content"
         android:layout_marginBottom="-3dp"
         android:layout_toRightOf="@+id/ll_tab_content"
-        android:background="@drawable/oval_red"
         android:visibility="gone" />
 
     <TextView
         android:id="@+id/msg_point_tv"
-        android:layout_width="18dp"
-        android:layout_height="18dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_above="@+id/ll_tab_content"
         android:layout_toRightOf="@+id/ll_tab_content"
-        android:background="@drawable/oval_red"
         android:gravity="center"
         android:textColor="#FFFFFF"
         android:textSize="9sp"

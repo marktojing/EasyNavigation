@@ -1,6 +1,12 @@
 package com.next.easynavigation.utils;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.ArcShape;
+import android.graphics.drawable.shapes.RoundRectShape;
+import android.view.View;
 import android.view.WindowManager;
 
 
@@ -67,5 +73,24 @@ public class NavigationUtil {
         final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
         return (int) (spValue * fontScale + 0.5f);
     }
+
+    public static void setRoundRectBg(Context mContext, View view, int dipRadius, int badgeColor) {
+        int radius = dip2px(mContext, dipRadius);
+        float[] radiusArray = new float[]{radius, radius, radius, radius, radius, radius, radius, radius};
+        RoundRectShape roundRect = new RoundRectShape(radiusArray, null, null);
+        ShapeDrawable bgDrawable = new ShapeDrawable(roundRect);
+        bgDrawable.getPaint().setColor(badgeColor);
+        view.setBackgroundDrawable(bgDrawable);
+    }
+
+    public static void setOvalBg(View view,int bgColor) {
+        ArcShape shape = new ArcShape(0, 360);
+        ShapeDrawable drawable = new ShapeDrawable(shape);
+        drawable.getPaint().setColor(bgColor);
+        drawable.getPaint().setAntiAlias(true);
+        drawable.getPaint().setStyle(Paint.Style.FILL);
+        view.setBackgroundDrawable(drawable);
+    }
+
 
 }

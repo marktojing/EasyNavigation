@@ -2,10 +2,11 @@ package com.next.easynavigationdemo.ui;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import com.next.easynavigation.view.EasyNavigationBar;
 import com.next.easynavigationdemo.R;

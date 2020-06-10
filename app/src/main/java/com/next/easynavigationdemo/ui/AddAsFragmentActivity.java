@@ -88,7 +88,7 @@ public class AddAsFragmentActivity extends AppCompatActivity {
                     }
                 })
                 .canScroll(true)
-                .mode(EasyNavigationBar.MODE_ADD)
+                .mode(EasyNavigationBar.NavigationMode.MODE_ADD)
                 .build();
     }
 

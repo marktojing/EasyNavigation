@@ -100,12 +100,10 @@ public class WeiboActivity extends AppCompatActivity {
                         return false;
                     }
                 })
-                .mode(EasyNavigationBar.MODE_ADD)
+                .mode(EasyNavigationBar.NavigationMode.MODE_ADD)
                 .anim(Anim.ZoomIn)
                 .build();
 
-
-        navigationBar.setAddViewLayout(createWeiboView());
 
     }
 

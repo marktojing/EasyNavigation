@@ -51,7 +51,7 @@ public class AddViewActivity extends AppCompatActivity {
                 .selectIconItems(selectIcon)
                 .fragmentList(fragments)
                 .canScroll(true)
-                .mode(EasyNavigationBar.MODE_ADD_VIEW)
+                .mode(EasyNavigationBar.NavigationMode.MODE_ADD_VIEW)
                 .addCustomView(view)
                 .fragmentManager(getSupportFragmentManager())
                 .setOnTabClickListener(new EasyNavigationBar.OnTabClickListener() {

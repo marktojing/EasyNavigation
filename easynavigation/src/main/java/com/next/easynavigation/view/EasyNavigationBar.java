@@ -99,6 +99,7 @@ public class EasyNavigationBar extends LinearLayout {
 
     private EasyNavigationBar.OnTabClickListener onTabClickListener;
     private OnCenterTabSelectListener onCenterTabClickListener;
+    private OnTabLoadListener onTabLoadListener;
 
     //消息红点字体大小
     private float msgPointTextSize;
@@ -140,9 +141,6 @@ public class EasyNavigationBar extends LinearLayout {
 
     private float centerIconSize;
     private float centerLayoutHeight = navigationHeight;
-    public static final int MODE_NORMAL = 0;
-    public static final int MODE_ADD = 1;
-    public static final int MODE_ADD_VIEW = 2;
 
     private float centerLayoutBottomMargin;
 
@@ -482,6 +480,7 @@ public class EasyNavigationBar extends LinearLayout {
 
         onTabClickListener = null;
         onCenterTabClickListener = null;
+        onTabClickListener = null;
 
 
         tabContentRule = 0;
@@ -606,6 +605,8 @@ public class EasyNavigationBar extends LinearLayout {
                     addTabItemView(i);
                 }
                 selectNormalTabUI(0, false);
+                if(onTabLoadListener!=null)
+                    onTabLoadListener.onTabLoadCompleteEvent();
             }
         });
 
@@ -654,7 +655,7 @@ public class EasyNavigationBar extends LinearLayout {
         }
 
         if (isAddPage() && tabCount % 2 == 1) {
-            Log.e(getClass().getName(), "2.0.0之后、添加中间Tab、则普通Tab数量应为偶数");
+            Log.e(getClass().getName(), "1.5.0之后、添加中间Tab、则普通Tab数量应为偶数");
             return;
         }
 
@@ -755,6 +756,8 @@ public class EasyNavigationBar extends LinearLayout {
                     addTabItemView(i);
                 }
                 selectNormalTabUI(0, false);
+                if(onTabLoadListener!=null)
+                    onTabLoadListener.onTabLoadCompleteEvent();
             }
         });
 
@@ -1035,6 +1038,8 @@ public class EasyNavigationBar extends LinearLayout {
                 }
 
                 selectNormalTabUI(0, false);
+                if(onTabLoadListener!=null)
+                    onTabLoadListener.onTabLoadCompleteEvent();
             }
         });
 
@@ -1278,6 +1283,13 @@ public class EasyNavigationBar extends LinearLayout {
          * 中间布局点击事件
          */
         boolean onCenterTabSelectEvent(View view);
+    }
+
+    public interface OnTabLoadListener {
+        /**
+         * Tab加载完毕
+         */
+        void onTabLoadCompleteEvent();
     }
 
 
@@ -1719,6 +1731,11 @@ public class EasyNavigationBar extends LinearLayout {
 
     public EasyNavigationBar setMsgPointColor(int msgPointColor) {
         this.msgPointColor = msgPointColor;
+        return this;
+    }
+
+    public EasyNavigationBar setOnTabLoadListener(OnTabLoadListener onTabLoadListener) {
+        this.onTabLoadListener = onTabLoadListener;
         return this;
     }
 }

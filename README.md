@@ -23,9 +23,7 @@
 
 ![基础版和加号版本.png](https://upload-images.jianshu.io/upload_images/5739496-567bb2686d717fde.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-![image](https://github.com/Vincent7Wong/EasyNavigation/blob/master/screenshot/pre5.jpg)
-![image](https://github.com/Vincent7Wong/EasyNavigation/blob/master/screenshot/pre3.jpg)
-![image](https://github.com/Vincent7Wong/EasyNavigation/blob/master/screenshot/pre4.jpg)
+![自定义中间按钮](https://upload-images.jianshu.io/upload_images/5739496-eeee2d6ac5fa33a9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 
 # 实现

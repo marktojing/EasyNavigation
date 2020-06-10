@@ -46,4 +46,8 @@ public class DemoListActivity extends AppCompatActivity {
     public void SetUpViewPagerActivity(View view) {
         startActivity(new Intent(DemoListActivity.this, SetUpViewPagerActivity.class));
     }
+
+    public void ViewPager2Activity(View view) {
+        startActivity(new Intent(DemoListActivity.this, ViewPager2Activity.class));
+    }
 }

@@ -48,6 +48,14 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:gravity="center"
+        android:onClick="ViewPager2Activity"
+        android:text="ViewPager2(ViewPager2Activity)"
+        android:textSize="17sp" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="center"
         android:onClick="OnWeibo"
         android:text="示例(Weibo)"
         android:textSize="17sp" />

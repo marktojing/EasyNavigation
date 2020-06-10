@@ -25,6 +25,5 @@ dependencies {
     api project(path: ':easynavigation')
     implementation 'com.daimajia.easing:library:2.0@aar'
     implementation 'com.daimajia.androidanimations:library:2.2@aar'
-    implementation 'org.jetbrains:annotations-java5:15.0'
-    implementation 'org.jetbrains:annotations-java5:15.0'
+    implementation 'androidx.viewpager2:viewpager2:1.0.0'
 }

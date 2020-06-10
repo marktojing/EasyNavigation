@@ -22,6 +22,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
@@ -68,6 +69,7 @@ public class EasyNavigationBar extends LinearLayout {
     private List<View> tabList = new ArrayList<>();
 
     private ViewPager mViewPager;
+    private ViewPager2 mViewPager2;
     //private GestureDetector detector;
 
     private ViewGroup addViewLayout;
@@ -195,6 +197,8 @@ public class EasyNavigationBar extends LinearLayout {
     private int tabContentBottomMargin;
     //字体显示为DP还是SP  默认1 为DP 2SP
     private int textSizeType;
+    //是否为ViewPager2
+    private boolean isViewPager2;
 
 
     public EasyNavigationBar(Context context) {
@@ -253,7 +257,7 @@ public class EasyNavigationBar extends LinearLayout {
             hintPointTop = attributes.getDimension(R.styleable.EasyNavigationBar_Easy_hintPointTop, hintPointTop);
 
             msgPointLeft = attributes.getDimension(R.styleable.EasyNavigationBar_Easy_msgPointLeft, -iconSize / 2);
-            msgPointTextSize = NavigationUtil.compareTo(getContext(),attributes.getDimension(R.styleable.EasyNavigationBar_Easy_msgPointTextSize, 0),msgPointTextSize,textSizeType);
+            msgPointTextSize = NavigationUtil.compareTo(getContext(), attributes.getDimension(R.styleable.EasyNavigationBar_Easy_msgPointTextSize, 0), msgPointTextSize, textSizeType);
             centerIconSize = attributes.getDimension(R.styleable.EasyNavigationBar_Easy_centerIconSize, centerIconSize);
             centerLayoutBottomMargin = attributes.getDimension(R.styleable.EasyNavigationBar_Easy_centerLayoutBottomMargin, centerLayoutBottomMargin);
 
@@ -307,6 +311,7 @@ public class EasyNavigationBar extends LinearLayout {
 //        if (adapter == null) {
 //            throw new IllegalArgumentException("ViewPager does not have a PagerAdapter set");
 //        }
+        isViewPager2 = false;
         onlyNavigation = true;
         mViewPager = viewPager;
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -323,6 +328,35 @@ public class EasyNavigationBar extends LinearLayout {
             @Override
             public void onPageScrollStateChanged(int state) {
 
+            }
+        });
+        return this;
+    }
+
+
+    public EasyNavigationBar setupWithViewPager(@NonNull ViewPager2 viewPager2) {
+//        final PagerAdapter adapter = viewPager.getAdapter();
+//        if (adapter == null) {
+//            throw new IllegalArgumentException("ViewPager does not have a PagerAdapter set");
+//        }
+        isViewPager2 = true;
+        onlyNavigation = true;
+        mViewPager2 = viewPager2;
+        mViewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                super.onPageScrolled(position, positionOffset, positionOffsetPixels);
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                selectTab(position, smoothScroll, false);
+                super.onPageSelected(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                super.onPageScrollStateChanged(state);
             }
         });
         return this;
@@ -402,9 +436,7 @@ public class EasyNavigationBar extends LinearLayout {
         if (this.adapter != null)
             this.adapter.notifyDataSetChanged();
 
-//        if(mViewPager!=null){
-//            ((ViewGroup) mViewPager.getParent()).removeView(mViewPager);
-//        }
+        mViewPager2 = null;
 
         //Tab点击动画效果
         anim = null;
@@ -421,7 +453,7 @@ public class EasyNavigationBar extends LinearLayout {
         hintPointTop = NavigationUtil.dip2px(getContext(), -3);
 
         //消息红点字体大小
-        msgPointTextSize =11;
+        msgPointTextSize = 11;
         //消息红点大小
         msgPointSize = NavigationUtil.dip2px(getContext(), 18);
         //消息红点距Tab图标右侧的距离   默认为Tab图标的一半
@@ -497,6 +529,7 @@ public class EasyNavigationBar extends LinearLayout {
         msgPointMoreRadius = 10;
         //消息红点颜色
         msgPointColor = Color.parseColor("#ff0000");
+        isViewPager2 = false;
 
         return this;
     }
@@ -670,9 +703,21 @@ public class EasyNavigationBar extends LinearLayout {
             setViewPagerAdapter();
         }
 
-        if (hasPadding && mViewPager != null) {
-            mViewPager.setPadding(0, 0, 0, (int) (navigationHeight + lineHeight));
+        if (hasPadding) {
+            if (isViewPager2) {
+                if (getViewPager2() != null) {
+                    getViewPager2().setPadding(0, 0, 0, (int) (navigationHeight + lineHeight));
+                }
+            } else {
+                if (getViewPager() != null) {
+                    getViewPager().setPadding(0, 0, 0, (int) (navigationHeight + lineHeight));
+                }
+            }
         }
+    }
+
+    private ViewPager2 getViewPager2() {
+        return mViewPager2;
     }
 
     /**
@@ -911,7 +956,7 @@ public class EasyNavigationBar extends LinearLayout {
 
         //消息红点
         TextView msgPoint = itemView.findViewById(R.id.msg_point_tv);
-        msgPoint.setTextSize(textSizeType,msgPointTextSize);
+        msgPoint.setTextSize(textSizeType, msgPointTextSize);
         RelativeLayout.LayoutParams msgPointParams = (RelativeLayout.LayoutParams) msgPoint.getLayoutParams();
         msgPointParams.bottomMargin = (int) NavigationUtil.dip2px(getContext(), -12);
         msgPointParams.leftMargin = (int) msgPointLeft;
@@ -979,9 +1024,17 @@ public class EasyNavigationBar extends LinearLayout {
         if (currentPosition == position)
             return;
         currentPosition = position;
-        if (selectPager && mViewPager != null) {
-            getViewPager().setCurrentItem(position, smoothScroll);
+        if (selectPager) {
+            if (isViewPager2) {
+                if (getViewPager2() != null)
+                    getViewPager2().setCurrentItem(position, smoothScroll);
+            } else {
+                if (getViewPager() != null) {
+                    getViewPager().setCurrentItem(position, smoothScroll);
+                }
+            }
         }
+
         updateNavigation(true);
     }
 

@@ -22,6 +22,7 @@
         <activity android:name="com.next.easynavigationdemo.ui.AddViewActivity" />
         <activity android:name=".ui.OnlyNavigationActivity" />
         <activity android:name=".ui.SetUpViewPagerActivity" />
+        <activity android:name=".ui.ViewPager2Activity" />
     </application>
 
 </manifest>

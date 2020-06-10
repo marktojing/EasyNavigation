@@ -14,7 +14,7 @@
 
 # 效果图
 
-![image](https://github.com/Vincent7Wong/EasyNavigation/blob/master/screenshot/pre.gif)
+![轻松实现.gif](https://upload-images.jianshu.io/upload_images/5739496-c5a193a09c2142ec.gif?imageMogr2/auto-orient/strip)
 
 
 

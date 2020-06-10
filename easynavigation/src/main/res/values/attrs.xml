@@ -53,7 +53,7 @@
         <!--中间图片的大小-->
         <attr name="Easy_centerIconSize" format="dimension" />
         <!--底部导航栏和加号的高度  加号会居中-->
-        <attr name="Easy_addLayoutHeight" format="dimension" />
+        <attr name="Easy_centerLayoutHeight" format="dimension" />
         <!--添加按钮距离底部的距离-->
         <attr name="Easy_centerLayoutBottomMargin" format="dimension" />
         <!--图标显示-->
@@ -77,13 +77,13 @@
         <!-- true 点击加号切换fragment
          false 点击加号不切换fragment进行其他操作（跳转界面等）-->
         <attr name="Easy_centerAsFragment" format="boolean" />
-        <attr name="Easy_addSelectTextColor" format="color" />
-        <attr name="Easy_addNormalTextColor" format="color" />
+        <attr name="Easy_centerSelectTextColor" format="color" />
+        <attr name="Easy_centerNormalTextColor" format="color" />
         <attr name="Easy_centerTextSize" format="dimension" />
         <!--加号文字距离顶部加号的距离-->
-        <attr name="Easy_addTextTopMargin" format="dimension" />
+        <attr name="Easy_centerTextTopMargin" format="dimension" />
         <!--是否和其他tab文字底部对齐-->
-        <attr name="Easy_addAlignBottom" format="dimension" />
+        <attr name="Easy_centerAlignBottom" format="dimension" />
         <!--文字大小单位DP还是SP-->
         <attr name="Easy_textSizeType">
             <flag name="TYPE_DP" value="1" />

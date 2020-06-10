@@ -139,15 +139,15 @@ public class EasyNavigationBar extends LinearLayout {
 
 
     private float centerIconSize;
-    private float addLayoutHeight = navigationHeight;
+    private float centerLayoutHeight = navigationHeight;
     public static final int MODE_NORMAL = 0;
     public static final int MODE_ADD = 1;
     public static final int MODE_ADD_VIEW = 2;
 
     private float centerLayoutBottomMargin;
 
-    //RULE_CENTER 居中只需调节addLayoutHeight 默认和navigationHeight相等 此时centerLayoutBottomMargin属性无效
-    //RULE_BOTTOM addLayoutHeight属性无效、自适应、只需调节centerLayoutBottomMargin距底部的距离
+    //RULE_CENTER 居中只需调节centerLayoutHeight 默认和navigationHeight相等 此时centerLayoutBottomMargin属性无效
+    //RULE_BOTTOM centerLayoutHeight属性无效、自适应、只需调节centerLayoutBottomMargin距底部的距离
     private int centerLayoutRule = RULE_CENTER;
 
     public static final int RULE_CENTER = 0;
@@ -168,13 +168,13 @@ public class EasyNavigationBar extends LinearLayout {
     private View customAddView;
     private float centerTextSize;
     //加号文字未选中颜色（默认同其他tab）
-    private int addNormalTextColor;
+    private int centerNormalTextColor;
     //加号文字选中颜色（默认同其他tab）
-    private int addSelectTextColor;
+    private int centerSelectTextColor;
     //加号文字距离顶部加号的距离
-    private float addTextTopMargin;
+    private float centerTextTopMargin;
     //是否和其他tab文字底部对齐
-    private boolean addAlignBottom;
+    private boolean centerAlignBottom;
     private ImageView centerImage;
     private View empty_line;
 
@@ -257,18 +257,18 @@ public class EasyNavigationBar extends LinearLayout {
             centerLayoutBottomMargin = attributes.getDimension(R.styleable.EasyNavigationBar_Easy_centerLayoutBottomMargin, centerLayoutBottomMargin);
 
             //加号属性
-            addSelectTextColor = attributes.getColor(R.styleable.EasyNavigationBar_Easy_addSelectTextColor, addSelectTextColor);
-            addNormalTextColor = attributes.getColor(R.styleable.EasyNavigationBar_Easy_addNormalTextColor, addNormalTextColor);
+            centerSelectTextColor = attributes.getColor(R.styleable.EasyNavigationBar_Easy_centerSelectTextColor, centerSelectTextColor);
+            centerNormalTextColor = attributes.getColor(R.styleable.EasyNavigationBar_Easy_centerNormalTextColor, centerNormalTextColor);
             centerTextSize = NavigationUtil.compareTo(getContext(), attributes.getDimension(R.styleable.EasyNavigationBar_Easy_centerTextSize, 0), centerTextSize, textSizeType);
-            addTextTopMargin = attributes.getDimension(R.styleable.EasyNavigationBar_Easy_addTextTopMargin, addTextTopMargin);
-            addAlignBottom = attributes.getBoolean(R.styleable.EasyNavigationBar_Easy_addAlignBottom, addAlignBottom);
+            centerTextTopMargin = attributes.getDimension(R.styleable.EasyNavigationBar_Easy_centerTextTopMargin, centerTextTopMargin);
+            centerAlignBottom = attributes.getBoolean(R.styleable.EasyNavigationBar_Easy_centerAlignBottom, centerAlignBottom);
 
 
             lineHeight = attributes.getDimension(R.styleable.EasyNavigationBar_Easy_lineHeight, lineHeight);
             lineColor = attributes.getColor(R.styleable.EasyNavigationBar_Easy_lineColor, lineColor);
 
 
-            addLayoutHeight = attributes.getDimension(R.styleable.EasyNavigationBar_Easy_addLayoutHeight, navigationHeight + lineHeight);
+            centerLayoutHeight = attributes.getDimension(R.styleable.EasyNavigationBar_Easy_centerLayoutHeight, navigationHeight + lineHeight);
 
             normalTextColor = attributes.getColor(R.styleable.EasyNavigationBar_Easy_tabNormalColor, normalTextColor);
             selectTextColor = attributes.getColor(R.styleable.EasyNavigationBar_Easy_tabSelectColor, selectTextColor);
@@ -330,12 +330,12 @@ public class EasyNavigationBar extends LinearLayout {
 
     public void build() {
 
-        if (addLayoutHeight < navigationHeight + lineHeight)
-            addLayoutHeight = navigationHeight + lineHeight;
+        if (centerLayoutHeight < navigationHeight + lineHeight)
+            centerLayoutHeight = navigationHeight + lineHeight;
 
         if (centerLayoutRule == RULE_CENTER) {
             RelativeLayout.LayoutParams addLayoutParams = (RelativeLayout.LayoutParams) AddContainerLayout.getLayoutParams();
-            addLayoutParams.height = (int) addLayoutHeight;
+            addLayoutParams.height = (int) centerLayoutHeight;
             AddContainerLayout.setLayoutParams(addLayoutParams);
         } else if (centerLayoutRule == RULE_BOTTOM) {
            /* RelativeLayout.LayoutParams addLayoutParams = (RelativeLayout.LayoutParams) AddContainerLayout.getLayoutParams();
@@ -362,11 +362,11 @@ public class EasyNavigationBar extends LinearLayout {
         if (centerTextSize == 0) {
             centerTextSize = tabTextSize;
         }
-        if (addNormalTextColor == 0) {
-            addNormalTextColor = normalTextColor;
+        if (centerNormalTextColor == 0) {
+            centerNormalTextColor = normalTextColor;
         }
-        if (addSelectTextColor == 0) {
-            addSelectTextColor = selectTextColor;
+        if (centerSelectTextColor == 0) {
+            centerSelectTextColor = selectTextColor;
         }
 
         if (!checkCanBuild())
@@ -448,11 +448,11 @@ public class EasyNavigationBar extends LinearLayout {
         canScroll = false;
 
         centerIconSize = NavigationUtil.dip2px(getContext(), 36);
-        addLayoutHeight = navigationHeight;
+        centerLayoutHeight = navigationHeight;
         centerLayoutBottomMargin = NavigationUtil.dip2px(getContext(), 10);
 
-        //RULE_CENTER 居中只需调节addLayoutHeight 默认和navigationHeight相等 此时centerLayoutBottomMargin属性无效
-        //RULE_BOTTOM addLayoutHeight属性无效、自适应、只需调节centerLayoutBottomMargin距底部的距离
+        //RULE_CENTER 居中只需调节centerLayoutHeight 默认和navigationHeight相等 此时centerLayoutBottomMargin属性无效
+        //RULE_BOTTOM centerLayoutHeight属性无效、自适应、只需调节centerLayoutBottomMargin距底部的距离
         centerLayoutRule = RULE_CENTER;
 
         //true  ViewPager在Navigation上面
@@ -469,13 +469,13 @@ public class EasyNavigationBar extends LinearLayout {
 
         centerTextSize = 0;
         //加号文字未选中颜色（默认同其他tab）
-        addNormalTextColor = 0;
+        centerNormalTextColor = 0;
         //加号文字选中颜色（默认同其他tab）
-        addSelectTextColor = 0;
+        centerSelectTextColor = 0;
         //加号文字距离顶部加号的距离
-        addTextTopMargin = NavigationUtil.dip2px(getContext(), 3);
+        centerTextTopMargin = NavigationUtil.dip2px(getContext(), 3);
         //是否和其他tab文字底部对齐
-        addAlignBottom = true;
+        centerAlignBottom = true;
 
         contentType = TabContentType.TYPE_NORMAL;
         centerTextStr = "";
@@ -557,6 +557,17 @@ public class EasyNavigationBar extends LinearLayout {
     public EasyNavigationBar centerTextStr(String centerTextStr) {
         this.centerTextStr = centerTextStr;
         return this;
+    }
+
+    @IntDef({
+            TextSizeType.TYPE_DP,
+            TextSizeType.TYPE_SP,
+    })
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface TextSizeType {
+        //文字单位：1、DP   2、SP
+        int TYPE_DP = 1;
+        int TYPE_SP = 2;
     }
 
     @IntDef({
@@ -779,7 +790,7 @@ public class EasyNavigationBar extends LinearLayout {
         } else if (centerLayoutRule == RULE_BOTTOM) {
             linearParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
             linearParams.addRule(RelativeLayout.ABOVE, R.id.empty_line);
-            if (addAlignBottom) {
+            if (centerAlignBottom) {
                 if (textViewList != null && textViewList.size() > 0) {
                     textViewList.get(0).post(new Runnable() {
                         @Override
@@ -820,7 +831,7 @@ public class EasyNavigationBar extends LinearLayout {
             TextView centerText = new TextView(getContext());
             centerText.setTextSize(textSizeType, centerTextSize);
             LinearLayout.LayoutParams addTextParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            addTextParams.topMargin = (int) addTextTopMargin;
+            addTextParams.topMargin = (int) centerTextTopMargin;
             centerText.setLayoutParams(addTextParams);
             centerText.setText(centerTextStr);
             centerLinearLayout.addView(centerText);
@@ -1048,7 +1059,7 @@ public class EasyNavigationBar extends LinearLayout {
             linearParams.addRule(RelativeLayout.CENTER_IN_PARENT);
         } else if (centerLayoutRule == RULE_BOTTOM) {
             linearParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-            if (addAlignBottom) {
+            if (centerAlignBottom) {
                 linearParams.addRule(RelativeLayout.ABOVE, R.id.empty_line);
                 if (textViewList != null && textViewList.size() > 0) {
                     textViewList.get(0).post(new Runnable() {
@@ -1270,8 +1281,8 @@ public class EasyNavigationBar extends LinearLayout {
     }
 
 
-    public EasyNavigationBar addLayoutHeight(int addLayoutHeight) {
-        this.addLayoutHeight = NavigationUtil.dip2px(getContext(), addLayoutHeight);
+    public EasyNavigationBar centerLayoutHeight(int centerLayoutHeight) {
+        this.centerLayoutHeight = NavigationUtil.dip2px(getContext(), centerLayoutHeight);
         return this;
     }
 
@@ -1459,23 +1470,23 @@ public class EasyNavigationBar extends LinearLayout {
         return this;
     }
 
-    public EasyNavigationBar addNormalTextColor(int addNormalTextColor) {
-        this.addNormalTextColor = addNormalTextColor;
+    public EasyNavigationBar centerNormalTextColor(int centerNormalTextColor) {
+        this.centerNormalTextColor = centerNormalTextColor;
         return this;
     }
 
-    public EasyNavigationBar addSelectTextColor(int addSelectTextColor) {
-        this.addSelectTextColor = addSelectTextColor;
+    public EasyNavigationBar centerSelectTextColor(int centerSelectTextColor) {
+        this.centerSelectTextColor = centerSelectTextColor;
         return this;
     }
 
-    public EasyNavigationBar addTextTopMargin(int addTextTopMargin) {
-        this.addTextTopMargin = NavigationUtil.dip2px(getContext(), addTextTopMargin);
+    public EasyNavigationBar centerTextTopMargin(int centerTextTopMargin) {
+        this.centerTextTopMargin = NavigationUtil.dip2px(getContext(), centerTextTopMargin);
         return this;
     }
 
-    public EasyNavigationBar addAlignBottom(boolean addAlignBottom) {
-        this.addAlignBottom = addAlignBottom;
+    public EasyNavigationBar centerAlignBottom(boolean centerAlignBottom) {
+        this.centerAlignBottom = centerAlignBottom;
         return this;
     }
 
@@ -1573,8 +1584,8 @@ public class EasyNavigationBar extends LinearLayout {
         return centerIconSize;
     }
 
-    public float getAddLayoutHeight() {
-        return addLayoutHeight;
+    public float getcenterLayoutHeight() {
+        return centerLayoutHeight;
     }
 
     public int getNavigationBackground() {
@@ -1646,20 +1657,20 @@ public class EasyNavigationBar extends LinearLayout {
         return centerTextSize;
     }
 
-    public int getAddNormalTextColor() {
-        return addNormalTextColor;
+    public int getcenterNormalTextColor() {
+        return centerNormalTextColor;
     }
 
-    public int getAddSelectTextColor() {
-        return addSelectTextColor;
+    public int getcenterSelectTextColor() {
+        return centerSelectTextColor;
     }
 
-    public float getAddTextTopMargin() {
-        return addTextTopMargin;
+    public float getcenterTextTopMargin() {
+        return centerTextTopMargin;
     }
 
-    public boolean isAddAlignBottom() {
-        return addAlignBottom;
+    public boolean iscenterAlignBottom() {
+        return centerAlignBottom;
     }
 
     public ImageView getCenterImage() {

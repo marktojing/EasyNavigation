@@ -55,7 +55,7 @@ public class AddAsFragmentActivity extends AppCompatActivity {
                 .anim(null)
                 .centerLayoutRule(EasyNavigationBar.RULE_BOTTOM)
                 .centerLayoutBottomMargin(0)
-                .addAlignBottom(true)
+                .centerAlignBottom(true)
                 .fragmentManager(getSupportFragmentManager())
                 .setOnTabClickListener(new EasyNavigationBar.OnTabClickListener() {
                     @Override

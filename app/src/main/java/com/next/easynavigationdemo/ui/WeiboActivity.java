@@ -258,7 +258,7 @@ public class WeiboActivity extends AppCompatActivity {
                         return false;
                     }
                 })
-                .textSizeType(2)
+                .textSizeType(EasyNavigationBar.TextSizeType.TYPE_SP)
                 .build();
 
 

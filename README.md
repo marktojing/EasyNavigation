@@ -18,7 +18,7 @@
 
 
 
-![image](https://github.com/forvv231/EasyNavigation/blob/master/screenshot/pre5.jpg)
+![image](https://github.com/Vincent/EasyNavigation/blob/master/screenshot/pre5.jpg)
 ![image](https://github.com/forvv231/EasyNavigation/blob/master/screenshot/pre3.jpg)
 ![image](https://github.com/forvv231/EasyNavigation/blob/master/screenshot/pre4.jpg)
 
@@ -37,7 +37,9 @@ Step 1. Add it in your root build.gradle at the end of repositories:
 ```
 Step 2. Add the dependency
 ```
-	 implementation 'com.github.Vincent7Wong:EasyNavigation:2.0.0'
+     	implementation 'com.github.Vincent7Wong:EasyNavigation:1.5.0'
+     	//2.0.0  AndroidX版本、支持ViewPager2
+     	implementation 'com.github.Vincent7Wong:EasyNavigation:2.0.0'
 ```
 
 ---
@@ -115,15 +117,15 @@ navigationBar.defaultSetting()  //恢复默认配置、可用于重绘导航栏
 ---
 # 更新
 
-此版本较上一版本有很大更新、实现方式也调整了下、如有错误及时反馈
-2.0.0迁移AndroidX、支持ViewPager2;
-剥离导航栏、不传Fragment则不会创建ViewPager、可自行实现ViewPager使用setupWithViewPager方法与之关联；
-新增仅图片、仅文字的方式。titleItems和normalIconItems不能同时为空。如果没有titleItems、则仅显示图片，没有normalIconItems则仅显示文字，没有selectIconItems则Tab没有切换效果；
-新增字体单位修改、SP和DP切换；
-新增红点消息大于99、则显示椭圆可自定义背景颜色及角度；
-修复控件宽度计算问题；
-新增重复选择回调；
-方法名字诸多修改；（中间Tab的相关属性由add改为center/万分抱歉）
+- 此版本较上一版本有很大更新、实现方式也调整了下、如有错误及时反馈
+- 2.0.0迁移AndroidX、支持ViewPager2;
+- 剥离导航栏、不传Fragment则不会创建ViewPager、可自行实现ViewPager使用setupWithViewPager方法与之关联；
+- 新增仅图片、仅文字的方式。titleItems和normalIconItems不能同时为空。如果没有titleItems、则仅显示图片，没有normalIconItems则仅显示文字，没有selectIconItems则Tab没有切换效果；
+- 新增字体单位修改、SP和DP切换；
+- 新增红点消息大于99、则显示椭圆可自定义背景颜色及角度；
+- 修复控件宽度计算问题；
+- 新增重复选择回调；
+- 方法名字诸多修改；（中间Tab的相关属性由add改为center/万分抱歉）
 
 ---
 #Demo

@@ -14,13 +14,13 @@
 
 # 效果图
 
-![image](https://github.com/forvv231/EasyNavigation/blob/master/screenshot/pre.gif)
+![image](https://github.com/Vincent7Wong/EasyNavigation/blob/master/screenshot/pre.gif)
 
 
 
-![image](https://github.com/Vincent/EasyNavigation/blob/master/screenshot/pre5.jpg)
-![image](https://github.com/forvv231/EasyNavigation/blob/master/screenshot/pre3.jpg)
-![image](https://github.com/forvv231/EasyNavigation/blob/master/screenshot/pre4.jpg)
+![image](https://github.com/Vincent7Wong/EasyNavigation/blob/master/screenshot/pre5.jpg)
+![image](https://github.com/Vincent7Wong/EasyNavigation/blob/master/screenshot/pre3.jpg)
+![image](https://github.com/Vincent7Wong/EasyNavigation/blob/master/screenshot/pre4.jpg)
 
 
 # 实现
@@ -128,9 +128,9 @@ navigationBar.defaultSetting()  //恢复默认配置、可用于重绘导航栏
 - 方法名字诸多修改；（中间Tab的相关属性由add改为center/万分抱歉）
 
 ---
-#Demo
-github：[https://github.com/Vincent7Wong/EasyNavigation](https://github.com/Vincent7Wong/EasyNavigation)
+# Demo
 
+github：[https://github.com/Vincent7Wong/EasyNavigation](https://github.com/Vincent7Wong/EasyNavigation)
 
 apk：http://d.6short.com/7r4d
 

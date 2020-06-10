@@ -16,7 +16,7 @@
 
 ![轻松实现.gif](https://upload-images.jianshu.io/upload_images/5739496-c5a193a09c2142ec.gif?imageMogr2/auto-orient/strip)
 
-
+![基础版和加号版本.png](https://upload-images.jianshu.io/upload_images/5739496-567bb2686d717fde.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 ![image](https://github.com/Vincent7Wong/EasyNavigation/blob/master/screenshot/pre5.jpg)
 ![image](https://github.com/Vincent7Wong/EasyNavigation/blob/master/screenshot/pre3.jpg)

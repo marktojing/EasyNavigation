@@ -54,7 +54,7 @@ public class AddAsFragmentActivity extends AppCompatActivity {
                 .centerTextStr("发布")
                 .anim(null)
                 .centerLayoutRule(EasyNavigationBar.RULE_BOTTOM)
-                .addLayoutBottom(0)
+                .centerLayoutBottomMargin(0)
                 .addAlignBottom(true)
                 .fragmentManager(getSupportFragmentManager())
                 .setOnTabClickListener(new EasyNavigationBar.OnTabClickListener() {

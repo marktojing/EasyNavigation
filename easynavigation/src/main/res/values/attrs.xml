@@ -36,7 +36,10 @@
         <!--消息红点99+的高度-->
         <attr name="Easy_msgPointMoreHeight" format="dimension" />
         <!--消息红点99+的半径-->
-        <attr name="Easy_msgPointMoreRadius" format="dimension" />
+        <attr name="Easy_msgPointMoreRadius" format="integer" />
+        <!--消息红点的颜色-->
+        <attr name="Easy_msgPointColor" format="color" />
+
 
         <!--分割线高度-->
         <attr name="Easy_lineHeight" format="dimension" />
@@ -52,7 +55,7 @@
         <!--底部导航栏和加号的高度  加号会居中-->
         <attr name="Easy_addLayoutHeight" format="dimension" />
         <!--添加按钮距离底部的距离-->
-        <attr name="Easy_addLayoutBottom" format="dimension" />
+        <attr name="Easy_centerLayoutBottomMargin" format="dimension" />
         <!--图标显示-->
         <attr name="Easy_scaleType">
             <flag name="CENTER_INSIDE" value="0" />
@@ -76,7 +79,7 @@
         <attr name="Easy_centerAsFragment" format="boolean" />
         <attr name="Easy_addSelectTextColor" format="color" />
         <attr name="Easy_addNormalTextColor" format="color" />
-        <attr name="Easy_addTextSize" format="dimension" />
+        <attr name="Easy_centerTextSize" format="dimension" />
         <!--加号文字距离顶部加号的距离-->
         <attr name="Easy_addTextTopMargin" format="dimension" />
         <!--是否和其他tab文字底部对齐-->

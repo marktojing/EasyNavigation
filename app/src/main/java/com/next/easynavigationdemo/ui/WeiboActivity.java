@@ -75,7 +75,6 @@ public class WeiboActivity extends AppCompatActivity {
                 .fragmentList(fragments)
                 .fragmentManager(getSupportFragmentManager())
                 .centerLayoutRule(EasyNavigationBar.RULE_CENTER)
-//                .addLayoutBottom(100)
                 .setOnTabClickListener(new EasyNavigationBar.OnTabClickListener() {
                     @Override
                     public boolean onTabSelectEvent(View view, int position) {
@@ -247,12 +246,11 @@ public class WeiboActivity extends AppCompatActivity {
 
     public void changeStyle() {
         navigationBar
-                .resetSetting()
+                .defaultSetting()
                 .fragmentList(changeFragments)
                 .fragmentManager(getSupportFragmentManager())
                 .titleItems(tabText2)
                 .centerLayoutRule(EasyNavigationBar.RULE_BOTTOM)
-                .addLayoutBottom(100)
                 .setOnCenterTabClickListener(new EasyNavigationBar.OnCenterTabSelectListener() {
                     @Override
                     public boolean onCenterTabSelectEvent(View view) {
@@ -260,6 +258,7 @@ public class WeiboActivity extends AppCompatActivity {
                         return false;
                     }
                 })
+                .textSizeType(2)
                 .build();
 
 

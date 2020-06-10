@@ -88,49 +88,49 @@ public class EasyNavigationBar extends LinearLayout {
     //ViewPager切换动画
     private boolean smoothScroll = false;
     //图标大小
-    private int iconSize = 20;
+    private int iconSize;
 
     //提示红点大小
-    private float hintPointSize = 6;
+    private float hintPointSize;
     //提示红点距Tab图标右侧的距离
-    private float hintPointLeft = -3;
+    private float hintPointLeft;
     //提示红点距图标顶部的距离
-    private float hintPointTop = -3;
+    private float hintPointTop;
 
     private EasyNavigationBar.OnTabClickListener onTabClickListener;
     private OnCenterTabSelectListener onCenterTabClickListener;
 
     //消息红点字体大小
-    private float msgPointTextSize = 11;
+    private float msgPointTextSize;
     //消息红点大小
-    private float msgPointSize = 18;
+    private float msgPointSize;
     //消息红点99+的长度
-    private float msgPointMoreWidth = 30;
+    private float msgPointMoreWidth;
     //消息红点99+的高度
-    private float msgPointMoreHeight = 18;
+    private float msgPointMoreHeight;
     //消息红点99+的半径
-    private float msgPointMoreRadius = 10;
+    private int msgPointMoreRadius;
     //消息红点颜色
-    private int msgPointColor = Color.parseColor("#ff0000");
+    private int msgPointColor;
     //消息红点距Tab图标右侧的距离   默认为Tab图标的一半
-    private float msgPointLeft = -10;
+    private float msgPointLeft;
     //消息红点距图标顶部的距离  默认为Tab图标的一半
-    private float msgPointTop = -12;
+    private float msgPointTop;
     //Tab文字距Tab图标的距离
-    private float tabTextTop = 2;
+    private float tabTextTop;
     //Tab文字大小
-    private float tabTextSize = 12;
+    private float tabTextSize;
     //未选中Tab字体颜色
-    private int normalTextColor = Color.parseColor("#999999");
+    private int normalTextColor;
     //选中字体颜色
-    private int selectTextColor = Color.parseColor("#333333");
+    private int selectTextColor;
     //分割线高度
-    private float lineHeight = 1;
+    private float lineHeight;
     //分割线颜色
-    private int lineColor = Color.parseColor("#f7f7f7");
+    private int lineColor;
 
-    private int navigationBackground = Color.parseColor("#ffffff");
-    private float navigationHeight = 60;
+    private int navigationBackground;
+    private float navigationHeight;
 
     private ImageView.ScaleType scaleType = ImageView.ScaleType.CENTER_INSIDE;
 
@@ -138,16 +138,16 @@ public class EasyNavigationBar extends LinearLayout {
     private ViewPagerAdapter adapter;
 
 
-    private float centerIconSize = 36;
+    private float centerIconSize;
     private float addLayoutHeight = navigationHeight;
     public static final int MODE_NORMAL = 0;
     public static final int MODE_ADD = 1;
     public static final int MODE_ADD_VIEW = 2;
 
-    private float addLayoutBottom = 10;
+    private float centerLayoutBottomMargin;
 
-    //RULE_CENTER 居中只需调节addLayoutHeight 默认和navigationHeight相等 此时addLayoutBottom属性无效
-    //RULE_BOTTOM addLayoutHeight属性无效、自适应、只需调节addLayoutBottom距底部的距离
+    //RULE_CENTER 居中只需调节addLayoutHeight 默认和navigationHeight相等 此时centerLayoutBottomMargin属性无效
+    //RULE_BOTTOM addLayoutHeight属性无效、自适应、只需调节centerLayoutBottomMargin距底部的距离
     private int centerLayoutRule = RULE_CENTER;
 
     public static final int RULE_CENTER = 0;
@@ -155,7 +155,7 @@ public class EasyNavigationBar extends LinearLayout {
 
     //true  ViewPager在Navigation上面
     //false  ViewPager和Navigation重叠
-    private boolean hasPadding = true;
+    private boolean hasPadding;
 
 
     //1、普通的Tab 2、中间带按钮（如加号）3、
@@ -163,18 +163,18 @@ public class EasyNavigationBar extends LinearLayout {
 
     //true 点击加号切换fragment
     //false 点击加号不切换fragment进行其他操作（跳转界面等）
-    private boolean centerAsFragment = false;
+    private boolean centerAsFragment;
     //自定义加号view
     private View customAddView;
-    private float addTextSize;
+    private float centerTextSize;
     //加号文字未选中颜色（默认同其他tab）
     private int addNormalTextColor;
     //加号文字选中颜色（默认同其他tab）
     private int addSelectTextColor;
     //加号文字距离顶部加号的距离
-    private float addTextTopMargin = 3;
+    private float addTextTopMargin;
     //是否和其他tab文字底部对齐
-    private boolean addAlignBottom = true;
+    private boolean addAlignBottom;
     private ImageView centerImage;
     private View empty_line;
 
@@ -187,13 +187,13 @@ public class EasyNavigationBar extends LinearLayout {
     //只是导航没有ViewPager
     private boolean onlyNavigation;
     //记录位置
-    private int currentPosition = 0;
+    private int currentPosition;
     //Tab内容布局方式
-    private int tabContentRule = 0;
+    private int tabContentRule;
     //Tab内容距底部距离
-    private int tabContentBottomMargin = 0;
+    private int tabContentBottomMargin;
     //字体显示为DP还是SP  默认1 为DP 2SP
-    private int textSizeType = 1;
+    private int textSizeType;
 
 
     public EasyNavigationBar(Context context) {
@@ -210,6 +210,8 @@ public class EasyNavigationBar extends LinearLayout {
 
     private void initViews(Context context, AttributeSet attrs) {
 
+        defaultSetting();
+
         contentView = (RelativeLayout) View.inflate(context, R.layout.container_layout, null);
         addViewLayout = contentView.findViewById(R.id.add_view_ll);
         AddContainerLayout = contentView.findViewById(R.id.add_rl);
@@ -220,8 +222,6 @@ public class EasyNavigationBar extends LinearLayout {
         empty_line.setTag(-100);
         navigationLayout.setTag(-100);
 
-        toDp();
-
 
         TypedArray attributes = context.obtainStyledAttributes(attrs, R.styleable.EasyNavigationBar);
         parseStyle(attributes);
@@ -231,30 +231,35 @@ public class EasyNavigationBar extends LinearLayout {
 
     private void parseStyle(TypedArray attributes) {
         if (attributes != null) {
+//要放在前面
+            textSizeType = attributes.getInt(R.styleable.EasyNavigationBar_Easy_textSizeType, textSizeType);
+
+
+            msgPointColor = attributes.getColor(R.styleable.EasyNavigationBar_Easy_msgPointColor, msgPointColor);
             navigationHeight = attributes.getDimension(R.styleable.EasyNavigationBar_Easy_navigationHeight, navigationHeight);
             navigationBackground = attributes.getColor(R.styleable.EasyNavigationBar_Easy_navigationBackground, navigationBackground);
 
             msgPointMoreWidth = attributes.getDimension(R.styleable.EasyNavigationBar_Easy_msgPointMoreWidth, msgPointMoreWidth);
             msgPointMoreHeight = attributes.getDimension(R.styleable.EasyNavigationBar_Easy_msgPointMoreHeight, msgPointMoreHeight);
-            msgPointMoreRadius = attributes.getDimension(R.styleable.EasyNavigationBar_Easy_msgPointMoreRadius, msgPointMoreRadius);
-            tabTextSize = attributes.getDimension(R.styleable.EasyNavigationBar_Easy_tabTextSize, tabTextSize);
+            msgPointMoreRadius = attributes.getInt(R.styleable.EasyNavigationBar_Easy_msgPointMoreRadius, msgPointMoreRadius);
+            tabTextSize = NavigationUtil.compareTo(getContext(), attributes.getDimension(R.styleable.EasyNavigationBar_Easy_tabTextSize, 0), tabTextSize, textSizeType);
             tabTextTop = attributes.getDimension(R.styleable.EasyNavigationBar_Easy_tabTextTop, tabTextTop);
             iconSize = (int) attributes.getDimension(R.styleable.EasyNavigationBar_Easy_tabIconSize, iconSize);
             hintPointSize = attributes.getDimension(R.styleable.EasyNavigationBar_Easy_hintPointSize, hintPointSize);
             msgPointSize = attributes.getDimension(R.styleable.EasyNavigationBar_Easy_msgPointSize, msgPointSize);
             hintPointLeft = attributes.getDimension(R.styleable.EasyNavigationBar_Easy_hintPointLeft, hintPointLeft);
-            msgPointTop = attributes.getDimension(R.styleable.EasyNavigationBar_Easy_msgPointTop, -iconSize*3 / 5);
+            msgPointTop = attributes.getDimension(R.styleable.EasyNavigationBar_Easy_msgPointTop, -iconSize * 3 / 5);
             hintPointTop = attributes.getDimension(R.styleable.EasyNavigationBar_Easy_hintPointTop, hintPointTop);
 
             msgPointLeft = attributes.getDimension(R.styleable.EasyNavigationBar_Easy_msgPointLeft, -iconSize / 2);
-            msgPointTextSize = attributes.getDimension(R.styleable.EasyNavigationBar_Easy_msgPointTextSize, msgPointTextSize);
+            msgPointTextSize = NavigationUtil.compareTo(getContext(),attributes.getDimension(R.styleable.EasyNavigationBar_Easy_msgPointTextSize, 0),msgPointTextSize,textSizeType);
             centerIconSize = attributes.getDimension(R.styleable.EasyNavigationBar_Easy_centerIconSize, centerIconSize);
-            addLayoutBottom = attributes.getDimension(R.styleable.EasyNavigationBar_Easy_addLayoutBottom, addLayoutBottom);
+            centerLayoutBottomMargin = attributes.getDimension(R.styleable.EasyNavigationBar_Easy_centerLayoutBottomMargin, centerLayoutBottomMargin);
 
             //加号属性
             addSelectTextColor = attributes.getColor(R.styleable.EasyNavigationBar_Easy_addSelectTextColor, addSelectTextColor);
             addNormalTextColor = attributes.getColor(R.styleable.EasyNavigationBar_Easy_addNormalTextColor, addNormalTextColor);
-            addTextSize = attributes.getDimension(R.styleable.EasyNavigationBar_Easy_addTextSize, addTextSize);
+            centerTextSize = NavigationUtil.compareTo(getContext(), attributes.getDimension(R.styleable.EasyNavigationBar_Easy_centerTextSize, 0), centerTextSize, textSizeType);
             addTextTopMargin = attributes.getDimension(R.styleable.EasyNavigationBar_Easy_addTextTopMargin, addTextTopMargin);
             addAlignBottom = attributes.getBoolean(R.styleable.EasyNavigationBar_Easy_addAlignBottom, addAlignBottom);
 
@@ -291,34 +296,8 @@ public class EasyNavigationBar extends LinearLayout {
             hasPadding = attributes.getBoolean(R.styleable.EasyNavigationBar_Easy_hasPadding, hasPadding);
 
             centerAsFragment = attributes.getBoolean(R.styleable.EasyNavigationBar_Easy_centerAsFragment, centerAsFragment);
-            textSizeType = attributes.getInt(R.styleable.EasyNavigationBar_Easy_textSizeType, textSizeType);
             attributes.recycle();
         }
-    }
-
-    //将dp、sp转换成px
-    private void toDp() {
-        navigationHeight = NavigationUtil.dip2px(getContext(), navigationHeight);
-        iconSize = NavigationUtil.dip2px(getContext(), iconSize);
-        hintPointSize = NavigationUtil.dip2px(getContext(), hintPointSize);
-        hintPointTop = NavigationUtil.dip2px(getContext(), hintPointTop);
-        hintPointLeft = NavigationUtil.dip2px(getContext(), hintPointLeft);
-
-        msgPointLeft = NavigationUtil.dip2px(getContext(), msgPointLeft);
-        msgPointTop = NavigationUtil.dip2px(getContext(), msgPointTop);
-        msgPointSize = NavigationUtil.dip2px(getContext(), msgPointSize);
-        msgPointTextSize = NavigationUtil.dip2px(getContext(), msgPointTextSize);
-
-        tabTextTop = NavigationUtil.dip2px(getContext(), tabTextTop);
-        tabTextSize = NavigationUtil.dip2px(getContext(), tabTextSize);
-
-
-        //Add
-        centerIconSize = NavigationUtil.dip2px(getContext(), centerIconSize);
-        addLayoutHeight = NavigationUtil.dip2px(getContext(), addLayoutHeight);
-        addLayoutBottom = NavigationUtil.dip2px(getContext(), addLayoutBottom);
-        addTextSize = NavigationUtil.dip2px(getContext(), addTextSize);
-        addTextTopMargin = NavigationUtil.dip2px(getContext(), addTextTopMargin);
     }
 
 
@@ -380,8 +359,8 @@ public class EasyNavigationBar extends LinearLayout {
         lineView.setLayoutParams(lineParams);
 
 //若没有设置中间添加的文字字体大小、颜色、则同其他Tab一样
-        if (addTextSize == 0) {
-            addTextSize = tabTextSize;
+        if (centerTextSize == 0) {
+            centerTextSize = tabTextSize;
         }
         if (addNormalTextColor == 0) {
             addNormalTextColor = normalTextColor;
@@ -414,12 +393,13 @@ public class EasyNavigationBar extends LinearLayout {
     /**
      * 重置各个参数
      */
-    public EasyNavigationBar resetSetting() {
+    public EasyNavigationBar defaultSetting() {
         this.titleItems = new String[]{};
         this.normalIconItems = new int[]{};
         this.selectIconItems = new int[]{};
         this.fragmentList = new ArrayList<>();
-        this.adapter.notifyDataSetChanged();
+        if (this.adapter != null)
+            this.adapter.notifyDataSetChanged();
 
 //        if(mViewPager!=null){
 //            ((ViewGroup) mViewPager.getParent()).removeView(mViewPager);
@@ -430,25 +410,25 @@ public class EasyNavigationBar extends LinearLayout {
         //ViewPager切换动画
         smoothScroll = false;
         //图标大小
-        iconSize = 20;
+        iconSize = NavigationUtil.dip2px(getContext(), 20);
 
         //提示红点大小
-        hintPointSize = 6;
+        hintPointSize = NavigationUtil.sp2px(getContext(), 6);
         //提示红点距Tab图标右侧的距离
-        hintPointLeft = -3;
+        hintPointLeft = NavigationUtil.dip2px(getContext(), -3);
         //提示红点距图标顶部的距离
-        hintPointTop = -3;
+        hintPointTop = NavigationUtil.dip2px(getContext(), -3);
 
         //消息红点字体大小
-        msgPointTextSize = 11;
+        msgPointTextSize =11;
         //消息红点大小
-        msgPointSize = 18;
+        msgPointSize = NavigationUtil.dip2px(getContext(), 18);
         //消息红点距Tab图标右侧的距离   默认为Tab图标的一半
-        msgPointLeft = -10;
+        msgPointLeft = NavigationUtil.dip2px(getContext(), -10);
         //消息红点距图标顶部的距离  默认为Tab图标的一半
-        msgPointTop = -12;
+        msgPointTop = NavigationUtil.dip2px(getContext(), -12);
         //Tab文字距Tab图标的距离
-        tabTextTop = 2;
+        tabTextTop = NavigationUtil.dip2px(getContext(), 2);
         //Tab文字大小
         tabTextSize = 12;
         //未选中Tab字体颜色
@@ -461,18 +441,18 @@ public class EasyNavigationBar extends LinearLayout {
         lineColor = Color.parseColor("#f7f7f7");
 
         navigationBackground = Color.parseColor("#ffffff");
-        navigationHeight = 60;
+        navigationHeight = NavigationUtil.dip2px(getContext(), 60);
 
         scaleType = ImageView.ScaleType.CENTER_INSIDE;
 
         canScroll = false;
 
-        centerIconSize = 36;
+        centerIconSize = NavigationUtil.dip2px(getContext(), 36);
         addLayoutHeight = navigationHeight;
-        addLayoutBottom = 10;
+        centerLayoutBottomMargin = NavigationUtil.dip2px(getContext(), 10);
 
-        //RULE_CENTER 居中只需调节addLayoutHeight 默认和navigationHeight相等 此时addLayoutBottom属性无效
-        //RULE_BOTTOM addLayoutHeight属性无效、自适应、只需调节addLayoutBottom距底部的距离
+        //RULE_CENTER 居中只需调节addLayoutHeight 默认和navigationHeight相等 此时centerLayoutBottomMargin属性无效
+        //RULE_BOTTOM addLayoutHeight属性无效、自适应、只需调节centerLayoutBottomMargin距底部的距离
         centerLayoutRule = RULE_CENTER;
 
         //true  ViewPager在Navigation上面
@@ -487,13 +467,13 @@ public class EasyNavigationBar extends LinearLayout {
         //false 点击加号不切换fragment进行其他操作（跳转界面等）
         centerAsFragment = false;
 
-        addTextSize = 0;
+        centerTextSize = 0;
         //加号文字未选中颜色（默认同其他tab）
         addNormalTextColor = 0;
         //加号文字选中颜色（默认同其他tab）
         addSelectTextColor = 0;
         //加号文字距离顶部加号的距离
-        addTextTopMargin = 3;
+        addTextTopMargin = NavigationUtil.dip2px(getContext(), 3);
         //是否和其他tab文字底部对齐
         addAlignBottom = true;
 
@@ -508,7 +488,15 @@ public class EasyNavigationBar extends LinearLayout {
         tabContentBottomMargin = 0;
         textSizeType = 1;
 
-        toDp();
+        //消息红点99+的长度
+        msgPointMoreWidth = NavigationUtil.dip2px(getContext(), 30);
+        //消息红点99+的高度
+        msgPointMoreHeight = NavigationUtil.dip2px(getContext(), 18);
+        //消息红点99+的半径
+        msgPointMoreRadius = 10;
+        //消息红点颜色
+        msgPointColor = Color.parseColor("#ff0000");
+
         return this;
     }
 
@@ -774,9 +762,9 @@ public class EasyNavigationBar extends LinearLayout {
         addItemView.setLayoutParams(addItemParams);
         navigationLayout.addView(addItemView);
 
-        final LinearLayout addLinear = new LinearLayout(getContext());
-        addLinear.setOrientation(VERTICAL);
-        addLinear.setGravity(Gravity.CENTER);
+        final LinearLayout centerLinearLayout = new LinearLayout(getContext());
+        centerLinearLayout.setOrientation(VERTICAL);
+        centerLinearLayout.setGravity(Gravity.CENTER);
         final RelativeLayout.LayoutParams linearParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         centerImage = new ImageView(getContext());
@@ -805,7 +793,7 @@ public class EasyNavigationBar extends LinearLayout {
 
                 }
             } else {
-                linearParams.bottomMargin = (int) addLayoutBottom;
+                linearParams.bottomMargin = (int) centerLayoutBottomMargin;
             }
         }
 
@@ -826,20 +814,20 @@ public class EasyNavigationBar extends LinearLayout {
             }
         });
 
-        addLinear.addView(centerImage);
+        centerLinearLayout.addView(centerImage);
 
         if (!TextUtils.isEmpty(centerTextStr)) {
-            TextView addText = new TextView(getContext());
-            addText.setTextSize(textSizeType, NavigationUtil.px2dip(getContext(), addTextSize));
+            TextView centerText = new TextView(getContext());
+            centerText.setTextSize(textSizeType, centerTextSize);
             LinearLayout.LayoutParams addTextParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             addTextParams.topMargin = (int) addTextTopMargin;
-            addText.setLayoutParams(addTextParams);
-            addText.setText(centerTextStr);
-            addLinear.addView(addText);
+            centerText.setLayoutParams(addTextParams);
+            centerText.setText(centerTextStr);
+            centerLinearLayout.addView(centerText);
         }
 
 
-        AddContainerLayout.addView(addLinear, linearParams);
+        AddContainerLayout.addView(centerLinearLayout, linearParams);
     }
 
     /**
@@ -906,14 +894,14 @@ public class EasyNavigationBar extends LinearLayout {
         hintPointParams.width = (int) hintPointSize;
         hintPointParams.height = (int) hintPointSize;
         hintPointParams.leftMargin = (int) hintPointLeft;
-        NavigationUtil.setOvalBg(hintPoint,msgPointColor);
+        NavigationUtil.setOvalBg(hintPoint, msgPointColor);
         hintPoint.setLayoutParams(hintPointParams);
 
         //消息红点
         TextView msgPoint = itemView.findViewById(R.id.msg_point_tv);
-        msgPoint.setTextSize(textSizeType, NavigationUtil.px2dip(getContext(), msgPointTextSize));
+        msgPoint.setTextSize(textSizeType,msgPointTextSize);
         RelativeLayout.LayoutParams msgPointParams = (RelativeLayout.LayoutParams) msgPoint.getLayoutParams();
-        msgPointParams.bottomMargin = (int) NavigationUtil.dip2px(getContext(),-12);
+        msgPointParams.bottomMargin = (int) NavigationUtil.dip2px(getContext(), -12);
         msgPointParams.leftMargin = (int) msgPointLeft;
         msgPoint.setLayoutParams(msgPointParams);
 
@@ -942,7 +930,7 @@ public class EasyNavigationBar extends LinearLayout {
                 textParams.topMargin = 0;
                 text.setLayoutParams(textParams);
                 text.setText(titleItems[position]);
-                text.setTextSize(textSizeType, NavigationUtil.px2dip(getContext(), tabTextSize));
+                text.setTextSize(textSizeType, tabTextSize);
                 text.setVisibility(VISIBLE);
 
                 icon.setVisibility(GONE);
@@ -953,7 +941,7 @@ public class EasyNavigationBar extends LinearLayout {
                 textParams2.topMargin = (int) tabTextTop;
                 text.setLayoutParams(textParams2);
                 text.setText(titleItems[position]);
-                text.setTextSize(textSizeType, NavigationUtil.px2dip(getContext(), tabTextSize));
+                text.setTextSize(textSizeType, tabTextSize);
 
 
                 icon.setScaleType(scaleType);
@@ -1073,7 +1061,7 @@ public class EasyNavigationBar extends LinearLayout {
                 }
             } else {
                 linearParams.addRule(RelativeLayout.ABOVE, R.id.empty_line);
-                linearParams.bottomMargin = (int) addLayoutBottom;
+                linearParams.bottomMargin = (int) centerLayoutBottomMargin;
             }
         }
         customAddView.setId(-1);
@@ -1205,11 +1193,11 @@ public class EasyNavigationBar extends LinearLayout {
             return;
         TextView msgPointView = msgPointList.get(position);
         if (count > 99) {
-            NavigationUtil.setRoundRectBg(getContext(),msgPointView, (int) msgPointMoreRadius,msgPointColor);
+            NavigationUtil.setRoundRectBg(getContext(), msgPointView, (int) msgPointMoreRadius, msgPointColor);
             msgPointView.setText("99+");
             ViewGroup.LayoutParams params = msgPointView.getLayoutParams();
-            params.width = NavigationUtil.dip2px(getContext(),msgPointMoreWidth);
-            params.height = NavigationUtil.dip2px(getContext(),msgPointMoreHeight);
+            params.width = (int) msgPointMoreWidth;
+            params.height = (int) msgPointMoreHeight;
             msgPointView.setLayoutParams(params);
             msgPointView.setVisibility(VISIBLE);
         } else if (count < 1) {
@@ -1219,7 +1207,7 @@ public class EasyNavigationBar extends LinearLayout {
             params.width = (int) msgPointSize;
             params.height = (int) msgPointSize;
             msgPointView.setLayoutParams(params);
-            NavigationUtil.setOvalBg(msgPointView,msgPointColor);
+            NavigationUtil.setOvalBg(msgPointView, msgPointColor);
             msgPointView.setText(count + "");
             msgPointView.setVisibility(VISIBLE);
         }
@@ -1340,7 +1328,7 @@ public class EasyNavigationBar extends LinearLayout {
     }
 
     public EasyNavigationBar tabTextSize(int tabTextSize) {
-        this.tabTextSize = NavigationUtil.dip2px(getContext(), tabTextSize);
+        this.tabTextSize = tabTextSize;
         return this;
     }
 
@@ -1350,7 +1338,7 @@ public class EasyNavigationBar extends LinearLayout {
     }
 
     public EasyNavigationBar msgPointTextSize(int msgPointTextSize) {
-        this.msgPointTextSize = NavigationUtil.dip2px(getContext(), msgPointTextSize);
+        this.msgPointTextSize = msgPointTextSize;
         return this;
     }
 
@@ -1451,8 +1439,8 @@ public class EasyNavigationBar extends LinearLayout {
         return this;
     }
 
-    public EasyNavigationBar addLayoutBottom(int addLayoutBottom) {
-        this.addLayoutBottom = NavigationUtil.dip2px(getContext(), addLayoutBottom);
+    public EasyNavigationBar centerLayoutBottomMargin(int centerLayoutBottomMargin) {
+        this.centerLayoutBottomMargin = NavigationUtil.dip2px(getContext(), centerLayoutBottomMargin);
         return this;
     }
 
@@ -1466,8 +1454,8 @@ public class EasyNavigationBar extends LinearLayout {
         return this;
     }
 
-    public EasyNavigationBar addTextSize(int addTextSize) {
-        this.addTextSize = NavigationUtil.dip2px(getContext(), addTextSize);
+    public EasyNavigationBar centerTextSize(int centerTextSize) {
+        this.centerTextSize = NavigationUtil.dip2px(getContext(), centerTextSize);
         return this;
     }
 
@@ -1630,8 +1618,8 @@ public class EasyNavigationBar extends LinearLayout {
         return addViewLayout;
     }
 
-    public float getAddLayoutBottom() {
-        return addLayoutBottom;
+    public float getcenterLayoutBottomMargin() {
+        return centerLayoutBottomMargin;
     }
 
     public int getCenterLayoutRule() {
@@ -1654,8 +1642,8 @@ public class EasyNavigationBar extends LinearLayout {
         return customAddView;
     }
 
-    public float getAddTextSize() {
-        return addTextSize;
+    public float getcenterTextSize() {
+        return centerTextSize;
     }
 
     public int getAddNormalTextColor() {
@@ -1692,7 +1680,7 @@ public class EasyNavigationBar extends LinearLayout {
     }
 
     public EasyNavigationBar setMsgPointMoreWidth(float msgPointMoreWidth) {
-        this.msgPointMoreWidth = msgPointMoreWidth;
+        this.msgPointMoreWidth = NavigationUtil.dip2px(getContext(), msgPointMoreWidth);
         return this;
     }
 
@@ -1701,7 +1689,7 @@ public class EasyNavigationBar extends LinearLayout {
     }
 
     public EasyNavigationBar setMsgPointMoreHeight(float msgPointMoreHeight) {
-        this.msgPointMoreHeight = msgPointMoreHeight;
+        this.msgPointMoreHeight = NavigationUtil.dip2px(getContext(), msgPointMoreHeight);
         return this;
     }
 

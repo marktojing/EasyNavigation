@@ -126,10 +126,11 @@ navigationBar.defaultSetting()  //恢复默认配置、可用于重绘导航栏
 方法名字诸多修改；（中间Tab的相关属性由add改为center/万分抱歉）
 
 ---
-# Demo
-github：[https://github.com/forvv231/EasyNavigation](https://github.com/forvv231/EasyNavigation)
+#Demo
+github：[https://github.com/Vincent7Wong/EasyNavigation](https://github.com/Vincent7Wong/EasyNavigation)
 
-apk：[ https://fir.im/7r4d]( https://fir.im/7r4d)
 
-![image.png](https://upload-images.jianshu.io/upload_images/5739496-3dca3d12b05784ac.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+apk：http://d.6short.com/7r4d
+
+![image.png](https://upload-images.jianshu.io/upload_images/5739496-be94c7122ef83c51.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 

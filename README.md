@@ -113,8 +113,7 @@ navigationBar.defaultSetting()  //恢复默认配置、可用于重绘导航栏
                         navigationBar.setHintPoint(4, true);
                     }
                 })
-                //.setupWithViewPager(new ViewPager(AllActivity.this))
-                //.setupWithViewPager(new ViewPager2(AllActivity.this))
+                //.setupWithViewPager() ViewPager或ViewPager2
                 .build();
 ```
 ---

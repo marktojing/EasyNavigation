@@ -44,7 +44,7 @@ Step 2. Add the dependency
 ```
      	implementation 'com.github.Vincent7Wong:EasyNavigation:1.5.0'
      	//2.0.0  AndroidX版本、支持ViewPager2
-     	implementation 'com.github.Vincent7Wong:EasyNavigation:2.0.1'
+     	implementation 'com.github.Vincent7Wong:EasyNavigation:2.0.2'
 ```
 
 ---
@@ -79,7 +79,6 @@ navigationBar.defaultSetting()  //恢复默认配置、可用于重绘导航栏
                 .smoothScroll(false)  //点击Tab  Viewpager切换是否有动画
                 .canScroll(true)    //Viewpager能否左右滑动
                 .mode(EasyNavigationBar.NavigationMode.MODE_ADD)   //默认MODE_NORMAL 普通模式  //MODE_ADD 带加号模式
-                .anim(Anim.ZoomIn)                //点击Tab时的动画
                 .centerTextStr("发现")
                 .centerImageRes(R.mipmap.add_image)
                 .centerIconSize(36)    //中间加号图片的大小
@@ -130,6 +129,7 @@ navigationBar.defaultSetting()  //恢复默认配置、可用于重绘导航栏
 - 修复控件宽度计算问题；
 - 新增重复选择回调；
 - 方法名字诸多修改；（中间Tab的相关属性由add改为center/万分抱歉）
+- 取消Tab点击动画
 
 ---
 # Demo

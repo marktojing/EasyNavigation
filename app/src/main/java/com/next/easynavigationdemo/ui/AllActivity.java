@@ -10,7 +10,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import com.next.easynavigation.constant.Anim;
 import com.next.easynavigation.view.EasyNavigationBar;
 import com.next.easynavigationdemo.R;
 import com.next.easynavigationdemo.ui.normal.AFragment;
@@ -76,7 +75,6 @@ public class AllActivity extends AppCompatActivity {
                 .smoothScroll(false)  //点击Tab  Viewpager切换是否有动画
                 .canScroll(true)    //Viewpager能否左右滑动
                 .mode(EasyNavigationBar.NavigationMode.MODE_ADD)   //默认MODE_NORMAL 普通模式  //MODE_ADD 带加号模式
-                .anim(Anim.ZoomIn)                //点击Tab时的动画
                 .centerTextStr("发现")
                 .centerImageRes(R.mipmap.add_image)
                 .centerIconSize(36)    //中间加号图片的大小

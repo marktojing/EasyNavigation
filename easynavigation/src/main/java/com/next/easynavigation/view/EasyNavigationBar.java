@@ -24,11 +24,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.daimajia.androidanimations.library.Techniques;
-import com.daimajia.androidanimations.library.YoYo;
 import com.next.easynavigation.R;
 import com.next.easynavigation.adapter.ViewPagerAdapter;
-import com.next.easynavigation.constant.Anim;
 import com.next.easynavigation.utils.NavigationUtil;
 
 import java.lang.annotation.Retention;
@@ -86,8 +83,8 @@ public class EasyNavigationBar extends LinearLayout {
 
     private FragmentManager fragmentManager;
 
-    //Tab点击动画效果
-    private Techniques anim = null;
+//    //Tab点击动画效果
+//    private Techniques anim = null;
     //ViewPager切换动画
     private boolean smoothScroll = false;
     //图标大小
@@ -436,8 +433,8 @@ public class EasyNavigationBar extends LinearLayout {
 
         mViewPager2 = null;
 
-        //Tab点击动画效果
-        anim = null;
+//        //Tab点击动画效果
+//        anim = null;
         //ViewPager切换动画
         smoothScroll = false;
         //图标大小
@@ -1198,8 +1195,8 @@ public class EasyNavigationBar extends LinearLayout {
     private void selectNormalTabUI(int position, boolean showAnim) {
         for (int i = 0; i < tabCount; i++) {
             if (i == position) {
-                if (anim != null && showAnim)
-                    YoYo.with(anim).duration(300).playOn(tabList.get(i));
+//                if (anim != null && showAnim)
+//                    YoYo.with(anim).duration(300).playOn(tabList.get(i));
                 switch (contentType) {
                     case TabContentType.TYPE_NORMAL:
                         imageViewList.get(i).setImageResource(selectIconItems[i]);
@@ -1476,14 +1473,14 @@ public class EasyNavigationBar extends LinearLayout {
         return this;
     }
 
-    public EasyNavigationBar anim(Anim anim) {
-        if (anim != null) {
-            this.anim = anim.getYoyo();
-        } else {
-            this.anim = null;
-        }
-        return this;
-    }
+//    public EasyNavigationBar anim(Anim anim) {
+//        if (anim != null) {
+//            this.anim = anim.getYoyo();
+//        } else {
+//            this.anim = null;
+//        }
+//        return this;
+//    }
 
     public EasyNavigationBar centerLayoutRule(int centerLayoutRule) {
         this.centerLayoutRule = centerLayoutRule;
@@ -1576,9 +1573,9 @@ public class EasyNavigationBar extends LinearLayout {
         return fragmentManager;
     }
 
-    public Techniques getAnim() {
-        return anim;
-    }
+//    public Techniques getAnim() {
+//        return anim;
+//    }
 
     public boolean isSmoothScroll() {
         return smoothScroll;

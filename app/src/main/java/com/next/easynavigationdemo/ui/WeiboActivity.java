@@ -18,7 +18,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import com.next.easynavigation.constant.Anim;
 import com.next.easynavigation.utils.NavigationUtil;
 import com.next.easynavigation.view.EasyNavigationBar;
 import com.next.easynavigationdemo.R;
@@ -103,7 +102,6 @@ public class WeiboActivity extends AppCompatActivity {
                     }
                 })
                 .mode(EasyNavigationBar.NavigationMode.MODE_ADD)
-                .anim(Anim.ZoomIn)
                 .build();
 
 

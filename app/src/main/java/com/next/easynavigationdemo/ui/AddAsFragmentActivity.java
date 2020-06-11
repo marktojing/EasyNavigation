@@ -53,7 +53,6 @@ public class AddAsFragmentActivity extends AppCompatActivity {
                 .fragmentList(fragments)
                 .centerImageRes(R.mipmap.add_image)
                 .centerTextStr("发布")
-                .anim(null)
                 .centerLayoutRule(EasyNavigationBar.RULE_BOTTOM)
                 .centerLayoutBottomMargin(0)
                 .centerAlignBottom(true)

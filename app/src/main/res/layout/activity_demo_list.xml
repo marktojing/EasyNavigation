@@ -56,6 +56,14 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:gravity="center"
+        android:onClick="AllActivity"
+        android:text="所有属性测试(AllActivity)"
+        android:textSize="17sp" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="center"
         android:onClick="OnWeibo"
         android:text="示例(Weibo)"
         android:textSize="17sp" />

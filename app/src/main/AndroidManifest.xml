@@ -23,6 +23,7 @@
         <activity android:name=".ui.OnlyNavigationActivity" />
         <activity android:name=".ui.SetUpViewPagerActivity" />
         <activity android:name=".ui.ViewPager2Activity" />
+        <activity android:name=".ui.AllActivity" />
     </application>
 
 </manifest>

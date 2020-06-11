@@ -46,6 +46,8 @@ public class NormalActivity extends AppCompatActivity {
                 .fragmentManager(getSupportFragmentManager())
                 .canScroll(true)
                 .build();
+
+
     }
 
     public EasyNavigationBar getNavigationBar() {

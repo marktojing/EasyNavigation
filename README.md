@@ -26,6 +26,9 @@
 ![自定义中间按钮](https://upload-images.jianshu.io/upload_images/5739496-eeee2d6ac5fa33a9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 
+![image](https://github.com/forvv231/EasyNavigation/blob/master/screenshot/pre5.jpg)
+
+
 # 实现
 - 依赖
 

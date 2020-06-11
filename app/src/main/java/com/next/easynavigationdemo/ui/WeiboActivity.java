@@ -105,6 +105,8 @@ public class WeiboActivity extends AppCompatActivity {
                 .build();
 
 
+        navigationBar.setAddViewLayout(createWeiboView());
+
     }
 
     //仿微博弹出菜单

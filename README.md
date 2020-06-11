@@ -19,14 +19,13 @@
 
 # 效果图
 
-![轻松实现.gif](https://upload-images.jianshu.io/upload_images/5739496-c5a193a09c2142ec.gif?imageMogr2/auto-orient/strip)
+![image](https://github.com/forvv231/EasyNavigation/blob/master/screenshot/pre.gif)
 
-![基础版和加号版本.png](https://upload-images.jianshu.io/upload_images/5739496-567bb2686d717fde.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
-![自定义中间按钮](https://upload-images.jianshu.io/upload_images/5739496-eeee2d6ac5fa33a9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 
 ![image](https://github.com/forvv231/EasyNavigation/blob/master/screenshot/pre5.jpg)
+![image](https://github.com/forvv231/EasyNavigation/blob/master/screenshot/pre3.jpg)
+![image](https://github.com/forvv231/EasyNavigation/blob/master/screenshot/pre4.jpg)
 
 
 # 实现

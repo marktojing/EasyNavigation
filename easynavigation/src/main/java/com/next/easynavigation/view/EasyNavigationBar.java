@@ -438,7 +438,7 @@ public class EasyNavigationBar extends LinearLayout {
         //ViewPager切换动画
         smoothScroll = false;
         //图标大小
-        iconSize = NavigationUtil.dip2px(getContext(), 20);
+        iconSize = NavigationUtil.sp2px(getContext(), 22);
 
         //提示红点大小
         hintPointSize = NavigationUtil.sp2px(getContext(), 6);
@@ -503,7 +503,7 @@ public class EasyNavigationBar extends LinearLayout {
         //加号文字距离顶部加号的距离
         centerTextTopMargin = NavigationUtil.dip2px(getContext(), 3);
         //是否和其他tab文字底部对齐
-        centerAlignBottom = true;
+        centerAlignBottom = false;
 
         contentType = TabContentType.TYPE_NORMAL;
         centerTextStr = "";
@@ -976,12 +976,10 @@ public class EasyNavigationBar extends LinearLayout {
                 text.setVisibility(GONE);
 
                 icon.setScaleType(scaleType);
-                if (iconSize > 0) {
                     LayoutParams iconParams = (LayoutParams) icon.getLayoutParams();
                     iconParams.width = (int) iconSize;
                     iconParams.height = (int) iconSize;
                     icon.setLayoutParams(iconParams);
-                }
                 imageViewList.add(icon);
                 icon.setVisibility(VISIBLE);
                 break;
@@ -1006,12 +1004,10 @@ public class EasyNavigationBar extends LinearLayout {
 
 
                 icon.setScaleType(scaleType);
-                if (iconSize > 0) {
                     LayoutParams iconParams2 = (LayoutParams) icon.getLayoutParams();
                     iconParams2.width = (int) iconSize;
                     iconParams2.height = (int) iconSize;
                     icon.setLayoutParams(iconParams2);
-                }
                 imageViewList.add(icon);
 
                 text.setVisibility(VISIBLE);
@@ -1115,7 +1111,6 @@ public class EasyNavigationBar extends LinearLayout {
         navigationLayout.addView(addItemView);
 
         final RelativeLayout.LayoutParams linearParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        //linearParams.width = NavigationUtil.getScreenWidth(getContext()) / tabCount;
 
         if (centerLayoutRule == RULE_CENTER) {
             linearParams.addRule(RelativeLayout.CENTER_IN_PARENT);

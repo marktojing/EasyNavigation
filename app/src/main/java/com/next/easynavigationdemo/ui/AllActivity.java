@@ -78,12 +78,12 @@ public class AllActivity extends AppCompatActivity {
                 .centerTextStr("发现")
                 .centerImageRes(R.mipmap.add_image)
                 .centerIconSize(36)    //中间加号图片的大小
-                .centerLayoutHeight(100)   //包含加号的布局高度 背景透明  所以加号看起来突出一块
+           //     .centerLayoutHeight(100)   //包含加号的布局高度 背景透明  所以加号看起来突出一块
                 .navigationHeight(60)  //导航栏高度
                 .lineHeight(10)         //分割线高度  默认1px
                 .lineColor(Color.parseColor("#ff0000"))
                 .centerLayoutRule(EasyNavigationBar.RULE_BOTTOM) //RULE_CENTER 加号居中addLayoutHeight调节位置 EasyNavigationBar.RULE_BOTTOM 加号在导航栏靠下
-                .centerLayoutBottomMargin(10)   //加号到底部的距离
+                .centerLayoutBottomMargin(100)   //加号到底部的距离
                 .hasPadding(true)    //true ViewPager布局在导航栏之上 false有重叠
                 .hintPointLeft(-3)  //调节提示红点的位置hintPointLeft hintPointTop（看文档说明）
                 .hintPointTop(-3)
@@ -92,8 +92,8 @@ public class AllActivity extends AppCompatActivity {
                 .msgPointTop(-20)
                 .msgPointTextSize(9)  //数字消息中字体大小
                 .msgPointSize(18)    //数字消息红色背景的大小
-                .centerAlignBottom(true)  //加号是否同Tab文字底部对齐  RULE_BOTTOM时有效；
-                .centerTextTopMargin(50)  //加号文字距离加号图片的距离
+                .centerAlignBottom(false)  //加号是否同Tab文字底部对齐  RULE_BOTTOM时有效；
+                .centerTextTopMargin(10)  //加号文字距离加号图片的距离
                 .centerTextSize(15)      //加号文字大小
                 .centerNormalTextColor(Color.parseColor("#ff0000"))    //加号文字未选中时字体颜色
                 .centerSelectTextColor(Color.parseColor("#00ff00"))    //加号文字选中时字体颜色

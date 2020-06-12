@@ -450,7 +450,7 @@ public class EasyNavigationBar extends LinearLayout {
         //消息红点字体大小
         msgPointTextSize = 11;
         //消息红点大小
-        msgPointSize = NavigationUtil.dip2px(getContext(), 18);
+        msgPointSize = NavigationUtil.dip2px(getContext(), 16);
         //消息红点距Tab图标右侧的距离   默认为Tab图标的一半
         msgPointLeft = NavigationUtil.dip2px(getContext(), -10);
         //消息红点距图标顶部的距离  默认为Tab图标的一半
@@ -520,7 +520,7 @@ public class EasyNavigationBar extends LinearLayout {
         //消息红点99+的长度
         msgPointMoreWidth = NavigationUtil.dip2px(getContext(), 30);
         //消息红点99+的高度
-        msgPointMoreHeight = NavigationUtil.dip2px(getContext(), 18);
+        msgPointMoreHeight = NavigationUtil.dip2px(getContext(), 16);
         //消息红点99+的半径
         msgPointMoreRadius = 10;
         //消息红点颜色
@@ -960,7 +960,7 @@ public class EasyNavigationBar extends LinearLayout {
         TextView msgPoint = itemView.findViewById(R.id.msg_point_tv);
         msgPoint.setTextSize(textSizeType, msgPointTextSize);
         RelativeLayout.LayoutParams msgPointParams = (RelativeLayout.LayoutParams) msgPoint.getLayoutParams();
-        msgPointParams.bottomMargin = (int) NavigationUtil.dip2px(getContext(), -12);
+        msgPointParams.bottomMargin = (int)  msgPointTop;
         msgPointParams.leftMargin = (int) msgPointLeft;
         msgPoint.setLayoutParams(msgPointParams);
 
@@ -1422,7 +1422,7 @@ public class EasyNavigationBar extends LinearLayout {
         return this;
     }
 
-    public EasyNavigationBar msgPointSize(int msgPointSize) {
+    public EasyNavigationBar msgPointSize(float msgPointSize) {
         this.msgPointSize = NavigationUtil.dip2px(getContext(), msgPointSize);
         return this;
     }
@@ -1438,7 +1438,7 @@ public class EasyNavigationBar extends LinearLayout {
     }
 
 
-    public EasyNavigationBar hintPointSize(int hintPointSize) {
+    public EasyNavigationBar hintPointSize(float hintPointSize) {
         this.hintPointSize = NavigationUtil.dip2px(getContext(), hintPointSize);
         return this;
     }

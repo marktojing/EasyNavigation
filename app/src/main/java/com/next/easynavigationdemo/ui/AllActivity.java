@@ -88,8 +88,8 @@ public class AllActivity extends AppCompatActivity {
                 .hintPointLeft(-3)  //调节提示红点的位置hintPointLeft hintPointTop（看文档说明）
                 .hintPointTop(-3)
                 .hintPointSize(6)    //提示红点的大小
-                .msgPointLeft(-10)  //调节数字消息的位置msgPointLeft msgPointTop（看文档说明）
-                .msgPointTop(-10)
+                .msgPointLeft(-20)  //调节数字消息的位置msgPointLeft msgPointTop（看文档说明）
+                .msgPointTop(-20)
                 .msgPointTextSize(9)  //数字消息中字体大小
                 .msgPointSize(18)    //数字消息红色背景的大小
                 .centerAlignBottom(true)  //加号是否同Tab文字底部对齐  RULE_BOTTOM时有效；

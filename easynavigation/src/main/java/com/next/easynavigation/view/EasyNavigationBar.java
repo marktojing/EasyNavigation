@@ -83,7 +83,7 @@ public class EasyNavigationBar extends LinearLayout {
 
     private FragmentManager fragmentManager;
 
-//    //Tab点击动画效果
+    //    //Tab点击动画效果
 //    private Techniques anim = null;
     //ViewPager切换动画
     private boolean smoothScroll = false;
@@ -475,7 +475,7 @@ public class EasyNavigationBar extends LinearLayout {
 
         canScroll = false;
 
-        centerIconSize = NavigationUtil.dip2px(getContext(), 36);
+        centerIconSize = 0;
         centerLayoutHeight = navigationHeight;
         centerLayoutBottomMargin = NavigationUtil.dip2px(getContext(), 10);
 
@@ -636,7 +636,7 @@ public class EasyNavigationBar extends LinearLayout {
                     addTabItemView(i);
                 }
                 selectNormalTabUI(0, false);
-                if(onTabLoadListener!=null)
+                if (onTabLoadListener != null)
                     onTabLoadListener.onTabLoadCompleteEvent();
             }
         });
@@ -799,7 +799,7 @@ public class EasyNavigationBar extends LinearLayout {
                     addTabItemView(i);
                 }
                 selectNormalTabUI(0, false);
-                if(onTabLoadListener!=null)
+                if (onTabLoadListener != null)
                     onTabLoadListener.onTabLoadCompleteEvent();
             }
         });
@@ -826,8 +826,10 @@ public class EasyNavigationBar extends LinearLayout {
 
         centerImage = new ImageView(getContext());
         LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        imageParams.width = (int) centerIconSize;
-        imageParams.height = (int) centerIconSize;
+        if (centerIconSize > 0) {
+            imageParams.width = (int) centerIconSize;
+            imageParams.height = (int) centerIconSize;
+        }
         centerImage.setLayoutParams(imageParams);
 
 
@@ -974,10 +976,12 @@ public class EasyNavigationBar extends LinearLayout {
                 text.setVisibility(GONE);
 
                 icon.setScaleType(scaleType);
-                LayoutParams iconParams = (LayoutParams) icon.getLayoutParams();
-                iconParams.width = (int) iconSize;
-                iconParams.height = (int) iconSize;
-                icon.setLayoutParams(iconParams);
+                if (iconSize > 0) {
+                    LayoutParams iconParams = (LayoutParams) icon.getLayoutParams();
+                    iconParams.width = (int) iconSize;
+                    iconParams.height = (int) iconSize;
+                    icon.setLayoutParams(iconParams);
+                }
                 imageViewList.add(icon);
                 icon.setVisibility(VISIBLE);
                 break;
@@ -1002,10 +1006,12 @@ public class EasyNavigationBar extends LinearLayout {
 
 
                 icon.setScaleType(scaleType);
-                LayoutParams iconParams2 = (LayoutParams) icon.getLayoutParams();
-                iconParams2.width = (int) iconSize;
-                iconParams2.height = (int) iconSize;
-                icon.setLayoutParams(iconParams2);
+                if (iconSize > 0) {
+                    LayoutParams iconParams2 = (LayoutParams) icon.getLayoutParams();
+                    iconParams2.width = (int) iconSize;
+                    iconParams2.height = (int) iconSize;
+                    icon.setLayoutParams(iconParams2);
+                }
                 imageViewList.add(icon);
 
                 text.setVisibility(VISIBLE);
@@ -1089,7 +1095,7 @@ public class EasyNavigationBar extends LinearLayout {
                 }
 
                 selectNormalTabUI(0, false);
-                if(onTabLoadListener!=null)
+                if (onTabLoadListener != null)
                     onTabLoadListener.onTabLoadCompleteEvent();
             }
         });
@@ -1365,7 +1371,7 @@ public class EasyNavigationBar extends LinearLayout {
         return this;
     }
 
-    public EasyNavigationBar centerIconSize(int centerIconSize) {
+    public EasyNavigationBar centerIconSize(float centerIconSize) {
         this.centerIconSize = NavigationUtil.dip2px(getContext(), centerIconSize);
         return this;
     }
@@ -1508,7 +1514,7 @@ public class EasyNavigationBar extends LinearLayout {
         return this;
     }
 
-    public EasyNavigationBar iconSize(int iconSize) {
+    public EasyNavigationBar iconSize(float iconSize) {
         this.iconSize = NavigationUtil.dip2px(getContext(), iconSize);
         return this;
     }
@@ -1788,5 +1794,17 @@ public class EasyNavigationBar extends LinearLayout {
     public EasyNavigationBar setOnTabLoadListener(OnTabLoadListener onTabLoadListener) {
         this.onTabLoadListener = onTabLoadListener;
         return this;
+    }
+
+    public List<View> getTabList() {
+        return tabList;
+    }
+
+    public List<ImageView> getImageViewList() {
+        return imageViewList;
+    }
+
+    public List<TextView> getTextViewList() {
+        return textViewList;
     }
 }

@@ -44,7 +44,7 @@ Step 2. Add the dependency
 ```
      	implementation 'com.github.Vincent7Wong:EasyNavigation:1.5.0'
      	//2.0.0  AndroidX版本、支持ViewPager2
-     	implementation 'com.github.Vincent7Wong:EasyNavigation:2.0.2'
+     	implementation 'com.github.Vincent7Wong:EasyNavigation:2.0.5'
 ```
 
 ---

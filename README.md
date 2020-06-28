@@ -43,7 +43,7 @@ Step 1. Add it in your root build.gradle at the end of repositories:
 Step 2. Add the dependency
 ```
      	implementation 'com.github.Vincent7Wong:EasyNavigation:1.5.0'
-     	//2.0.0  AndroidX版本、支持ViewPager2
+     	//2.0.5  AndroidX版本、支持ViewPager2
      	implementation 'com.github.Vincent7Wong:EasyNavigation:2.0.5'
 ```
 
@@ -121,7 +121,7 @@ navigationBar.defaultSetting()  //恢复默认配置、可用于重绘导航栏
 # 更新
 
 - 此版本较上一版本有很大更新、实现方式也调整了下、如有错误及时反馈
-- 2.0.0迁移AndroidX、支持ViewPager2;
+- 2.0.5迁移AndroidX、支持ViewPager2;
 - 剥离导航栏、不传Fragment则不会创建ViewPager、可自行实现ViewPager使用setupWithViewPager方法与之关联；
 - 新增仅图片、仅文字的方式。titleItems和normalIconItems不能同时为空。如果没有titleItems、则仅显示图片，没有normalIconItems则仅显示文字，没有selectIconItems则Tab没有切换效果；
 - 新增字体单位修改、SP和DP切换；

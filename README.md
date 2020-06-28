@@ -5,7 +5,7 @@
 - 如果还不能满足、中间可添加自定义View；
 - Tab中随意添加小红点提示、数字消息提示；
 - 点击按钮可跳转界面、也可作为Tab切换Fragment；
-- 2.0.0迁移AndroidX、支持ViewPager2;
+- 2.0.+迁移AndroidX、支持ViewPager2;
 - 剥离导航栏、不传Fragment则不会创建ViewPager、可自行实现ViewPager使用setupWithViewPager方法与之关联；
 - 支持仅图片、仅文字的方式.；
 - 支持字体单位修改、SP和DP切换；
@@ -121,7 +121,7 @@ navigationBar.defaultSetting()  //恢复默认配置、可用于重绘导航栏
 # 更新
 
 - 此版本较上一版本有很大更新、实现方式也调整了下、如有错误及时反馈
-- 2.0.5迁移AndroidX、支持ViewPager2;
+- 2.0.+迁移AndroidX、支持ViewPager2;
 - 剥离导航栏、不传Fragment则不会创建ViewPager、可自行实现ViewPager使用setupWithViewPager方法与之关联；
 - 新增仅图片、仅文字的方式。titleItems和normalIconItems不能同时为空。如果没有titleItems、则仅显示图片，没有normalIconItems则仅显示文字，没有selectIconItems则Tab没有切换效果；
 - 新增字体单位修改、SP和DP切换；

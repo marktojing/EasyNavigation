@@ -27,9 +27,9 @@ public class SetUpViewPagerActivity extends AppCompatActivity {
 
     private String[] tabText = {"首页", "发现", "消息", "我的"};
     //未选中icon
-    private int[] normalIcon = {R.mipmap.index, R.mipmap.find, R.mipmap.message, R.mipmap.me};
+    private Integer[] normalIcon = {R.mipmap.index, R.mipmap.find, R.mipmap.message, R.mipmap.me};
     //选中时icon
-    private int[] selectIcon = {R.mipmap.index1, R.mipmap.find1, R.mipmap.message1, R.mipmap.me1};
+    private Integer[] selectIcon = {R.mipmap.index1, R.mipmap.find1, R.mipmap.message1, R.mipmap.me1};
 
     private List<android.support.v4.app.Fragment> fragments = new ArrayList<>();
 

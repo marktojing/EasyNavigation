@@ -3,6 +3,9 @@ package com.next.easynavigation.view;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -28,6 +31,8 @@ import com.next.easynavigation.R;
 import com.next.easynavigation.adapter.ViewPagerAdapter;
 import com.next.easynavigation.constant.Anim;
 import com.next.easynavigation.utils.NavigationUtil;
+
+import org.w3c.dom.Text;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -75,9 +80,9 @@ public class EasyNavigationBar extends LinearLayout {
     //文字集合
     private String[] titleItems = new String[]{};
     //未选择 图片集合
-    private int[] normalIconItems = new int[]{};
+    private Integer[] normalIconItems = new Integer[]{};
     //已选择 图片集合
-    private int[] selectIconItems = new int[]{};
+    private Integer[] selectIconItems = new Integer[]{};
     //fragment集合
     private List<Fragment> fragmentList = new ArrayList<>();
 
@@ -393,8 +398,8 @@ public class EasyNavigationBar extends LinearLayout {
      */
     public EasyNavigationBar defaultSetting() {
         this.titleItems = new String[]{};
-        this.normalIconItems = new int[]{};
-        this.selectIconItems = new int[]{};
+        this.normalIconItems = new Integer[]{};
+        this.selectIconItems = new Integer[]{};
         this.fragmentList = new ArrayList<>();
         if (this.adapter != null)
             this.adapter.notifyDataSetChanged();
@@ -1114,25 +1119,55 @@ public class EasyNavigationBar extends LinearLayout {
         return addViewLayout;
     }
 
+    private void setDrawableColor(ImageView imageView,int color){
+        Drawable drawable = imageView.getDrawable();
+        drawable.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
+    }
+    private void setDrawable(ImageView  imageView,int drawable,int color){
+        imageView.setImageResource(drawable);
+        setDrawableColor(imageView,color);
+    }
+    private void setTextAndTextColor(TextView textView,int color,String text){
+        textView.setTextColor(color);
+        textView.setText(text);
+    }
+    private void setNormalTabUI(int i){
+        switch (contentType) {
+            case TabContentType.TYPE_NORMAL:
+                setDrawable( imageViewList.get(i),normalIconItems[i],normalTextColor);
+                setTextAndTextColor(textViewList.get(i),normalTextColor,titleItems[i]);
+            case TabContentType.TYPE_ONLY_IMAGE:
+                setDrawable( imageViewList.get(i),normalIconItems[i],normalTextColor);
+                break;
+            case TabContentType.TYPE_ONLY_TEXT:
+                setTextAndTextColor(textViewList.get(i),normalTextColor,titleItems[i]);
+                break;
+        }
+    }
+    private void setSelectedTabUI(int i){
+        switch (contentType) {
+            case TabContentType.TYPE_NORMAL:
+                setDrawable(imageViewList.get(i),normalIconItems[i],selectTextColor);
+//                setDrawable(imageViewList.get(i),selectIconItems[i],selectTextColor);
+                setTextAndTextColor( textViewList.get(i),selectTextColor,titleItems[i]);
+                break;
+            case TabContentType.TYPE_ONLY_IMAGE:
+//                setDrawable(imageViewList.get(i),selectIconItems[i],selectTextColor);
+                setDrawable(imageViewList.get(i),normalIconItems[i],selectTextColor);
+                break;
+            case TabContentType.TYPE_ONLY_TEXT:
+                setTextAndTextColor( textViewList.get(i),selectTextColor,titleItems[i]);
+                break;
+        }
+    }
+
 
     /**
      * 选择中间Tab UI变化
      */
     private void selectCenterTabUI() {
         for (int i = 0; i < tabCount; i++) {
-            switch (contentType) {
-                case TabContentType.TYPE_NORMAL:
-                    imageViewList.get(i).setImageResource(normalIconItems[i]);
-                    textViewList.get(i).setTextColor(normalTextColor);
-                    textViewList.get(i).setText(titleItems[i]);
-                case TabContentType.TYPE_ONLY_IMAGE:
-                    imageViewList.get(i).setImageResource(normalIconItems[i]);
-                    break;
-                case TabContentType.TYPE_ONLY_TEXT:
-                    textViewList.get(i).setTextColor(normalTextColor);
-                    textViewList.get(i).setText(titleItems[i]);
-                    break;
-            }
+            setNormalTabUI(i);
         }
     }
 
@@ -1146,35 +1181,10 @@ public class EasyNavigationBar extends LinearLayout {
             if (i == position) {
                 if (anim != null && showAnim)
                     YoYo.with(anim).duration(300).playOn(tabList.get(i));
-                switch (contentType) {
-                    case TabContentType.TYPE_NORMAL:
-                        imageViewList.get(i).setImageResource(selectIconItems[i]);
-                        textViewList.get(i).setTextColor(selectTextColor);
-                        textViewList.get(i).setText(titleItems[i]);
-                        break;
-                    case TabContentType.TYPE_ONLY_IMAGE:
-                        imageViewList.get(i).setImageResource(selectIconItems[i]);
-                        break;
-                    case TabContentType.TYPE_ONLY_TEXT:
-                        textViewList.get(i).setTextColor(selectTextColor);
-                        textViewList.get(i).setText(titleItems[i]);
-                        break;
-                }
+               setSelectedTabUI(i);
 
             } else {
-                switch (contentType) {
-                    case TabContentType.TYPE_NORMAL:
-                        imageViewList.get(i).setImageResource(normalIconItems[i]);
-                        textViewList.get(i).setTextColor(normalTextColor);
-                        textViewList.get(i).setText(titleItems[i]);
-                    case TabContentType.TYPE_ONLY_IMAGE:
-                        imageViewList.get(i).setImageResource(normalIconItems[i]);
-                        break;
-                    case TabContentType.TYPE_ONLY_TEXT:
-                        textViewList.get(i).setTextColor(normalTextColor);
-                        textViewList.get(i).setText(titleItems[i]);
-                        break;
-                }
+                setNormalTabUI(i);
             }
         }
 
@@ -1402,12 +1412,17 @@ public class EasyNavigationBar extends LinearLayout {
         return this;
     }
 
-    public EasyNavigationBar normalIconItems(int[] normalIconItems) {
+    public EasyNavigationBar normalIconItems(Integer[] normalIconItems) {
         this.normalIconItems = normalIconItems;
         return this;
     }
+    public EasyNavigationBar setIconItems(Integer[] iconItems) {
+        this.normalIconItems = iconItems;
+        this.selectIconItems = iconItems;
+        return this;
+    }
 
-    public EasyNavigationBar selectIconItems(int[] selectIconItems) {
+    public EasyNavigationBar selectIconItems(Integer[] selectIconItems) {
         this.selectIconItems = selectIconItems;
         return this;
     }
@@ -1506,11 +1521,11 @@ public class EasyNavigationBar extends LinearLayout {
         return titleItems;
     }
 
-    public int[] getNormalIconItems() {
+    public Integer[] getNormalIconItems() {
         return normalIconItems;
     }
 
-    public int[] getSelectIconItems() {
+    public Integer[] getSelectIconItems() {
         return selectIconItems;
     }
 

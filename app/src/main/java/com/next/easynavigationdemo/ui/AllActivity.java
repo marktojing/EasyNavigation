@@ -26,9 +26,9 @@ public class AllActivity extends AppCompatActivity {
 
     private String[] tabText = {"首页", "发现", "消息", "我的"};
     //未选中icon
-    private int[] normalIcon = {R.mipmap.index, R.mipmap.find, R.mipmap.message, R.mipmap.me};
+    private Integer[] normalIcon = {R.mipmap.index, R.mipmap.find, R.mipmap.message, R.mipmap.me};
     //选中时icon
-    private int[] selectIcon = {R.mipmap.index1, R.mipmap.find1, R.mipmap.message1, R.mipmap.me1};
+    private Integer[] selectIcon = {R.mipmap.index1, R.mipmap.find1, R.mipmap.message1, R.mipmap.me1};
 
     private List<android.support.v4.app.Fragment> fragments = new ArrayList<>();
 
@@ -55,7 +55,7 @@ public class AllActivity extends AppCompatActivity {
                 .tabTextSize(10)   //Tab文字大小
                 .tabTextTop(2)     //Tab文字距Tab图标的距离
                 .normalTextColor(Color.parseColor("#666666"))   //Tab未选中时字体颜色
-                .selectTextColor(Color.parseColor("#333333"))   //Tab选中时字体颜色
+                .selectTextColor(Color.parseColor("#ff0000"))   //Tab选中时字体颜色
                 .scaleType(ImageView.ScaleType.CENTER_INSIDE)  //同 ImageView的ScaleType
                 .navigationBackground(Color.parseColor("#80000000"))   //导航栏背景色
                 .setOnTabClickListener(new EasyNavigationBar.OnTabClickListener() {

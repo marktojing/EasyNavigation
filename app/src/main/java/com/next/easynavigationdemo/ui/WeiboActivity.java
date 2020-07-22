@@ -36,16 +36,16 @@ public class WeiboActivity extends AppCompatActivity {
 
     private String[] tabText2 = {"商城", "订单", "地址"};
     //未选中icon
-    private int[] normalIcon = {R.mipmap.index, R.mipmap.find,  R.mipmap.message, R.mipmap.me};
+    private Integer[] normalIcon = {R.mipmap.index, R.mipmap.find,  R.mipmap.message, R.mipmap.me};
     //选中时icon
-    private int[] selectIcon = {R.mipmap.index1, R.mipmap.find1, R.mipmap.message1, R.mipmap.me1};
+    private Integer[] selectIcon = {R.mipmap.index1, R.mipmap.find1, R.mipmap.message1, R.mipmap.me1};
 
     private List<android.support.v4.app.Fragment> fragments = new ArrayList<>();
     private List<android.support.v4.app.Fragment> changeFragments = new ArrayList<>();
 
 
     //仿微博图片和文字集合
-    private int[] menuIconItems = {R.mipmap.pic1, R.mipmap.pic2, R.mipmap.pic3, R.mipmap.pic4};
+    private Integer[] menuIconItems = {R.mipmap.pic1, R.mipmap.pic2, R.mipmap.pic3, R.mipmap.pic4};
     private String[] menuTextItems = {"文字", "拍摄", "相册", "直播"};
 
     private LinearLayout menuLayout;
